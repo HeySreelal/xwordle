@@ -6,6 +6,7 @@ import 'package:xwordle/handlers/notify.dart';
 import 'package:xwordle/handlers/profile.dart';
 import 'package:xwordle/handlers/quit.dart';
 import 'package:xwordle/handlers/start.dart';
+import 'package:xwordle/handlers/update.dart';
 import 'package:xwordle/models/session.dart';
 import 'package:xwordle/xwordle.dart';
 
@@ -21,4 +22,6 @@ void main(List<String> args) {
   bot.command("quit", quitHandler());
   bot.command("profile", profileHandler());
   bot.onText(guessHandler());
+
+  updateWord();
 }

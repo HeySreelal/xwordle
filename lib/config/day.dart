@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:xwordle/utils/utils.dart';
 
 /// This class represents a Wordle Day
@@ -34,5 +37,20 @@ class WordleDay {
   /// Update the word
   WordleDay updateWord(String word) {
     return WordleDay(word, index, date);
+  }
+
+  /// Save day to day.json
+  void save() {
+    final file = File('day.json');
+    file.writeAsStringSync(jsonEncode(toMap()));
+  }
+
+  /// Returns a map from the day
+  Map<String, dynamic> toMap() {
+    return {
+      'word': word,
+      'index': index,
+      'date': date.millisecondsSinceEpoch ~/ 1000,
+    };
   }
 }
