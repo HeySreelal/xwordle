@@ -30,4 +30,9 @@ class WordleDay {
   String get formattedDurationTillNext {
     return DateUtil.getFormattedDuration(next);
   }
+
+  /// Update the word
+  WordleDay updateWord(String word) {
+    return WordleDay(word, index, date);
+  }
 }
