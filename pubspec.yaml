@@ -1,0 +1,14 @@
+name: xwordle
+description: The wordle game for Telegram. Inspired by the original Wordle game by NY Times.
+version: 1.0.0
+repository: https://github.com/heysreelal/xwordle
+
+environment:
+  sdk: ^3.0.4
+
+dependencies:
+  televerse:
+
+dev_dependencies:
+  lints: ^2.0.0
+  test: ^1.21.0
