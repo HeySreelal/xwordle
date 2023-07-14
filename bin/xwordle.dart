@@ -2,6 +2,7 @@ import 'package:xwordle/handlers/error.dart';
 import 'package:xwordle/handlers/help.dart';
 import 'package:xwordle/handlers/next.dart';
 import 'package:xwordle/handlers/notify.dart';
+import 'package:xwordle/handlers/profile.dart';
 import 'package:xwordle/handlers/quit.dart';
 import 'package:xwordle/handlers/start.dart';
 import 'package:xwordle/models/session.dart';
@@ -17,4 +18,5 @@ void main(List<String> args) {
   bot.command("about", aboutHandler());
   bot.command("next", nextWordHandler());
   bot.command("quit", quitHandler());
+  bot.command("profile", profileHandler());
 }
