@@ -41,6 +41,9 @@ class WordleSession extends Session {
   /// The user's tries
   List<String> tries;
 
+  /// The number of perfect games the user has had
+  int perfectGames;
+
   /// Constructs a WordleSession
   WordleSession({
     this.currentGame = 0,
@@ -55,6 +58,7 @@ class WordleSession extends Session {
     this.totalGamesPlayed = 0,
     this.totalWins = 0,
     this.tries = const [],
+    this.perfectGames = 0,
     DateTime? joinedDate,
   }) : joinedDate = joinedDate ?? DateTime.now();
 
@@ -74,6 +78,7 @@ class WordleSession extends Session {
       'totalGamesPlayed': totalGamesPlayed,
       'totalWins': totalWins,
       'tries': tries,
+      'perfectGames': perfectGames,
     };
   }
 
@@ -94,6 +99,7 @@ class WordleSession extends Session {
       totalGamesPlayed: map['totalGamesPlayed'] as int,
       totalWins: map['totalWins'] as int,
       tries: map['tries'].cast<String>(),
+      perfectGames: map['perfectGames'] ?? 0,
     );
   }
 

@@ -136,4 +136,18 @@ Show some love by sharing the bot with your friends!
   /// Notification prompt
   static const notificationPrompt =
       "Do you want to receive notifications when new word is available?";
+
+  /// Perfect game messages
+  static const perfectGameMessages = [
+    "You're a natural!",
+    "That was a total no-brainer!",
+    "You're acing this game!",
+    "You're on fire!",
+    "You're acing this game like a boss!",
+    "You're a pro!",
+    "You're a master of this game!",
+    "You're a total genius!",
+    "You're acing this game like it's your job!",
+    "Awesome! Just in one try! Nailed it! 🎉",
+  ];
 }
