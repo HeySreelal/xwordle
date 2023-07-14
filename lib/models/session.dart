@@ -93,7 +93,7 @@ class WordleSession extends Session {
       streak: map['streak'] as int,
       totalGamesPlayed: map['totalGamesPlayed'] as int,
       totalWins: map['totalWins'] as int,
-      tries: map['tries'] as List<String>,
+      tries: map['tries'].cast<String>(),
     );
   }
 

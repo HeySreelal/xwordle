@@ -115,3 +115,7 @@ const notOnGameMessages = [
   "Could you rephrase that, please? Send /help for help message, or /start to start playing. 👀",
   "Let's start the game or need some help? Send /help for help message, or /start to start playing. 😇",
 ];
+
+/// Notification prompt
+const notificationPrompt =
+    "Do you want to receive notifications when new word is available?";
