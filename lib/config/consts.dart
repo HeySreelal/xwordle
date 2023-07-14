@@ -1,64 +1,62 @@
 // I know this is shit :)
 // But, just to keep all the strings in one place
 
-/// **Notification Messages**
-///
-/// Contains all the messages that are sent to the user as reminder to play the game.
-const notificationMsgs = [
-  "Hey, time to play! New Wordle is here!\nRemember to send /start to start playing. 👀",
-  "New new new! 🆕 New Wordle is here!\nSend /start to start playing. 🤖",
-  "New Wordle is here! 🆕\n\nSend /start to start playing. 🤖",
-  "👀 Did your best friend tell you about today's Wordle?\n\nSend /start to start playing. 🤖",
-  "New drop! 📨 New Wordle is here!\n\nSend /start to start playing. 🤖",
-];
+class MessageStrings {
+  static const List<String> mustBe5Letters = [
+    "Your guess must be 5 letters long",
+    "Your guess must be a five-letter word.",
+    "Your guess must be five letters long, or else you're wrong.",
+    "Your guess must be five letters long, or you'll be left hanging.",
+  ];
+  static const List<String> mustBeLetters = [
+    "Your guess must be letters only",
+    "Your guess must only contain letters.",
+    "Your guess must be made up of only letters.",
+    "Your guess cannot contain any numbers, symbols, or spaces.",
+    "Please enter a word that only contains letters.",
+    "Your guess must be a word of only letters.",
+  ];
+  static const List<String> notValidWord = [
+    "Uh, oh! I don't think that's a valid word.",
+    "I don't think that's a real word.",
+    "That word doesn't exist.",
+    "I'm not sure what you mean by that.",
+    "That's not a word in the dictionary.",
+  ];
 
-/// **Error Messages**
-///
-/// Contains all the messages that are sent to the user when something goes wrong as a Map.
-const errors = {
-  "blocked": "Forbidden: bot was blocked by the user",
-  "something_went_wrong": "Something went wrong. Please try again later.",
-  "cannot_initiate": "Forbidden: bot can't initiate conversation with a user"
-};
+  /// **Not On Game Message**
+  ///
+  /// These are the messages that are sent when the user is not playing the game and sends some message to the bot.
+  static const notOnGameMessages = [
+    "You are not currently playing the game. 😇 Send /start to start playing. 🤖",
+    "Oops! You're not on a game. Send /start to start play today's Wordle! 🤖",
+    "First, send /start to start playing today's Wordle! 🤖",
+    "I didn't get what you said. Send /start to start playing today's Wordle! 🤖",
+    "Could you rephrase that, please? Send /help for help message, or /start to start playing. 👀",
+    "Let's start the game or need some help? Send /help for help message, or /start to start playing. 😇",
+  ];
 
-/// **Excited Messages**
-///
-/// Messages to be sent when the user tries to play the game again after it's over.
-const excitedMessages = [
-  "Excited? But, you've already played today! Next wordle showing up on {TIME} 👀",
-  "You've already played today! Next wordle showing up on {TIME} 🤖",
-  "I'm glad you're excited for this! 😍 Next wordle showing up on {TIME} 🤖",
-  "Daily one wordle, that's the rule! 🤓 So next up on {TIME} 🤖",
-  "Counting, 1, 2, 3... 🤓 Next Wordle arrives on {TIME} 🤖",
-];
+  static const alreadyPlaying =
+      "You are already playing the game. Shoot the guesses. 😇";
+  static const notOnGame = "You are not currently playing the game. 😇";
+  static const letsStart =
+      "Let's start the game, shoot your first guess!\n\nMeanwhile, send <code>/help</code> anytime if you want to check instructions.";
 
-/// **Welcome Messages**
-///
-/// Messages to be sent when the user first joins the chat.
-const welcomeMessages = [
-  "Welcome to Wordle! Glad to have you here <b>{name}</b>! 🤓",
-  "Welcome to Wordle Bot, {name}! 🤖 Let's play today's Wordle! 🚀",
-  "Hey there, {name}! Greetings from Wordle Bot! 🚀",
-];
+  /// When bot tries to send message to the user who has blocked the bot.
+  static const blocked = "Forbidden: bot was blocked by the user";
 
-/// **In Game Messages**
-///
-/// Contains `already` and `notOnGame` and `letsStart` messages.
-///
-/// - `already` message is sent when the user is already playing the game.
-/// - `notOnGame` message is sent when the user is not playing the game.
-/// - `letsStart` message is sent when the user is not playing the game and tries to play the game.
-const inGameMessages = {
-  "already": "You are already playing the game. Shoot the guesses. 😇",
-  "notOnGame": "You are not currently playing the game. 😇",
-  "letsStart":
-      "Let's start the game, shoot your first guess!\n\nMeanwhile, send <code>/help</code> anytime if you want to check instructions.",
-};
+  /// Something went wrong
+  static const somethingWentWrong =
+      "Something went wrong. Please try again later.";
 
-/// **Help Message**
-///
-/// Sent when the user sends /help.
-const helpMessage = """
+  /// When the bot is not allowed to initiate conversation with the user.
+  static const cannotInitiate =
+      "Forbidden: bot can't initiate conversation with a user";
+
+  /// **Help Message**
+  ///
+  /// Sent when the user sends /help.
+  static const helpMessage = """
 💁‍♀️ <b>Help</b>
 
 The game is about guessing a five letter word. You will have 6 tries to guess the word.
@@ -89,10 +87,10 @@ A new word will be available every day. The bot will send you notification when 
 Happy Wordleing! 🤓
 """;
 
-/// **About Message**
-///
-/// Sent when the user sends /about.
-const aboutMessage = """<b>🧑🏻‍💻 About</b>
+  /// **About Message**
+  ///
+  /// Sent when the user sends /about.
+  static const aboutMessage = """<b>🧑🏻‍💻 About</b>
 
 Wordle Bot is Telegram bot version of the <a href="https://www.nytimes.com/games/wordle/index.html">Wordle</a> game.
 Created by @HeySreelal with ❤️ for Telegram.
@@ -104,18 +102,38 @@ Show some love by sharing the bot with your friends!
 <a href="https://twitter.com/HeySreelal">Twitter</a> | <a href="https://t.me/xooniverse">Xooniverse</a>
 """;
 
-/// **Not On Game Message**
-///
-/// These are the messages that are sent when the user is not playing the game and sends some message to the bot.
-const notOnGameMessages = [
-  "You are not currently playing the game. 😇 Send /start to start playing. 🤖",
-  "Oops! You're not on a game. Send /start to start play today's Wordle! 🤖",
-  "First, send /start to start playing today's Wordle! 🤖",
-  "I didn't get what you said. Send /start to start playing today's Wordle! 🤖",
-  "Could you rephrase that, please? Send /help for help message, or /start to start playing. 👀",
-  "Let's start the game or need some help? Send /help for help message, or /start to start playing. 😇",
-];
+  /// **Notification Messages**
+  ///
+  /// Contains all the messages that are sent to the user as reminder to play the game.
+  static const notificationMsgs = [
+    "Hey, time to play! New Wordle is here!\nRemember to send /start to start playing. 👀",
+    "New new new! 🆕 New Wordle is here!\nSend /start to start playing. 🤖",
+    "New Wordle is here! 🆕\n\nSend /start to start playing. 🤖",
+    "👀 Did your best friend tell you about today's Wordle?\n\nSend /start to start playing. 🤖",
+    "New drop! 📨 New Wordle is here!\n\nSend /start to start playing. 🤖",
+  ];
 
-/// Notification prompt
-const notificationPrompt =
-    "Do you want to receive notifications when new word is available?";
+  /// **Excited Messages**
+  ///
+  /// Messages to be sent when the user tries to play the game again after it's over.
+  static const excitedMessages = [
+    "Excited? But, you've already played today! Next wordle showing up on {TIME} 👀",
+    "You've already played today! Next wordle showing up on {TIME} 🤖",
+    "I'm glad you're excited for this! 😍 Next wordle showing up on {TIME} 🤖",
+    "Daily one wordle, that's the rule! 🤓 So next up on {TIME} 🤖",
+    "Counting, 1, 2, 3... 🤓 Next Wordle arrives on {TIME} 🤖",
+  ];
+
+  /// **Welcome Messages**
+  ///
+  /// Messages to be sent when the user first joins the chat.
+  static const welcomeMessages = [
+    "Welcome to Wordle! Glad to have you here <b>{name}</b>! 🤓",
+    "Welcome to Wordle Bot, {name}! 🤖 Let's play today's Wordle! 🚀",
+    "Hey there, {name}! Greetings from Wordle Bot! 🚀",
+  ];
+
+  /// Notification prompt
+  static const notificationPrompt =
+      "Do you want to receive notifications when new word is available?";
+}

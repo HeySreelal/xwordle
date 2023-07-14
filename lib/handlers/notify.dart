@@ -23,7 +23,7 @@ MessageHandler notifyHandler() {
   return (ctx) async {
     final user = ctx.session as WordleSession;
     await ctx.reply(
-      notificationPrompt,
+      MessageStrings.notificationPrompt,
       replyMarkup: notificationMenu(user.notify, true),
     );
   };

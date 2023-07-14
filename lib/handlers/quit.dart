@@ -11,7 +11,7 @@ MessageHandler quitHandler() {
     final game = WordleDB.today;
     final user = ctx.session as WordleSession;
     if (!user.onGame) {
-      await ctx.reply(inGameMessages["notOnGame"]!);
+      await ctx.reply(MessageStrings.notOnGame);
       return;
     }
 

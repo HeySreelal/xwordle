@@ -10,7 +10,7 @@ import 'package:xwordle/utils/utils.dart';
 MessageHandler nextWordHandler() {
   return (ctx) async {
     final game = WordleDB.today;
-    final msg = random(excitedMessages).replaceAll(
+    final msg = random(MessageStrings.excitedMessages).replaceAll(
       "{TIME}",
       game.formattedDurationTillNext,
     );

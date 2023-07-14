@@ -5,7 +5,7 @@ import 'package:xwordle/config/consts.dart';
 MessageHandler helpHandler() {
   return (ctx) async {
     await ctx.reply(
-      helpMessage,
+      MessageStrings.helpMessage,
       parseMode: ParseMode.html,
     );
   };
@@ -15,7 +15,7 @@ MessageHandler helpHandler() {
 MessageHandler aboutHandler() {
   return (ctx) async {
     await ctx.reply(
-      aboutMessage,
+      MessageStrings.aboutMessage,
       parseMode: ParseMode.html,
     );
   };

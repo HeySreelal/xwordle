@@ -10,7 +10,7 @@ MessageHandler startHandler() {
     final user = ctx.session as WordleSession;
 
     if (game.index == user.lastGame) {
-      final msg = random(excitedMessages).replaceAll(
+      final msg = random(MessageStrings.excitedMessages).replaceAll(
         "{TIME}",
         game.formattedDurationTillNext,
       );
@@ -24,13 +24,13 @@ MessageHandler startHandler() {
     /// If the user is already playing a game, tell them to finish it first
     if (user.onGame && user.currentGame == game.index) {
       await ctx.api.sendChatAction(ctx.id, ChatAction.typing);
-      await ctx.reply(inGameMessages["already"]!);
+      await ctx.reply(MessageStrings.alreadyPlaying);
       return;
     }
 
     /// Let's start a new game
     await ctx.api.sendChatAction(ctx.id, ChatAction.typing);
-    await ctx.reply(inGameMessages["letsStart"]!, parseMode: ParseMode.html);
+    await ctx.reply(MessageStrings.letsStart, parseMode: ParseMode.html);
     user.onGame = true;
     if (user.currentGame != game.index) {
       user.currentGame = game.index;
