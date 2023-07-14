@@ -2,22 +2,23 @@ import 'package:televerse/televerse.dart';
 import 'package:xwordle/config/consts.dart';
 import 'package:xwordle/models/session.dart';
 
-/// Creates an inline menu for notification settings
-InlineMenu notificationMenu([bool enabled = true, bool isYesNoMenu = true]) {
-  final menu = InlineMenu();
+Pattern notificationPattern = RegExp(r"notify_(yes|no)");
+
+/// Creates an inline keyboard for notification settings
+InlineKeyboard notificationMenu(
+    [bool enabled = true, bool isYesNoMenu = true]) {
+  final menu = InlineKeyboard();
   if (isYesNoMenu) {
-    return menu
-        .text("Yes 🚀", handleYes(), data: "notify_yes")
-        .text("No 🔕", handleNo(), data: "notify_no");
+    return menu.add("Yes 🚀", "notify_yes").add("No 🔕", "notify_no");
   } else {
-    return menu.text(
+    return menu.add(
       enabled ? "Enabled ✅" : "Disabled 🔕",
-      enabled ? handleNo() : handleYes(),
-      data: "notify${enabled ? "_no" : "_yes"}",
+      "notify${enabled ? "_no" : "_yes"}",
     );
   }
 }
 
+/// Handles the /notify command
 MessageHandler notifyHandler() {
   return (ctx) async {
     final user = ctx.session as WordleSession;
@@ -28,26 +29,15 @@ MessageHandler notifyHandler() {
   };
 }
 
-CallbackQueryHandler handleYes() {
+/// Handles enables the notification
+CallbackQueryHandler handleNotificationTap() {
   return (ctx) async {
     final user = ctx.session as WordleSession;
-    user.notify = true;
-    user.saveToFile();
-    await ctx.editMessage(
-      "$notificationSettings\n\nYou will be notified when new word is available.",
-      replyMarkup: notificationMenu(user.notify, false),
-      parseMode: ParseMode.html,
-    );
-  };
-}
 
-CallbackQueryHandler handleNo() {
-  return (ctx) async {
-    final user = ctx.session as WordleSession;
-    user.notify = false;
+    user.notify = ctx.data == "notify_yes";
     user.saveToFile();
     await ctx.editMessage(
-      "$notificationSettings\n\nYou will not be notified when new word is available.",
+      "$notificationSettings\n\nYou will ${!user.notify ? 'not ' : ''}be notified when new word is available.",
       replyMarkup: notificationMenu(user.notify, false),
       parseMode: ParseMode.html,
     );

@@ -8,6 +8,6 @@ void main(List<String> args) {
   bot.initSession(WordleSession.init);
   bot.start(startHandler());
   bot.onError(errorHandler);
-  bot.attachMenu(notificationMenu());
   bot.command("notify", notifyHandler());
+  bot.callbackQuery(notificationPattern, handleNotificationTap());
 }
