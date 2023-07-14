@@ -1,4 +1,5 @@
 import 'package:xwordle/handlers/error.dart';
+import 'package:xwordle/handlers/guess.dart';
 import 'package:xwordle/handlers/help.dart';
 import 'package:xwordle/handlers/next.dart';
 import 'package:xwordle/handlers/notify.dart';
@@ -19,4 +20,5 @@ void main(List<String> args) {
   bot.command("next", nextWordHandler());
   bot.command("quit", quitHandler());
   bot.command("profile", profileHandler());
+  bot.onText(guessHandler());
 }

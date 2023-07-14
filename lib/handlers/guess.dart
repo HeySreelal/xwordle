@@ -40,6 +40,9 @@ MessageHandler guessHandler() {
     final result = getBoxes(cw, gw);
 
     user.tries.add(gw);
+    final shareMsg = getShareableMessage(cw, user.tries, game.index);
+    final shareUrl =
+        "https://t.me/share/url?url=https://t.me/xwordlebot&text=${Uri.encodeComponent('Just finished a game at @xWordleBot. Here\'s my result:\n\n$shareMsg')}";
 
     if (cw == gw) {
       user.onGame = false;
@@ -53,12 +56,12 @@ MessageHandler guessHandler() {
         user.perfectGames++;
         await ctx.reply(random(MessageStrings.perfectGameMessages));
       }
-      final shareMsg = getShareableMessage(cw, user.tries, game.index);
+
       await ctx.reply(
         shareMsg,
-        replyMarkup: InlineKeyboard().add(
+        replyMarkup: InlineKeyboard().addUrl(
           "Share 📤",
-          ShareLink("https://t.me/xwordlebot", text: shareMsg).https,
+          shareUrl,
         ),
       );
       await ctx.reply(
@@ -75,13 +78,11 @@ MessageHandler guessHandler() {
       final shareMsg = getShareableMessage(cw, user.tries, game.index);
       await ctx.reply(
         shareMsg,
-        replyMarkup: InlineKeyboard().add(
-          "Share 📤",
-          ShareLink("https://t.me/xwordlebot", text: shareMsg).https,
-        ),
+        replyMarkup: InlineKeyboard().addUrl("Share 📤", shareUrl),
       );
       await ctx.reply(
         "You lost the game!\n\nThe word was <b>${game.word.toUpperCase()}</b>! 🔥",
+        parseMode: ParseMode.html,
       );
       await ctx.reply(
         "New word will be available in ${game.formattedDurationTillNext}",
@@ -109,9 +110,9 @@ Future<bool> existingWord(String word) async {
 
 /// Creates the boxes for the given guess
 List<String> getBoxes(String correct, String guess) {
-  List<String?> boxes = List.filled(5, null);
-  List<String?> letters = correct.split('');
-  List<String?> guessedLetters = guess.split('');
+  List<String?> boxes = [null, null, null, null, null];
+  List<String?> letters = [...correct.split('')];
+  List<String?> guessedLetters = [...guess.split('')];
 
   for (int i = 0; i < 5; i++) {
     if (letters[i] == guessedLetters[i]) {

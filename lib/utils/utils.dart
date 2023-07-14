@@ -24,14 +24,11 @@ class DateUtil {
     final days = diff.inDays;
     final hours = diff.inHours - days * 24;
     final minutes = diff.inMinutes - hours * 60 - days * 24 * 60;
-    final seconds =
-        diff.inSeconds - minutes * 60 - hours * 60 * 60 - days * 24 * 60 * 60;
 
     final dayStr = days > 0 ? '$days days ' : '';
     final hourStr = hours > 0 ? '$hours hours ' : '';
     final minuteStr = minutes > 0 ? '$minutes minutes ' : '';
-    final secondStr = seconds > 0 ? '$seconds seconds ' : '';
 
-    return '$dayStr$hourStr$minuteStr$secondStr';
+    return '$dayStr$hourStr$minuteStr';
   }
 }

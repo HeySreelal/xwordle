@@ -20,8 +20,8 @@ class MessageStrings {
     "Uh, oh! I don't think that's a valid word.",
     "I don't think that's a real word.",
     "That word doesn't exist.",
-    "I'm not sure what you mean by that.",
-    "That's not a word in the dictionary.",
+    "I searched through all my knowledge, and couldn't find that word. Try another.",
+    "That's not a word in the dictionary. Give it another try.",
   ];
 
   /// **Not On Game Message**
