@@ -1,7 +1,7 @@
 import 'package:televerse/televerse.dart';
 
 /// The wordle session, keeps track of the current wordle of the user, and their progress
-class WordleSession extends Session {
+class WordleUser extends Session {
   /// The current game id
   int currentGame;
 
@@ -45,7 +45,7 @@ class WordleSession extends Session {
   int perfectGames;
 
   /// Constructs a WordleSession
-  WordleSession({
+  WordleUser({
     this.currentGame = 0,
     this.userId = 0,
     this.lastGame = 0,
@@ -53,7 +53,7 @@ class WordleSession extends Session {
     this.name = '',
     this.notify = false,
     this.onGame = false,
-    this.role = 'Player',
+    this.role = defaultName,
     this.streak = 0,
     this.totalGamesPlayed = 0,
     this.totalWins = 0,
@@ -82,8 +82,8 @@ class WordleSession extends Session {
     };
   }
 
-  factory WordleSession.fromMap(Map<String, dynamic> map) {
-    return WordleSession(
+  factory WordleUser.fromMap(Map<String, dynamic> map) {
+    return WordleUser(
       currentGame: map['currentGame'] as int,
       userId: map['userId'] as int,
       joinedDate: DateTime.fromMillisecondsSinceEpoch(
@@ -103,8 +103,10 @@ class WordleSession extends Session {
     );
   }
 
-  static WordleSession init(int id) {
-    final ses = Session.loadFromFile(WordleSession.fromMap, id: id);
-    return ses ?? WordleSession(userId: id, name: 'Player', role: 'Player');
+  static const String defaultName = 'Player';
+
+  static WordleUser init(int id) {
+    final ses = Session.loadFromFile(WordleUser.fromMap, id: id);
+    return ses ?? WordleUser(userId: id, name: defaultName, role: defaultName);
   }
 }

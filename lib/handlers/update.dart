@@ -30,29 +30,37 @@ void updateWord() {
 
   // Timer to update the word at 5:00 PM GMT
   final now = DateTime.now();
-  final nextFivePM = DateTime(now.year, now.month, now.day, 17);
+  final nextFivePM = DateTime(now.year, now.month, now.day, 17, 14);
   final tomorrow = now.isAfter(nextFivePM)
       ? DateTime(now.year, now.month, now.day + 1, 17)
       : nextFivePM;
   final difference = tomorrow.difference(now);
   Timer(difference, () {
     updateWord();
+    notifyUsers();
   });
 }
 
 /// Notify users about the new word
 Future<void> notifyUsers() async {
+  print('Notifying users');
   List<FileSystemEntity> files = Directory(".televerse/sessions").listSync();
-  int count = files.length;
+  List<File> jsonFiles = files
+      .where((e) => e is File && e.path.endsWith(".json"))
+      .toList()
+      .cast<File>();
+  final users = jsonFiles.map((e) {
+    final contents = e.readAsStringSync();
+    return WordleUser.fromMap(jsonDecode(contents));
+  }).toList();
+  final notificationEnabledUsers = users.where((e) => e.notify).toList();
+  int count = notificationEnabledUsers.length;
   int success = 0, failure = 0;
   for (int i = 0; i < count; i++) {
-    File file = File(files[i].path);
-    String contents = file.readAsStringSync();
-    WordleSession session = WordleSession.fromMap(jsonDecode(contents));
-    if (session.notify) {
+    if (notificationEnabledUsers[i].notify) {
       try {
         await bot.api.sendMessage(
-          ChatID(session.userId),
+          ChatID(notificationEnabledUsers[i].userId),
           random(MessageStrings.notificationMsgs),
         );
         success++;
@@ -62,10 +70,9 @@ Future<void> notifyUsers() async {
       }
     }
   }
-
   try {
     await bot.api.sendMessage(
-      WordleConfig.instance.logsChannel,
+      WordleConfig.init().logsChannel,
       "Notified $success users, failed to notify $failure users",
     );
   } catch (err) {

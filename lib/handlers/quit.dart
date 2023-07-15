@@ -9,7 +9,7 @@ import 'package:xwordle/services/db.dart';
 MessageHandler quitHandler() {
   return (ctx) async {
     final game = WordleDB.today;
-    final user = ctx.session as WordleSession;
+    final user = ctx.session as WordleUser;
     if (!user.onGame) {
       await ctx.reply(MessageStrings.notOnGame);
       return;

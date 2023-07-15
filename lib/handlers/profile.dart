@@ -4,7 +4,7 @@ import 'package:xwordle/models/session.dart';
 /// Handles the /profile command
 MessageHandler profileHandler() {
   return (ctx) async {
-    final user = ctx.session as WordleSession;
+    final user = ctx.session as WordleUser;
     await ctx.reply(
       "Hello <b>${user.name}</b>\n\n${profileDetails(user)}",
       parseMode: ParseMode.html,
@@ -13,7 +13,7 @@ MessageHandler profileHandler() {
 }
 
 /// Returns the profile details
-String profileDetails(WordleSession user) {
+String profileDetails(WordleUser user) {
   return "🎰 Total Games Played: <b>${user.totalGamesPlayed}</b>\n\n"
       "🎉 Total Games Won: <b>${user.totalWins}</b>\n\n"
       "🔥 Current Streak: <b>${user.streak}</b>\n\n"

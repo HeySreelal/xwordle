@@ -7,7 +7,10 @@ import 'package:xwordle/utils/utils.dart';
 MessageHandler startHandler() {
   return (MessageContext ctx) async {
     final game = WordleDB.today;
-    final user = ctx.session as WordleSession;
+    final user = ctx.session as WordleUser;
+    if (user.name == WordleUser.defaultName && ctx.message.from != null) {
+      user.name = ctx.message.from!.firstName;
+    }
 
     if (game.index == user.lastGame) {
       final msg = random(MessageStrings.excitedMessages).replaceAll(

@@ -8,7 +8,7 @@ import 'package:xwordle/utils/utils.dart';
 /// Handles the user guesses
 MessageHandler guessHandler() {
   return (ctx) async {
-    final user = ctx.session as WordleSession;
+    final user = ctx.session as WordleUser;
     final game = WordleDB.today;
 
     // If the user is not playing a game, tell them to start one

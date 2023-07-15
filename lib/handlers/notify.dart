@@ -21,7 +21,7 @@ InlineKeyboard notificationMenu(
 /// Handles the /notify command
 MessageHandler notifyHandler() {
   return (ctx) async {
-    final user = ctx.session as WordleSession;
+    final user = ctx.session as WordleUser;
     await ctx.reply(
       MessageStrings.notificationPrompt,
       replyMarkup: notificationMenu(user.notify, true),
@@ -32,7 +32,7 @@ MessageHandler notifyHandler() {
 /// Handles enables the notification
 CallbackQueryHandler handleNotificationTap() {
   return (ctx) async {
-    final user = ctx.session as WordleSession;
+    final user = ctx.session as WordleUser;
 
     user.notify = ctx.data == "notify_yes";
     user.saveToFile();
