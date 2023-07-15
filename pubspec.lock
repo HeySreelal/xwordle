@@ -308,10 +308,11 @@ packages:
   televerse:
     dependency: "direct main"
     description:
-      name: televerse
-      sha256: e3d4c3d3bdba878f22e4504fc446cb098ae76cd2c7d132767caed7c21b567128
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: dev
+      resolved-ref: "504e124e6c707bbbccfe527e2eb3df0b1012f54a"
+      url: "https://github.com/HeySreelal/televerse/"
+    source: git
     version: "1.10.4"
   term_glyph:
     dependency: transitive
