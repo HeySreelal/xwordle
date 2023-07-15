@@ -1,3 +1,4 @@
+import 'package:xwordle/handlers/admin.dart';
 import 'package:xwordle/handlers/error.dart';
 import 'package:xwordle/handlers/guess.dart';
 import 'package:xwordle/handlers/help.dart';
@@ -7,7 +8,7 @@ import 'package:xwordle/handlers/profile.dart';
 import 'package:xwordle/handlers/quit.dart';
 import 'package:xwordle/handlers/start.dart';
 import 'package:xwordle/handlers/update.dart';
-import 'package:xwordle/models/session.dart';
+import 'package:xwordle/models/user.dart';
 import 'package:xwordle/xwordle.dart';
 
 void main(List<String> args) {
@@ -22,5 +23,9 @@ void main(List<String> args) {
   bot.command("next", nextWordHandler());
   bot.command("quit", quitHandler());
   bot.command("profile", profileHandler());
+  bot.command("mod", Admin.modHandler());
+  bot.command("count", Admin.countHandler());
+  bot.hears(Admin.broadcastPattern, Admin.handleAdminText());
+  bot.callbackQuery(Admin.releasePattern, Admin.handleConfirmation());
   bot.onText(guessHandler());
 }

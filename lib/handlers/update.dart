@@ -1,13 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:televerse/televerse.dart';
 import 'package:xwordle/config/config.dart';
 import 'package:xwordle/config/consts.dart';
 import 'package:xwordle/config/day.dart';
 import 'package:xwordle/config/words.dart';
-import 'package:xwordle/models/session.dart';
+import 'package:xwordle/services/db.dart';
 import 'package:xwordle/utils/utils.dart';
 import 'package:xwordle/xwordle.dart';
 
@@ -43,15 +41,7 @@ void updateWord() {
 
 /// Notify users about the new word
 Future<void> notifyUsers() async {
-  List<FileSystemEntity> files = Directory(".televerse/sessions").listSync();
-  List<File> jsonFiles = files
-      .where((e) => e is File && e.path.endsWith(".json"))
-      .toList()
-      .cast<File>();
-  final users = jsonFiles.map((e) {
-    final contents = e.readAsStringSync();
-    return WordleUser.fromMap(jsonDecode(contents));
-  }).toList();
+  final users = WordleDB.getUsers();
   final notificationEnabledUsers = users.where((e) => e.notify).toList();
   int count = notificationEnabledUsers.length;
   int success = 0, failure = 0;

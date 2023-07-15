@@ -1,5 +1,5 @@
 import 'package:televerse/televerse.dart';
-import 'package:xwordle/models/session.dart';
+import 'package:xwordle/models/user.dart';
 
 /// Handles the /profile command
 MessageHandler profileHandler() {
