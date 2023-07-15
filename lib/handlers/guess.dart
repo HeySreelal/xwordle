@@ -134,32 +134,19 @@ Future<bool> existingWord(String word) async {
 
 /// Creates the boxes for the given guess
 List<String> getBoxes(String correct, String guess) {
-  List<String?> boxes = [null, null, null, null, null];
-  List<String?> letters = [...correct.split('')];
-  List<String?> guessedLetters = [...guess.split('')];
+  List<String> result = [];
 
-  for (int i = 0; i < 5; i++) {
-    if (letters[i] == guessedLetters[i]) {
-      boxes[i] = "🟩";
-      letters[i] = null;
-      guessedLetters[i] = null;
+  for (int i = 0; i < correct.length; i++) {
+    if (correct[i] == guess[i]) {
+      result.add('🟢');
+    } else if (correct.contains(guess[i])) {
+      result.add('🟡');
+    } else {
+      result.add('⚫️');
     }
   }
 
-  for (int i = 0; i < 5; i++) {
-    if (letters[i] != null && guessedLetters.contains(letters[i])) {
-      boxes[i] = "🟨";
-      guessedLetters[guessedLetters.indexOf(letters[i])] = null;
-    }
-  }
-
-  for (int i = 0; i < 5; i++) {
-    if (boxes[i] == null) {
-      boxes[i] = "⬛️";
-    }
-  }
-
-  return boxes.cast<String>();
+  return result;
 }
 
 /// Creates the result grid for the user
