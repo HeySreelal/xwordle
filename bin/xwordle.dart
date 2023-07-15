@@ -23,9 +23,12 @@ void main(List<String> args) {
   bot.command("next", nextWordHandler());
   bot.command("quit", quitHandler());
   bot.command("profile", profileHandler());
+  bot.onText(guessHandler());
+
+  // Admin Handlers
   bot.command("mod", Admin.modHandler());
   bot.command("count", Admin.countHandler());
+  bot.command('testbroadcast', Admin.testBroadcastHandler());
   bot.hears(Admin.broadcastPattern, Admin.handleAdminText());
   bot.callbackQuery(Admin.releasePattern, Admin.handleConfirmation());
-  bot.onText(guessHandler());
 }

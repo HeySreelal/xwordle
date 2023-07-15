@@ -155,7 +155,7 @@ class Admin {
   }
 
   /// Test Broadcast Message
-  MessageHandler testBroadcastHandler() {
+  static MessageHandler testBroadcastHandler() {
     return (ctx) async {
       if (!check(ctx.id)) {
         await markUnauthorizedAttempt(ctx);
@@ -169,7 +169,11 @@ class Admin {
       }
       final admins = WordleConfig.instance.adminChats;
       for (int i = 0; i < admins.length; i++) {
-        await ctx.api.sendMessage(admins[i], message);
+        await ctx.api.sendMessage(
+          admins[i],
+          message,
+          parseMode: ParseMode.html,
+        );
         await Future.delayed(Duration(milliseconds: 2500));
       }
 
