@@ -18,7 +18,23 @@ class WordleDay {
   DateTime get next => date.add(Duration(days: 1));
 
   /// Constructor
-  WordleDay(this.word, this.index, this.date);
+  WordleDay(
+    this.word,
+    this.index,
+    this.date, {
+    this.totalWinners = 0,
+    this.totalLosers = 0,
+    this.totalPlayed = 0,
+  });
+
+  /// Total winners
+  int totalWinners;
+
+  /// Total losers
+  int totalLosers;
+
+  /// Number of people who played
+  int totalPlayed;
 
   /// Returns a WordleDay from a map
   factory WordleDay.fromMap(Map<String, dynamic> map) {
@@ -26,6 +42,9 @@ class WordleDay {
       map['word'],
       map['index'],
       DateTime.fromMillisecondsSinceEpoch(map['date'] * 1000),
+      totalWinners: map['totalWinners'] ?? 0,
+      totalLosers: map['totalLosers'] ?? 0,
+      totalPlayed: map['totalPlayed'] ?? 0,
     );
   }
 
@@ -54,6 +73,9 @@ class WordleDay {
       'word': word,
       'index': index,
       'date': date.millisecondsSinceEpoch ~/ 1000,
+      'totalWinners': totalWinners,
+      'totalLosers': totalLosers,
+      'totalPlayed': totalPlayed,
     };
   }
 }

@@ -43,7 +43,6 @@ void updateWord() {
 
 /// Notify users about the new word
 Future<void> notifyUsers() async {
-  print('Notifying users');
   List<FileSystemEntity> files = Directory(".televerse/sessions").listSync();
   List<File> jsonFiles = files
       .where((e) => e is File && e.path.endsWith(".json"))
@@ -73,7 +72,7 @@ Future<void> notifyUsers() async {
   try {
     await bot.api.sendMessage(
       WordleConfig.init().logsChannel,
-      "Notified $success users, failed to notify $failure users",
+      "🔔 Notified $success users, failed to notify $failure users",
     );
   } catch (err) {
     print(err);

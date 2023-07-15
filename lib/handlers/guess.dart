@@ -49,6 +49,7 @@ MessageHandler guessHandler() {
       user.lastGame = game.index;
       user.streak++;
       user.totalWins++;
+      game.totalWinners++;
       if (user.streak > user.maxStreak) {
         user.maxStreak = user.streak;
       }
@@ -88,11 +89,13 @@ MessageHandler guessHandler() {
         "New word will be available in ${game.formattedDurationTillNext}",
       );
       user.tries = [];
+      game.totalLosers++;
     } else {
       await ctx.reply(result.join(" "));
       await ctx.reply(getGuessPrompt(user.tries.length));
     }
     user.saveToFile();
+    game.save();
   };
 }
 
