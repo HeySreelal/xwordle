@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:televerse/televerse.dart';
 import 'package:xwordle/config/config.dart';
+import 'package:xwordle/services/db.dart';
 import 'package:xwordle/xwordle.dart';
 
 void main(List<String> args) async {
@@ -14,16 +15,15 @@ void main(List<String> args) async {
       .row()
       .addUrl("Vote 🗳️", "https://t.me/xooniverse/5");
 
-  // final users = WordleDB.getUsers();
-  final ids = WordleConfig.instance.adminChats;
+  final users = WordleDB.getUsers();
+  final ids = users.map((e) => ChatID(e.userId)).toList();
 
   int count = ids.length;
   int sent = 0, failed = 0;
   List<List<String>> failedIDsAndReason = [];
   for (int i = 0; i < count; i++) {
     try {
-      final id = ids[i];
-      await bot.api.sendMessage(id, text, replyMarkup: keyboard);
+      await bot.api.sendMessage(ids[i], text, replyMarkup: keyboard);
       sent++;
       await Future.delayed(Duration(milliseconds: 2000));
     } catch (e) {
