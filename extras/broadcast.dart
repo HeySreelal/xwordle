@@ -11,9 +11,9 @@ void main(List<String> args) async {
       "Best regards!";
 
   final keyboard = InlineKeyboard()
-      .addUrl("View Full Story 📝", "https://t.me/xooniverse/14")
+      .addUrl("View Full Story 📝", "https://t.me/xooniverse/16")
       .row()
-      .addUrl("Vote 🗳️", "https://t.me/xooniverse/15");
+      .addUrl("Vote 🗳️", "https://t.me/xooniverse/17");
 
   final users = WordleDB.getUsers();
   final ids = users.map((e) => ChatID(e.userId)).toList();
