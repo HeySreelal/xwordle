@@ -94,7 +94,7 @@ class WordleUser extends Session {
       name: map['name'] as String,
       notify: map['notify'] as bool,
       onGame: map['onGame'] as bool,
-      role: map['role'] as String,
+      role: map['role'] ?? defaultName,
       streak: map['streak'] as int,
       totalGamesPlayed: map['totalGamesPlayed'] as int,
       totalWins: map['totalWins'] as int,
