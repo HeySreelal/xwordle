@@ -42,6 +42,9 @@ class WordleDay {
   /// Save day to day.json
   void save() {
     final file = File('day.json');
+    if (!file.existsSync()) {
+      file.createSync();
+    }
     file.writeAsStringSync(jsonEncode(toMap()));
   }
 

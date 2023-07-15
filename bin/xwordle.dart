@@ -11,6 +11,7 @@ import 'package:xwordle/models/session.dart';
 import 'package:xwordle/xwordle.dart';
 
 void main(List<String> args) {
+  updateWord();
   bot.initSession(WordleUser.init);
   bot.start(startHandler());
   bot.onError(errorHandler);
@@ -22,6 +23,4 @@ void main(List<String> args) {
   bot.command("quit", quitHandler());
   bot.command("profile", profileHandler());
   bot.onText(guessHandler());
-
-  updateWord();
 }
