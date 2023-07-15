@@ -35,11 +35,13 @@ MessageHandler startHandler() {
     await ctx.api.sendChatAction(ctx.id, ChatAction.typing);
     await ctx.reply(MessageStrings.letsStart, parseMode: ParseMode.html);
     user.onGame = true;
+    game.totalPlayed++;
     if (user.currentGame != game.index) {
       user.currentGame = game.index;
       user.tries = [];
       user.totalGamesPlayed++;
     }
     user.saveToFile();
+    game.save();
   };
 }

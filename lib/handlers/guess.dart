@@ -160,19 +160,20 @@ String getShareableMessage(String word, List<String> tries, int gameId) {
 
 /// Gets prompt for the user to guess the word
 String getGuessPrompt(int tryCount) {
-  if (tryCount == 1) {
-    return "Shoot your first guess now...";
-  } else if (tryCount == 2) {
-    return "Shoot your second guess now...";
-  } else if (tryCount == 3) {
-    return "Shoot your third guess now...";
-  } else if (tryCount == 4) {
-    return "Shoot your fourth guess now...";
-  } else if (tryCount == 5) {
-    return "Shoot your fifth guess now...";
-  } else if (tryCount == 6) {
-    return "And your last guess... 🎯";
-  } else {
-    return "Shoot your guess now...";
+  switch (tryCount) {
+    case 0:
+      return "Shoot your first guess now...";
+    case 1:
+      return "Shoot your second guess now...";
+    case 2:
+      return "Shoot your third guess now...";
+    case 3:
+      return "Shoot your fourth guess now...";
+    case 4:
+      return "Shoot your fifth guess now...";
+    case 5:
+      return "And your last guess... 🎯";
+    default:
+      return "Shoot your guess now...";
   }
 }
