@@ -2,3 +2,5 @@
 .env
 day.json
 .televerse
+sessions.zip
+.DS_Store

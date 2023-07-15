@@ -125,7 +125,11 @@ class Admin {
 
       for (int i = 0; i < count; i++) {
         try {
-          await ctx.api.sendMessage(ChatID(users[i].userId), message);
+          await ctx.api.sendMessage(
+            ChatID(users[i].userId),
+            message,
+            parseMode: ParseMode.html,
+          );
           sent++;
           await Future.delayed(Duration(milliseconds: 2500));
         } catch (e) {
