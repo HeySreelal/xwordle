@@ -28,9 +28,7 @@ class WordleConfig {
   static WordleConfig? _instance;
 
   static WordleConfig get instance {
-    if (_instance == null) {
-      throw Exception('WordleConfig not initialized');
-    }
+    _instance ??= init();
     return _instance!;
   }
 

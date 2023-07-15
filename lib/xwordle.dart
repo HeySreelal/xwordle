@@ -1,5 +1,5 @@
 import 'package:televerse/televerse.dart';
 import 'package:xwordle/config/config.dart';
-import 'package:xwordle/models/session.dart';
+import 'package:xwordle/models/user.dart';
 
-Bot<WordleSession> bot = Bot<WordleSession>(WordleConfig.init().token);
+Bot<WordleUser> bot = Bot<WordleUser>(WordleConfig.instance.token);
