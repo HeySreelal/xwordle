@@ -95,7 +95,7 @@ Happy Wordleing! 🤓
 Wordle Bot is Telegram bot version of the <a href="https://www.nytimes.com/games/wordle/index.html">Wordle</a> game.
 Created by @HeySreelal with ❤️ for Telegram.
 
-The bot is open source and source is available on <a href="https://github.com/HeySreelal/xwordlebot">GitHub</a>. Feel free to contribute.
+The bot is open source and source is available on <a href="https://github.com/HeySreelal/xwordle">GitHub</a>. Feel free to contribute.
 
 Show some love by sharing the bot with your friends!
 
