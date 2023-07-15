@@ -87,6 +87,7 @@ MessageHandler guessHandler() {
       );
       await ctx.reply(
         "You guessed the word!\n\nThe word was <b>${game.word.toUpperCase()}</b>! 🚀",
+        parseMode: ParseMode.html,
       );
       await ctx.reply(
         "New word will be available in ${game.formattedDurationTillNext}",
