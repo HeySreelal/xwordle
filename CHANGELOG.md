@@ -1,3 +1,9 @@
+## 1.1.0
+
+- Admin can request statistics of the game
+- Daily logging
+- Improved code quality
+
 ## 1.0.1
 
 - 🆕 Added `/meaning` command to get meaning of the word
