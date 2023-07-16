@@ -2,6 +2,7 @@ import 'package:xwordle/handlers/admin.dart';
 import 'package:xwordle/handlers/error.dart';
 import 'package:xwordle/handlers/guess.dart';
 import 'package:xwordle/handlers/help.dart';
+import 'package:xwordle/handlers/meaning.dart';
 import 'package:xwordle/handlers/next.dart';
 import 'package:xwordle/handlers/notify.dart';
 import 'package:xwordle/handlers/profile.dart';
@@ -22,7 +23,9 @@ void main(List<String> args) {
   bot.command("about", aboutHandler());
   bot.command("next", nextWordHandler());
   bot.command("quit", quitHandler());
+  bot.callbackQuery(quitPattern, handleQuitInteraction());
   bot.command("profile", profileHandler());
+  bot.command('meaning', meaningHandler());
   bot.onText(guessHandler());
 
   // Admin Handlers
