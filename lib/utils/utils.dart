@@ -1,9 +1,12 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:televerse/telegram.dart' show Message;
 import 'package:televerse/televerse.dart';
 import 'package:xwordle/config/config.dart';
+import 'package:xwordle/config/day.dart';
 import 'package:xwordle/handlers/error.dart';
+import 'package:xwordle/services/db.dart';
 import 'package:xwordle/xwordle.dart';
 
 String random(List<String> list) => list[Random().nextInt(list.length)];
@@ -83,4 +86,50 @@ Future<void> createLogFileAndSend(List<ErrorUser> errorUsers) async {
       print(e);
     }
   }
+}
+
+Future<Message?> sendLogs(String text) async {
+  try {
+    return await bot.api.sendMessage(
+      WordleConfig.instance.logsChannel,
+      text,
+    );
+  } catch (err, stack) {
+    try {
+      await errorHandler(err, stack);
+    } catch (e) {
+      print(e);
+    }
+  }
+  return null;
+}
+
+Future<void> editLog(int messageId, String text) async {
+  try {
+    await bot.api.editMessageText(
+      WordleConfig.instance.logsChannel,
+      messageId,
+      text,
+    );
+  } catch (err, stack) {
+    try {
+      await errorHandler(err, stack);
+    } catch (e) {
+      print(e);
+    }
+  }
+}
+
+Future<void> dailyLog() async {
+  WordleDay day = WordleDB.today;
+  String msg = "ℹ️ Wordle Day ${day.index + 1}\n\n"
+      "Word: ${day.word}\n\n"
+      "Total Users: ${WordleDB.getUsers().length}\n"
+      "Total Plays: ${day.totalPlayed}\n"
+      "Total Wins: ${day.totalWinners}\n"
+      "Total Losers: ${day.totalLosers}\n"
+      "Total Skips: ${day.totalPlayed - (day.totalWinners + day.totalLosers)}\n\n"
+      "#daily";
+
+  await sendLogs(msg);
 }

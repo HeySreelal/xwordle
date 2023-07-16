@@ -40,13 +40,14 @@ class WordleConfig {
 
   static WordleConfig get instance {
     _instance ??= init();
-    if (isDebug) {
-      print("Running in debug mode");
-    }
     return _instance!;
   }
 
   static WordleConfig init() {
+    if (isDebug) {
+      print('Running in debug mode');
+    }
+
     _instance = WordleConfig(
       isDebug ? env["TEST_TOKEN"] : env['TOKEN']!,
       ChatID(int.parse(env['LOGS']!)),

@@ -94,4 +94,11 @@ class WordleDay {
       'dictionaryWord': dictionaryWord?.toJson(),
     };
   }
+
+  void resetCounters() {
+    totalPlayed = 0;
+    totalWinners = 0;
+    totalLosers = 0;
+    save();
+  }
 }
