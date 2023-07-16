@@ -122,18 +122,26 @@ MessageHandler guessHandler() {
 
 /// Creates the boxes for the given guess
 List<String> getBoxes(String correct, String guess) {
-  List<String> result = [];
-
-  for (int i = 0; i < correct.length; i++) {
+  List<String> result = ['', '', '', '', ''];
+  for (int i = 0; i < 5; i++) {
     if (correct[i] == guess[i]) {
-      result.add('🟢');
-    } else if (correct.contains(guess[i])) {
-      result.add('🟡');
-    } else {
-      result.add('⚫️');
+      result[i] = "🟢";
+      correct = correct.replaceFirst(correct[i], " ");
+      guess = guess.replaceFirst(guess[i], " ");
+    }
+  }
+  for (int i = 0; i < 5; i++) {
+    if (correct.contains(guess[i]) && result[i] == "") {
+      result[i] = "🟡";
+      correct = correct.replaceFirst(guess[i], " ");
     }
   }
 
+  for (int i = 0; i < 5; i++) {
+    if (result[i] == "") {
+      result[i] = "⚫️";
+    }
+  }
   return result;
 }
 
