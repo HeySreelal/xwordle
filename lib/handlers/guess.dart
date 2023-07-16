@@ -1,10 +1,10 @@
-import 'package:http/http.dart';
 import 'package:televerse/televerse.dart';
 import 'package:xwordle/config/consts.dart';
 import 'package:xwordle/handlers/admin.dart';
 import 'package:xwordle/models/admin.dart';
 import 'package:xwordle/models/user.dart';
 import 'package:xwordle/services/db.dart';
+import 'package:xwordle/services/dict.dart';
 import 'package:xwordle/utils/utils.dart';
 
 /// Handles the user guesses
@@ -50,7 +50,7 @@ MessageHandler guessHandler() {
       return;
     }
 
-    if (!await existingWord(guess)) {
+    if (!await Dictionary.existingWord(guess)) {
       await ctx.reply(random(MessageStrings.notValidWord));
       return;
     }
@@ -118,18 +118,6 @@ MessageHandler guessHandler() {
     user.saveToFile();
     game.save();
   };
-}
-
-/// Confirms if the word exists in the dictionary
-Future<bool> existingWord(String word) async {
-  final response = await get(
-    Uri.parse("https://api.dictionaryapi.dev/api/v2/entries/en/$word"),
-  );
-  if (response.statusCode == 200) {
-    return true;
-  } else {
-    return false;
-  }
 }
 
 /// Creates the boxes for the given guess
