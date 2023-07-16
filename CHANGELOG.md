@@ -1,3 +1,9 @@
+## 1.0.1
+
+- 🆕 Added `/meaning` command to get meaning of the word
+- Fix: /quit wasn't completely functional
+- Update: Error handling is updated
+
 ## 1.0.0
 
 - Initial version.
