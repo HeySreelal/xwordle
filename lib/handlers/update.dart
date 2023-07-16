@@ -5,13 +5,14 @@ import 'package:xwordle/config/config.dart';
 import 'package:xwordle/config/consts.dart';
 import 'package:xwordle/config/day.dart';
 import 'package:xwordle/config/words.dart';
+import 'package:xwordle/handlers/error.dart';
 import 'package:xwordle/services/db.dart';
 import 'package:xwordle/utils/utils.dart';
 import 'package:xwordle/xwordle.dart';
 
+DateTime launch = DateTime(2023, 7, 14, 18);
 int gameNo() {
   DateTime now = DateTime.now();
-  DateTime launch = DateTime(2023, 7, 14, 12);
 
   return now.difference(launch).inDays;
 }
@@ -21,19 +22,22 @@ String getWord() {
 }
 
 void updateWord() {
-  final word = getWord();
-  final index = gameNo();
-  final day = WordleDay(word, index, DateTime.now());
+  WordleDay day;
+  try {
+    day = WordleDB.today;
+    day.word = getWord();
+    day.index = gameNo();
+    day.next = launch.add(Duration(days: gameNo() + 1));
+  } catch (e) {
+    int index = gameNo();
+    String word = getWord();
+    day = WordleDay(word, index, DateTime.now());
+  }
   day.save();
 
-  // Timer to update the word at 5:00 PM GMT
-  final now = DateTime.now();
-  final nextFivePM = DateTime(now.year, now.month, now.day, 17, 14);
-  final tomorrow = now.isAfter(nextFivePM)
-      ? DateTime(now.year, now.month, now.day + 1, 17)
-      : nextFivePM;
-  final difference = tomorrow.difference(now);
-  Timer(difference, () {
+  final durationToNext = day.next.difference(DateTime.now());
+  print(durationToNext);
+  Timer(durationToNext, () {
     updateWord();
     notifyUsers();
   });
@@ -44,6 +48,18 @@ Future<void> notifyUsers() async {
   final users = WordleDB.getUsers();
   final notificationEnabledUsers = users.where((e) => e.notify).toList();
   int count = notificationEnabledUsers.length;
+  try {
+    await bot.api.sendMessage(
+      WordleConfig.instance.logsChannel,
+      "🔔 Notifying $count users",
+    );
+  } catch (err, stack) {
+    try {
+      await errorHandler(err, stack);
+    } catch (e) {
+      print(e);
+    }
+  }
   int success = 0, failure = 0;
   for (int i = 0; i < count; i++) {
     if (notificationEnabledUsers[i].notify) {
