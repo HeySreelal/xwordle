@@ -32,6 +32,7 @@ void main(List<String> args) {
   bot.command("mod", Admin.modHandler());
   bot.command("count", Admin.countHandler());
   bot.command('testbroadcast', Admin.testBroadcastHandler());
+  bot.command('stats', Admin.statsHandler());
   bot.hears(Admin.broadcastPattern, Admin.handleAdminText());
   bot.callbackQuery(Admin.releasePattern, Admin.handleConfirmation());
 }

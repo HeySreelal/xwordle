@@ -53,6 +53,7 @@ class Admin {
         "Welcome, ${ctx.from?.firstName}! You know what to do.",
         replyMarkup: adminKeyboard,
       );
+      await ctx.reply("Don't forget /testbroadcast and /stats");
     };
   }
 
@@ -192,6 +193,17 @@ class Admin {
       final users = WordleDB.getUsers();
       int count = users.length;
       await ctx.reply("Total users: $count");
+    };
+  }
+
+  /// /stats command handler
+  static MessageHandler statsHandler() {
+    return (ctx) async {
+      if (!check(ctx.id)) {
+        await markUnauthorizedAttempt(ctx);
+        return;
+      }
+      await dailyLog();
     };
   }
 }
