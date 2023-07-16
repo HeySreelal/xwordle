@@ -10,7 +10,7 @@ import 'package:xwordle/services/db.dart';
 import 'package:xwordle/utils/utils.dart';
 import 'package:xwordle/xwordle.dart';
 
-DateTime launch = DateTime(2023, 7, 14, 13, 30);
+DateTime launch = DateTime(2023, 7, 14, 23, 34);
 int gameNo() {
   DateTime now = DateTime.now();
 
@@ -108,7 +108,7 @@ String progressMessage(int total, int success, int failure) {
   int totalSent = success + failure;
   double completePercent = totalSent / total;
 
-  return "📣 Notifying Update (${completePercent * 100}%)\n\n"
+  return "📣 Notifying Update (${(completePercent * 100).toStringAsFixed(2)}%)\n\n"
       "Total: $total\n"
       "Success: $success\n"
       "Failure: $failure\n"
