@@ -33,13 +33,13 @@ void updateWord() {
     String word = getWord();
     day = WordleDay(word, index, DateTime.now());
   }
-  day.resetCounters();
   day.save();
 
   final durationToNext = day.next.difference(DateTime.now());
   print(durationToNext);
   Timer(durationToNext, () {
     dailyLog();
+    day.resetCounters();
     updateWord();
     notifyUsers();
   });
