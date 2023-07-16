@@ -5,7 +5,7 @@ Future<void> errorHandler(Object err, StackTrace stack) async {
   try {
     await bot.api.sendMessage(
       WordleConfig.instance.logsChannel,
-      "$err\n\n$stack",
+      "💀 $err\n\n$stack\n\n#error",
     );
   } catch (err, stack) {
     print("Error while sending error to logs channel: $err");
