@@ -1,22 +1,23 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:xwordle/handlers/update.dart';
 import 'package:xwordle/services/dict.dart';
 import 'package:xwordle/utils/utils.dart';
 
 /// This class represents a Wordle Day
 class WordleDay {
   /// The word for the day
-  final String word;
+  String word;
 
   /// Current index of the word
-  final int index;
+  int index;
 
   /// The date of the day
-  final DateTime date;
+  DateTime date;
 
-  /// Next day
-  DateTime get next => date.add(Duration(days: 1));
+  /// The date of next wordle
+  DateTime next;
 
   /// Word meaning as Dictionary Word
   Word? dictionaryWord;
@@ -30,7 +31,8 @@ class WordleDay {
     this.totalLosers = 0,
     this.totalPlayed = 0,
     this.dictionaryWord,
-  });
+    DateTime? next,
+  }) : next = next ?? launch.add(Duration(days: gameNo() + 1));
 
   /// Total winners
   int totalWinners;
