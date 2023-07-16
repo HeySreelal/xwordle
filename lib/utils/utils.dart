@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:televerse/telegram.dart' show Message;
 import 'package:televerse/televerse.dart';
 import 'package:xwordle/config/config.dart';
 import 'package:xwordle/handlers/error.dart';
@@ -76,6 +77,38 @@ Future<void> createLogFileAndSend(List<ErrorUser> errorUsers) async {
     await Future.delayed(Duration(seconds: 5), () async {
       await file.delete();
     });
+  } catch (err, stack) {
+    try {
+      await errorHandler(err, stack);
+    } catch (e) {
+      print(e);
+    }
+  }
+}
+
+Future<Message?> sendLogs(String text) async {
+  try {
+    return await bot.api.sendMessage(
+      WordleConfig.instance.logsChannel,
+      text,
+    );
+  } catch (err, stack) {
+    try {
+      await errorHandler(err, stack);
+    } catch (e) {
+      print(e);
+    }
+  }
+  return null;
+}
+
+Future<void> editLog(int messageId, String text) async {
+  try {
+    await bot.api.editMessageText(
+      WordleConfig.instance.logsChannel,
+      messageId,
+      text,
+    );
   } catch (err, stack) {
     try {
       await errorHandler(err, stack);

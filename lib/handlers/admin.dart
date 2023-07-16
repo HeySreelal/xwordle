@@ -3,6 +3,7 @@ import 'package:televerse/televerse.dart';
 import 'package:xwordle/config/config.dart';
 import 'package:xwordle/models/admin.dart';
 import 'package:xwordle/services/db.dart';
+import 'package:xwordle/utils/utils.dart';
 
 class Admin {
   // Some text constants
@@ -93,8 +94,7 @@ class Admin {
 
   /// Marks an unauthorized attempt to access admin commands
   static Future<void> markUnauthorizedAttempt(MessageContext ctx) async {
-    await ctx.api.sendMessage(
-      WordleConfig.instance.logsChannel,
+    await sendLogs(
       "Unauthorized access attempt by ${ctx.from?.firstName}! (${ctx.id})",
     );
   }
@@ -151,10 +151,7 @@ class Admin {
           "Failed: $failed\n"
           "Total: $count";
       await ctx.editMessage(resultMsg);
-      await ctx.api.sendMessage(
-        WordleConfig.instance.logsChannel,
-        "$resultMsg\n\n#broadcast",
-      );
+      await sendLogs("$resultMsg\n\n#broadcast");
     };
   }
 

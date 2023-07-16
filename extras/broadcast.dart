@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:televerse/televerse.dart';
 import 'package:xwordle/config/config.dart';
 import 'package:xwordle/services/db.dart';
+import 'package:xwordle/utils/utils.dart';
 import 'package:xwordle/xwordle.dart';
 
 void main(List<String> args) async {
@@ -36,8 +37,7 @@ void main(List<String> args) async {
   }
 
   try {
-    await bot.api.sendMessage(
-      WordleConfig.instance.logsChannel,
+    await sendLogs(
       "Broadcasted message to $sent users. Failed to send to $failed users.",
     );
 
