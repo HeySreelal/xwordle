@@ -7,6 +7,7 @@ import 'package:xwordle/config/consts.dart';
 import 'package:xwordle/config/day.dart';
 import 'package:xwordle/config/words.dart';
 import 'package:xwordle/handlers/error.dart';
+import 'package:xwordle/models/user.dart';
 import 'package:xwordle/services/db.dart';
 import 'package:xwordle/utils/utils.dart';
 import 'package:xwordle/xwordle.dart';
@@ -68,6 +69,8 @@ Future<void> notifyUsers() async {
     }
   }
   int success = 0, failure = 0;
+  List<ErrorUser> errorUsers = [];
+
   for (int i = 0; i < count; i++) {
     if (notificationEnabledUsers[i].notify) {
       try {
@@ -79,6 +82,10 @@ Future<void> notifyUsers() async {
         await Future.delayed(Duration(milliseconds: 2000));
       } catch (e) {
         failure++;
+        errorUsers.add(ErrorUser(
+          notificationEnabledUsers[i].userId,
+          e.toString(),
+        ));
       }
     }
 
@@ -111,6 +118,8 @@ Future<void> notifyUsers() async {
     );
     stopwatch.stop();
     stopwatch.reset();
+    await createLogFileAndSend(errorUsers);
+    turnOffNotificationForFailedUsers(errorUsers);
   } catch (err) {
     print(err);
   }
@@ -141,4 +150,12 @@ String progressPercent(double completePercent) {
   String completedStr = completed * completeCount;
   String remStr = rem * remCount;
   return completedStr + remStr;
+}
+
+void turnOffNotificationForFailedUsers(List<ErrorUser> errorUsers) {
+  for (int i = 0; i < errorUsers.length; i++) {
+    WordleUser user = WordleUser.init(errorUsers[i].userId);
+    user.notify = false;
+    user.saveToFile();
+  }
 }
