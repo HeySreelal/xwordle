@@ -2,12 +2,23 @@ import 'dart:io';
 
 import 'package:televerse/televerse.dart';
 
+void main(List<String> args) {
+  print(WordleConfig.isDebug);
+}
+
 class WordleConfig {
+  //? Change this to true to run in debug mode
+  static bool get isDebug => false;
+
   String token;
   ChatID logsChannel;
   List<ChatID> adminChats;
 
-  WordleConfig(this.token, this.logsChannel, this.adminChats);
+  WordleConfig(
+    this.token,
+    this.logsChannel,
+    this.adminChats,
+  );
 
   factory WordleConfig.fromMap(Map<String, dynamic> map) {
     return WordleConfig(
@@ -29,12 +40,15 @@ class WordleConfig {
 
   static WordleConfig get instance {
     _instance ??= init();
+    if (isDebug) {
+      print("Running in debug mode");
+    }
     return _instance!;
   }
 
   static WordleConfig init() {
     _instance = WordleConfig(
-      env['TOKEN']!,
+      isDebug ? env["TEST_TOKEN"] : env['TOKEN']!,
       ChatID(int.parse(env['LOGS']!)),
       (env['ADMINS']!.split(',') as List<String>)
           .map((e) => ChatID(int.parse(e)))
@@ -49,22 +63,24 @@ class WordleConfig {
       throw Exception('.env file not found');
     }
     String contents = file.readAsStringSync();
-    String token = contents
-        .split('\n')
+    final lines = contents.split('\n');
+    String token = lines
         .firstWhere((element) => element.startsWith('TOKEN='))
         .split('=')[1];
-    String logs = contents
-        .split('\n')
+    String logs = lines
         .firstWhere((element) => element.startsWith('LOGS='))
         .split('=')[1];
-    String admins = contents
-        .split('\n')
+    String admins = lines
         .firstWhere((element) => element.startsWith('ADMINS='))
+        .split('=')[1];
+    String testToken = lines
+        .firstWhere((element) => element.startsWith('TEST_TOKEN='))
         .split('=')[1];
     return {
       'TOKEN': token,
       'LOGS': logs,
       'ADMINS': admins,
+      "TEST_TOKEN": testToken,
     };
   }
 }

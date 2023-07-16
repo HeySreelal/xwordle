@@ -150,4 +150,19 @@ Show some love by sharing the bot with your friends!
     "You're acing this game like it's your job!",
     "Awesome! Just in one try! Nailed it! 🎉",
   ];
+
+  static const meaningBeforePlayingResponse = [
+    "You haven't solved today's Wordle yet! Once you do, I'll tell you what it means. 🎲",
+    'You have not played today\'s wordle yet! Once you finish, you can get the meaning of the word. 🤓',
+    "The answer to today's Wordle is under lock and key until you solve it. Good luck! 🔐",
+    "I'm not giving away the meaning of today's Wordle until you've solved it. You're on your own, kid. 😉",
+    "The meaning of today's Wordle is a mystery to me... until you solve it. So get to work! 🤓",
+    "I'm dying to tell you what today's Wordle is, but I'm not telling you until you've solved it. Muahahaha! 😈",
+  ];
+
+  static const meaningError = [
+    "I'm sorry, I couldn't find the meaning of that word. Please try again later.",
+    "Oops, I could't find meaning from the dictionary. Please try again later.",
+    "I'm sorry, I couldn't find the meaning of that word. Please try again later.",
+  ];
 }
