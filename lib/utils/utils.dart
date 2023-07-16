@@ -4,7 +4,9 @@ import 'dart:math';
 import 'package:televerse/telegram.dart' show Message;
 import 'package:televerse/televerse.dart';
 import 'package:xwordle/config/config.dart';
+import 'package:xwordle/config/day.dart';
 import 'package:xwordle/handlers/error.dart';
+import 'package:xwordle/services/db.dart';
 import 'package:xwordle/xwordle.dart';
 
 String random(List<String> list) => list[Random().nextInt(list.length)];
@@ -116,4 +118,18 @@ Future<void> editLog(int messageId, String text) async {
       print(e);
     }
   }
+}
+
+Future<void> dailyLog() async {
+  WordleDay day = WordleDB.today;
+  String msg = "ℹ️ Wordle Day ${day.index + 1}\n\n"
+      "Word: ${day.word}\n\n"
+      "Total Users: ${WordleDB.getUsers().length}\n"
+      "Total Plays: ${day.totalPlayed}\n"
+      "Total Wins: ${day.totalWinners}\n"
+      "Total Losers: ${day.totalLosers}\n"
+      "Total Skips: ${day.totalPlayed - (day.totalWinners + day.totalLosers)}\n\n"
+      "#daily";
+
+  await sendLogs(msg);
 }

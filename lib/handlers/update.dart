@@ -33,11 +33,13 @@ void updateWord() {
     String word = getWord();
     day = WordleDay(word, index, DateTime.now());
   }
+  day.resetCounters();
   day.save();
 
   final durationToNext = day.next.difference(DateTime.now());
   print(durationToNext);
   Timer(durationToNext, () {
+    dailyLog();
     updateWord();
     notifyUsers();
   });
@@ -106,15 +108,12 @@ String progressMessage(int total, int success, int failure) {
   int totalSent = success + failure;
   double completePercent = totalSent / total;
 
-  return """
-  📣 Notifying Update (${completePercent * 100}%)
-  Total: $total
-  Success: $success
-  Failure: $failure
-  Remaining: ${total - totalSent}
-
-  ${progressPercent(completePercent)}
-  """;
+  return "📣 Notifying Update (${completePercent * 100}%)\n\n"
+      "Total: $total\n"
+      "Success: $success\n"
+      "Failure: $failure\n"
+      "Remaining: ${total - totalSent}\n\n"
+      "${progressPercent(completePercent)}";
 }
 
 String progressPercent(double completePercent) {
