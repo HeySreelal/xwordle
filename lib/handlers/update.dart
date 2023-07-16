@@ -10,7 +10,8 @@ import 'package:xwordle/services/db.dart';
 import 'package:xwordle/utils/utils.dart';
 import 'package:xwordle/xwordle.dart';
 
-DateTime launch = DateTime(2023, 7, 14, 23, 34);
+DateTime launch = DateTime(2023, 7, 14, 12, 00);
+
 int gameNo() {
   DateTime now = DateTime.now();
 
