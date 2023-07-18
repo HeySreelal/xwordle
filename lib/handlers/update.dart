@@ -98,8 +98,8 @@ Future<void> notifyUsers() async {
     );
     stopwatch.stop();
     stopwatch.reset();
-    await createLogFileAndSend(errorUsers);
     turnOffNotificationForFailedUsers(errorUsers);
+    await createLogFileAndSend(errorUsers);
   } catch (err) {
     print(err);
   }
@@ -130,9 +130,12 @@ String progressPercent(double completePercent) {
 }
 
 void turnOffNotificationForFailedUsers(List<ErrorUser> errorUsers) {
-  for (int i = 0; i < errorUsers.length; i++) {
+  print('Turning off notifications for ${errorUsers.length} failed users');
+  final l = errorUsers.length;
+  for (int i = 0; i < l; i++) {
     WordleUser user = WordleUser.init(errorUsers[i].userId);
     user.notify = false;
+    user.id = errorUsers[i].userId;
     user.saveToFile();
   }
 }
