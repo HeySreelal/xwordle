@@ -18,7 +18,7 @@ MessageHandler meaningHandler() {
 
     Word word;
 
-    if (day.dictionaryWord != null) {
+    if (day.dictionaryWord != null && day.dictionaryWord!.word == day.word) {
       word = day.dictionaryWord!;
     } else {
       final w = await Dictionary(day.word).getWord();
