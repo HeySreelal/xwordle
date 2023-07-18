@@ -7,8 +7,11 @@ void main(List<String> args) {
 }
 
 class WordleConfig {
-  //? Change this to true to run in debug mode
-  static bool get isDebug => false;
+  /// Returns boolean value if bot is running in production mode
+  static bool get isProduction => env['MODE'] == 'production';
+
+  //? Returns true if not running in production mode
+  static bool get isDebug => !isProduction;
 
   String token;
   ChatID logsChannel;
@@ -77,11 +80,18 @@ class WordleConfig {
     String testToken = lines
         .firstWhere((element) => element.startsWith('TEST_TOKEN='))
         .split('=')[1];
+    String mode = lines
+        .firstWhere(
+          (element) => element.startsWith('MODE='),
+          orElse: () => 'MODE=debug',
+        )
+        .split('=')[1];
     return {
       'TOKEN': token,
       'LOGS': logs,
       'ADMINS': admins,
       "TEST_TOKEN": testToken,
+      "MODE": mode,
     };
   }
 }
