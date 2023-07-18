@@ -1,4 +1,5 @@
 import 'package:televerse/televerse.dart';
+import 'package:xwordle/handlers/update.dart';
 
 /// The wordle session, keeps track of the current wordle of the user, and their progress
 class WordleUser extends Session {
@@ -108,5 +109,9 @@ class WordleUser extends Session {
   static WordleUser init(int id) {
     final ses = Session.loadFromFile(WordleUser.fromMap, id: id);
     return ses ?? WordleUser(userId: id, name: defaultName, role: defaultName);
+  }
+
+  bool hasPlayedInLast4Days() {
+    return (gameNo() - lastGame) < 4;
   }
 }

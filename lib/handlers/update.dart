@@ -49,7 +49,9 @@ void updateWord() {
 /// Notify users about the new word
 Future<void> notifyUsers() async {
   final users = WordleDB.getUsers();
-  final notificationEnabledUsers = users.where((e) => e.notify).toList();
+  final notificationEnabledUsers = users.where((e) {
+    return e.notify && e.hasPlayedInLast4Days();
+  }).toList();
   int count = notificationEnabledUsers.length;
 
   await sendLogs("🔔 Notifying $count users");
@@ -61,21 +63,19 @@ Future<void> notifyUsers() async {
   List<ErrorUser> errorUsers = [];
 
   for (int i = 0; i < count; i++) {
-    if (notificationEnabledUsers[i].notify) {
-      try {
-        await bot.api.sendMessage(
-          ChatID(notificationEnabledUsers[i].userId),
-          random(MessageStrings.notificationMsgs),
-        );
-        success++;
-        await Future.delayed(Duration(milliseconds: 2000));
-      } catch (e) {
-        failure++;
-        errorUsers.add(ErrorUser(
-          notificationEnabledUsers[i].userId,
-          e.toString(),
-        ));
-      }
+    try {
+      await bot.api.sendMessage(
+        ChatID(notificationEnabledUsers[i].userId),
+        random(MessageStrings.notificationMsgs),
+      );
+      success++;
+      await Future.delayed(Duration(milliseconds: 2000));
+    } catch (e) {
+      failure++;
+      errorUsers.add(ErrorUser(
+        notificationEnabledUsers[i].userId,
+        e.toString(),
+      ));
     }
 
     if (i % 10 == 0) {
