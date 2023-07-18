@@ -126,8 +126,8 @@ List<String> getBoxes(String correct, String guess) {
   for (int i = 0; i < 5; i++) {
     if (correct[i] == guess[i]) {
       result[i] = "🟢";
-      correct = correct.replaceFirst(correct[i], " ");
-      guess = guess.replaceFirst(guess[i], " ");
+      correct = correct.replaceRange(i, i + 1, " ");
+      guess = guess.replaceRange(i, i + 1, " ");
     }
   }
   for (int i = 0; i < 5; i++) {
