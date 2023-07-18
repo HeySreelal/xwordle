@@ -39,7 +39,7 @@ void updateWord() {
   final durationToNext = day.next.difference(DateTime.now());
   print(durationToNext);
   Timer(durationToNext, () {
-    dailyLog();
+    dailyLog(autoLog: true);
     day.resetCounters();
     updateWord();
     notifyUsers();
