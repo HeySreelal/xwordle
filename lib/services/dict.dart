@@ -111,7 +111,8 @@ class Phonetic {
       text: json['text'],
       audio: json['audio'],
       sourceUrl: json['sourceUrl'],
-      license: License.fromJson(json['license']),
+      license:
+          json['license'] != null ? License.fromJson(json['license']) : null,
     );
   }
 
