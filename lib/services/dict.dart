@@ -121,7 +121,7 @@ class Phonetic {
     data['text'] = text;
     data['audio'] = audio;
     data['sourceUrl'] = sourceUrl;
-    data['license'] = license!.toJson();
+    data['license'] = license?.toJson();
     return data;
   }
 }
