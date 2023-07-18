@@ -8,19 +8,15 @@ import 'package:xwordle/xwordle.dart';
 MessageHandler shapeHandler() {
   return (ctx) async {
     WordleUser user = ctx.session as WordleUser;
-    const circle = "Circle 🟢";
-    const square = "Square 🟩";
-    const heart = "Heart 💚";
-    const rand = "Random 🎲";
 
     final keyboard = Keyboard()
-        .addText(circle)
+        .addText(HintShape.circleText)
         .row()
-        .addText(square)
+        .addText(HintShape.squareText)
         .row()
-        .addText(heart)
+        .addText(HintShape.heartText)
         .row()
-        .addText(rand)
+        .addText(HintShape.randText)
         .oneTime()
         .resized();
 
@@ -36,7 +32,10 @@ MessageHandler shapeHandler() {
       }
 
       final text = reply.message.text;
-      if (text != circle && text != square && text != heart && text != rand) {
+      if (text != HintShape.circleText &&
+          text != HintShape.squareText &&
+          text != HintShape.heartText &&
+          text != HintShape.randText) {
         await ctx.reply(
           "Uh oh, I didn't understand that. Please choose from the keyboard.",
           replyMarkup: keyboard,
@@ -44,10 +43,10 @@ MessageHandler shapeHandler() {
         continue;
       }
 
-      if (text == rand) {
+      if (text == HintShape.randText) {
         user.hintShape = HintShape.random();
       } else {
-        user.hintShape = HintShape.fromName(text!);
+        user.hintShape = HintShape.fromText(text!);
       }
 
       user.saveToFile();

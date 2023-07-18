@@ -25,6 +25,13 @@ enum HintShape {
     );
   }
 
+  static HintShape fromText(String text) {
+    return HintShape.values.firstWhere(
+      (e) => text.toLowerCase().contains(e.name.toLowerCase()),
+      orElse: () => HintShape.circle,
+    );
+  }
+
   String get shapes {
     return "$correct $misplaced $wrong";
   }
@@ -32,6 +39,11 @@ enum HintShape {
   static HintShape random() {
     return HintShape.values[Random().nextInt(HintShape.values.length)];
   }
+
+  static const circleText = "Circle 🟢";
+  static const squareText = "Square 🟨";
+  static const heartText = "Heart 🖤";
+  static const randText = "Random 🎲";
 }
 
 /// The wordle session, keeps track of the current wordle of the user, and their progress
