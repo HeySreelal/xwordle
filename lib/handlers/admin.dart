@@ -203,7 +203,9 @@ class Admin {
         await markUnauthorizedAttempt(ctx);
         return;
       }
-      await dailyLog();
+      await ctx.replyWithChatAction(ChatAction.typing);
+      final msg = dailyLog(requestedUser: ctx.chat.id);
+      await ctx.reply(msg, parseMode: ParseMode.html);
     };
   }
 }

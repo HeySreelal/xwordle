@@ -6,6 +6,7 @@ import 'package:televerse/televerse.dart';
 import 'package:xwordle/config/config.dart';
 import 'package:xwordle/config/day.dart';
 import 'package:xwordle/handlers/error.dart';
+import 'package:xwordle/models/user.dart';
 import 'package:xwordle/services/db.dart';
 import 'package:xwordle/xwordle.dart';
 
@@ -120,10 +121,19 @@ Future<void> editLog(int messageId, String text) async {
   }
 }
 
-Future<void> dailyLog() async {
+String dailyLog({int? requestedUser, bool autoLog = false}) {
   WordleDay day = WordleDB.today;
+  WordleUser? user;
+  if (requestedUser != null) {
+    user = WordleUser.init(requestedUser);
+  }
+
+  String wordString = (user != null && user.lastGame == day.index) || autoLog
+      ? "Word: ${day.word}\n\n"
+      : '';
+
   String msg = "ℹ️ Wordle Day ${day.index + 1}\n\n"
-      "Word: ${day.word}\n\n"
+      "$wordString"
       "Total Users: ${WordleDB.getUsers().length}\n"
       "Total Plays: ${day.totalPlayed}\n"
       "Total Wins: ${day.totalWinners}\n"
@@ -131,5 +141,5 @@ Future<void> dailyLog() async {
       "Total Skips: ${day.totalPlayed - (day.totalWinners + day.totalLosers)}\n\n"
       "#daily";
 
-  await sendLogs(msg);
+  return msg;
 }
