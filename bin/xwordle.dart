@@ -7,6 +7,7 @@ import 'package:xwordle/handlers/next.dart';
 import 'package:xwordle/handlers/notify.dart';
 import 'package:xwordle/handlers/profile.dart';
 import 'package:xwordle/handlers/quit.dart';
+import 'package:xwordle/handlers/shape.dart';
 import 'package:xwordle/handlers/start.dart';
 import 'package:xwordle/handlers/update.dart';
 import 'package:xwordle/models/user.dart';
@@ -26,6 +27,7 @@ void main(List<String> args) {
   bot.callbackQuery(quitPattern, handleQuitInteraction());
   bot.command("profile", profileHandler());
   bot.command('meaning', meaningHandler());
+  bot.command('shape', shapeHandler());
   bot.onText(guessHandler());
 
   // Admin Handlers

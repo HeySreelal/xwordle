@@ -1,5 +1,50 @@
+import 'dart:math';
+
 import 'package:televerse/televerse.dart';
 import 'package:xwordle/handlers/update.dart';
+
+/// The wordle hint shape, used to display the hint
+enum HintShape {
+  circle._("🟢", "⚫️", "🟡"),
+  square._("🟩", "⬛️", "🟨"),
+  heart._("💚", "🖤", "💛"),
+  ;
+
+  final String correct;
+  final String wrong;
+  final String misplaced;
+
+  const HintShape._(this.correct, this.wrong, this.misplaced);
+
+  String get name => toString().split('.').last;
+
+  static HintShape fromName(String name) {
+    return HintShape.values.firstWhere(
+      (e) => e.name == name,
+      orElse: () => HintShape.circle,
+    );
+  }
+
+  static HintShape fromText(String text) {
+    return HintShape.values.firstWhere(
+      (e) => text.toLowerCase().contains(e.name.toLowerCase()),
+      orElse: () => HintShape.circle,
+    );
+  }
+
+  String get shapes {
+    return "$correct $misplaced $wrong";
+  }
+
+  static HintShape random() {
+    return HintShape.values[Random().nextInt(HintShape.values.length)];
+  }
+
+  static const circleText = "Circle 🟢";
+  static const squareText = "Square 🟨";
+  static const heartText = "Heart 🖤";
+  static const randText = "Random 🎲";
+}
 
 /// The wordle session, keeps track of the current wordle of the user, and their progress
 class WordleUser extends Session {
@@ -45,6 +90,9 @@ class WordleUser extends Session {
   /// The number of perfect games the user has had
   int perfectGames;
 
+  /// Hint shape of user's preference
+  HintShape hintShape;
+
   /// Constructs a WordleSession
   WordleUser({
     this.currentGame = 0,
@@ -61,7 +109,9 @@ class WordleUser extends Session {
     this.tries = const [],
     this.perfectGames = 0,
     DateTime? joinedDate,
-  }) : joinedDate = joinedDate ?? DateTime.now();
+    HintShape? hintShape,
+  })  : joinedDate = joinedDate ?? DateTime.now(),
+        hintShape = hintShape ?? HintShape.circle;
 
   @override
   Map<String, dynamic> toJson() {
@@ -80,6 +130,7 @@ class WordleUser extends Session {
       'totalWins': totalWins,
       'tries': tries,
       'perfectGames': perfectGames,
+      'hintShape': hintShape.name,
     };
   }
 
@@ -101,6 +152,7 @@ class WordleUser extends Session {
       totalWins: map['totalWins'] as int,
       tries: map['tries'].cast<String>(),
       perfectGames: map['perfectGames'] ?? 0,
+      hintShape: HintShape.fromName(map['hintShape'] ?? 'circle'),
     );
   }
 

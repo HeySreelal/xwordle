@@ -57,10 +57,15 @@ MessageHandler guessHandler() {
 
     final cw = game.word.toLowerCase();
     final gw = guess.toLowerCase();
-    final result = getBoxes(cw, gw);
+    final result = getBoxes(cw, gw, user: user);
 
     user.tries.add(gw);
-    final shareMsg = getShareableMessage(cw, user.tries, game.index);
+    final shareMsg = getShareMessage(
+      cw,
+      user.tries,
+      game.index,
+      user: user,
+    );
     final shareUrl =
         "https://t.me/share/url?url=https://t.me/xwordlebot&text=${Uri.encodeComponent('Just finished a game at @xWordleBot. Here\'s my result:\n\n$shareMsg')}";
 
@@ -97,7 +102,12 @@ MessageHandler guessHandler() {
       user.onGame = false;
       user.lastGame = game.index;
       user.streak = 0;
-      final shareMsg = getShareableMessage(cw, user.tries, game.index);
+      final shareMsg = getShareMessage(
+        cw,
+        user.tries,
+        game.index,
+        user: user,
+      );
       await ctx.reply(
         shareMsg,
         replyMarkup: InlineKeyboard().addUrl("Share 📤", shareUrl),
@@ -121,42 +131,56 @@ MessageHandler guessHandler() {
 }
 
 /// Creates the boxes for the given guess
-List<String> getBoxes(String correct, String guess) {
+List<String> getBoxes(
+  String correct,
+  String guess, {
+  WordleUser? user,
+}) {
+  HintShape shape = user?.hintShape ?? HintShape.circle;
   List<String> result = ['', '', '', '', ''];
   for (int i = 0; i < 5; i++) {
     if (correct[i] == guess[i]) {
-      result[i] = "🟢";
+      result[i] = shape.correct;
       correct = correct.replaceRange(i, i + 1, " ");
       guess = guess.replaceRange(i, i + 1, " ");
     }
   }
   for (int i = 0; i < 5; i++) {
     if (correct.contains(guess[i]) && result[i] == "") {
-      result[i] = "🟡";
+      result[i] = shape.misplaced;
       correct = correct.replaceFirst(guess[i], " ");
     }
   }
 
   for (int i = 0; i < 5; i++) {
     if (result[i] == "") {
-      result[i] = "⚫️";
+      result[i] = shape.wrong;
     }
   }
   return result;
 }
 
 /// Creates the result grid for the user
-List<String> resultGrid(String correct, List<String> guesses) {
+List<String> resultGrid(
+  String correct,
+  List<String> guesses, {
+  WordleUser? user,
+}) {
   List<String> grid = List.generate(guesses.length, (index) {
-    return getBoxes(correct, guesses[index]).join(" ");
+    return getBoxes(correct, guesses[index], user: user).join(" ");
   });
 
   return grid;
 }
 
 /// Gets the shareable message for users' today's stats
-String getShareableMessage(String word, List<String> tries, int gameId) {
-  final grid = resultGrid(word, tries);
+String getShareMessage(
+  String word,
+  List<String> tries,
+  int gameId, {
+  WordleUser? user,
+}) {
+  final grid = resultGrid(word, tries, user: user);
   final msg =
       "#WordleBot $gameId - ${tries.length} / 6\n\n${grid.join('\n')}\n\n@xWordleBot";
   return msg;
