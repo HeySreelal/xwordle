@@ -165,4 +165,9 @@ Show some love by sharing the bot with your friends!
     "Oops, I could't find meaning from the dictionary. Please try again later.",
     "I'm sorry, I couldn't find the meaning of that word. Please try again later.",
   ];
+
+  static const shapesPrompts = [
+    "What shape would you like your hints to be? Choose from the keyboard. Or, you can let me surprise you by pressing the Random button.",
+    "Choose your hint shape from the following: circle, square, or heart. Or, if you're feeling adventurous, press the Random button.",
+  ];
 }
