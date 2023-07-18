@@ -52,7 +52,7 @@ class AdminFile {
     if (!adminFile.existsSync()) {
       adminFile.createSync();
     }
-    await adminFile.writeAsString(jsonEncode({
+    await adminFile.writeAsString(JsonEncoder.withIndent('  ').convert({
       "message": message,
       "createdBy": createdBy,
       "createdAt": (createdAt?.millisecondsSinceEpoch ?? 0) ~/ 1000,

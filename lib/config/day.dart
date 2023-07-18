@@ -32,6 +32,7 @@ class WordleDay {
     this.totalPlayed = 0,
     this.dictionaryWord,
     DateTime? next,
+    this.meaningCheckCount = 0,
   }) : next = next ?? launch.add(Duration(days: gameNo() + 1));
 
   /// Total winners
@@ -42,6 +43,9 @@ class WordleDay {
 
   /// Number of people who played
   int totalPlayed;
+
+  /// Count of people who looked the meaning
+  int meaningCheckCount;
 
   /// Returns a WordleDay from a map
   factory WordleDay.fromMap(Map<String, dynamic> map) {
@@ -55,6 +59,7 @@ class WordleDay {
       dictionaryWord: map['dictionaryWord'] != null
           ? Word.fromJson(map['dictionaryWord'])
           : null,
+      meaningCheckCount: map["meaningCheckCount"] ?? 0,
     );
   }
 
@@ -79,7 +84,7 @@ class WordleDay {
     if (!file.existsSync()) {
       file.createSync();
     }
-    file.writeAsStringSync(jsonEncode(toMap()));
+    file.writeAsStringSync(JsonEncoder.withIndent('  ').convert(toMap()));
   }
 
   /// Returns a map from the day
@@ -92,6 +97,7 @@ class WordleDay {
       'totalLosers': totalLosers,
       'totalPlayed': totalPlayed,
       'dictionaryWord': dictionaryWord?.toJson(),
+      'meaningCheckCount': meaningCheckCount,
     };
   }
 
@@ -99,6 +105,7 @@ class WordleDay {
     totalPlayed = 0;
     totalWinners = 0;
     totalLosers = 0;
+    meaningCheckCount = 0;
     save();
   }
 }
