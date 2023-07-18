@@ -72,10 +72,12 @@ Future<void> createLogFileAndSend(List<ErrorUser> errorUsers) async {
       );
     }
 
-    await bot.api.sendDocument(
-      WordleConfig.instance.logsChannel,
-      InputFile.fromFile(file),
-    );
+    if (file.lengthSync() > 0) {
+      await bot.api.sendDocument(
+        WordleConfig.instance.logsChannel,
+        InputFile.fromFile(file),
+      );
+    }
 
     await Future.delayed(Duration(seconds: 5), () async {
       await file.delete();
