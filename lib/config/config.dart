@@ -8,7 +8,7 @@ void main(List<String> args) {
 
 class WordleConfig {
   //? Change this to true to run in debug mode
-  static bool get isDebug => true;
+  static bool get isDebug => false;
 
   String token;
   ChatID logsChannel;
