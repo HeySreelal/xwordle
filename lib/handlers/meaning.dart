@@ -34,5 +34,7 @@ MessageHandler meaningHandler() {
       msg,
       parseMode: ParseMode.html,
     );
+    day.meaningCheckCount++;
+    day.save();
   };
 }
