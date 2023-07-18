@@ -134,13 +134,32 @@ String dailyLog({int? requestedUser, bool autoLog = false}) {
       ? "Word: ${day.word}\n\n"
       : '';
 
+  int skips = day.totalPlayed - (day.totalWinners + day.totalLosers);
+
+  String progressBar(int total, int wins, int loses, int skips) {
+    double winPercent = wins / total;
+    double losePercent = loses / total;
+    double skipPercent = skips / total;
+
+    int winLength = (winPercent * 10).round();
+    int loseLength = (losePercent * 10).round();
+    int skipLength = (skipPercent * 10).round();
+
+    String winBar = "🟩" * winLength;
+    String loseBar = "🟥" * loseLength;
+    String skipBar = "🟨" * skipLength;
+
+    return "$winBar$loseBar$skipBar";
+  }
+
   String msg = "ℹ️ Wordle Day ${day.index + 1}\n\n"
       "$wordString"
       "Total Users: ${WordleDB.getUsers().length}\n"
       "Total Plays: ${day.totalPlayed}\n"
       "Total Wins: ${day.totalWinners}\n"
       "Total Losers: ${day.totalLosers}\n"
-      "Total Skips: ${day.totalPlayed - (day.totalWinners + day.totalLosers)}\n\n"
+      "Total Skips: $skips\n\n"
+      "${progressBar(day.totalPlayed, day.totalWinners, day.totalLosers, skips)}\n\n"
       "#daily";
 
   return msg;
