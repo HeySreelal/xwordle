@@ -20,7 +20,7 @@ MessageHandler quitHandler() {
         .add("No, I don't.", "quit:no");
 
     await ctx.reply(
-      "Are you sure you want to quit the game?",
+      "Are you sure you want to quit the game? This will reset your streak.",
       replyMarkup: keyboard,
     );
   };
