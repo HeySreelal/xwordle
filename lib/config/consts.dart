@@ -117,11 +117,20 @@ Show some love by sharing the bot with your friends!
   ///
   /// Messages to be sent when the user tries to play the game again after it's over.
   static const excitedMessages = [
-    "Excited? But, you've already played today! Next wordle showing up on {TIME} 👀",
-    "You've already played today! Next wordle showing up on {TIME} 🤖",
-    "I'm glad you're excited for this! 😍 Next wordle showing up on {TIME} 🤖",
-    "Daily one wordle, that's the rule! 🤓 So next up on {TIME} 🤖",
+    "The next Wordle will be available in {TIME}.",
+    "The next Wordle is just {TIME} away. Get ready to flex your vocabulary muscles",
+    "The next Wordle is coming soon. Try gussing the word before it appears in {TIME}?",
+    "The next Wordle is just {TIME} away. I guess you can wait that long.",
     "Counting, 1, 2, 3... 🤓 Next Wordle arrives on {TIME} 🤖",
+  ];
+
+  /// Already Played
+  static const alreadyPlayed = [
+    "You have already played today's Wordle. The next Wordle will be available in {DURATION}.",
+    "Sorry, you can only play Wordle once a day. The next Wordle will be available in {DURATION}.",
+    "You have already used up your daily Wordle. Please wait for {DURATION} for the next Wordle.",
+    "You have already solved today's Wordle. The next Wordle will be available in {DURATION}.",
+    "You have already guessed today's Wordle. The next Wordle will be available in {DURATION}.",
   ];
 
   /// **Welcome Messages**

@@ -204,7 +204,7 @@ class Admin {
         return;
       }
       await ctx.replyWithChatAction(ChatAction.typing);
-      final msg = dailyLog(requestedUser: ctx.chat.id);
+      final msg = statsMessage(requestedUser: ctx.chat.id);
       await ctx.reply(msg, parseMode: ParseMode.html);
     };
   }

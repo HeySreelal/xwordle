@@ -124,7 +124,19 @@ Future<void> editLog(int messageId, String text) async {
   }
 }
 
-String dailyLog({int? requestedUser, bool autoLog = false}) {
+Future<void> sendDailyLog() async {
+  try {
+    await sendLogs(statsMessage(autoLog: true));
+  } catch (err, stack) {
+    try {
+      await errorHandler(err, stack);
+    } catch (e) {
+      print(e);
+    }
+  }
+}
+
+String statsMessage({int? requestedUser, bool autoLog = false}) {
   WordleDay day = WordleDB.today;
   WordleUser? user;
   if (requestedUser != null) {
