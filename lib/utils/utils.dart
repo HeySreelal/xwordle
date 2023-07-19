@@ -96,6 +96,7 @@ Future<Message?> sendLogs(String text) async {
     return await bot.api.sendMessage(
       WordleConfig.instance.logsChannel,
       text,
+      parseMode: ParseMode.html,
     );
   } catch (err, stack) {
     try {
