@@ -13,7 +13,7 @@ MessageHandler startHandler() {
     }
 
     if (game.index == user.lastGame) {
-      final msg = random(MessageStrings.excitedMessages).replaceAll(
+      final msg = random(MessageStrings.alreadyPlayed).replaceAll(
         "{TIME}",
         game.formattedDurationTillNext,
       );
