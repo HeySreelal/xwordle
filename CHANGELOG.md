@@ -1,3 +1,20 @@
+## 1.1.1
+
+- Meaning of the word 📖
+- Auto Mute 🔕
+- Counts meaning checks 📖
+- Customisable hint shapes 💚🟨⚫️
+- User feedback is important! 👩🏻‍⚖️
+- Updated daily logging & Fix #38
+- New broadcast, cancellation & quit
+- Error log to logsChannel 👀
+- Meaning & refactors ❤️‍🔥
+- Improved Notifications
+- Fix [#8](https://github.com/HeySreelal/xwordle/issues/8): Updated coloring logic 🚀
+- Fix [#20](https://github.com/HeySreelal/xwordle/issues/20)
+- Fix [#17](https://github.com/HeySreelal/xwordle/issues/17) - only for people who recently played
+- Fix [#27](https://github.com/HeySreelal/xwordle/issues/27) - cause i remember it all too well
+
 ## 1.1.0
 
 - Admin can request statistics of the game
