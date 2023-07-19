@@ -90,6 +90,9 @@ class WordleUser extends Session {
   /// Hint shape of user's preference
   HintShape hintShape;
 
+  /// Whether the user is opted out for broadcast messages
+  bool optedOutOfBroadcast;
+
   /// Constructs a WordleSession
   WordleUser({
     this.currentGame = 0,
@@ -107,6 +110,7 @@ class WordleUser extends Session {
     this.perfectGames = 0,
     DateTime? joinedDate,
     HintShape? hintShape,
+    this.optedOutOfBroadcast = false,
   })  : joinedDate = joinedDate ?? DateTime.now(),
         hintShape = hintShape ?? HintShape.circle;
 
@@ -128,6 +132,7 @@ class WordleUser extends Session {
       'tries': tries,
       'perfectGames': perfectGames,
       'hintShape': hintShape.name,
+      'optedOutOfBroadcast': optedOutOfBroadcast,
     };
   }
 
@@ -150,6 +155,7 @@ class WordleUser extends Session {
       tries: map['tries'].cast<String>(),
       perfectGames: map['perfectGames'] ?? 0,
       hintShape: HintShape.fromName(map['hintShape'] ?? 'circle'),
+      optedOutOfBroadcast: map['optedOutOfBroadcast'] ?? false,
     );
   }
 

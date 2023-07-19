@@ -105,7 +105,7 @@ String progressMessage(int total, int success, int failure) {
   int totalSent = success + failure;
   double completePercent = totalSent / total;
 
-  return "📣 Notifying Update (${(completePercent * 100).toStringAsFixed(2)}%)\n\n"
+  return "📣 Update (${(completePercent * 100).toStringAsFixed(2)}%)\n\n"
       "Total: $total\n"
       "Success: $success\n"
       "Failure: $failure\n"
