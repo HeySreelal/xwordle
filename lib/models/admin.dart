@@ -1,5 +1,4 @@
-import 'dart:convert';
-import 'dart:io';
+part of xwordle;
 
 class AdminFile {
   /// Admin File path

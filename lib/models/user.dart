@@ -1,7 +1,4 @@
-import 'dart:math';
-
-import 'package:televerse/televerse.dart';
-import 'package:xwordle/handlers/update.dart';
+part of xwordle;
 
 /// The wordle hint shape, used to display the hint
 enum HintShape {

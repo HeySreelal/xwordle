@@ -1,9 +1,4 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:xwordle/handlers/update.dart';
-import 'package:xwordle/services/dict.dart';
-import 'package:xwordle/utils/utils.dart';
+part of xwordle;
 
 /// This class represents a Wordle Day
 class WordleDay {

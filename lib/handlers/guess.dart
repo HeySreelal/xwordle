@@ -1,11 +1,4 @@
-import 'package:televerse/televerse.dart';
-import 'package:xwordle/config/consts.dart';
-import 'package:xwordle/handlers/admin.dart';
-import 'package:xwordle/models/admin.dart';
-import 'package:xwordle/models/user.dart';
-import 'package:xwordle/services/db.dart';
-import 'package:xwordle/services/dict.dart';
-import 'package:xwordle/utils/utils.dart';
+part of xwordle;
 
 /// Handles the user guesses
 MessageHandler guessHandler() {
@@ -14,7 +7,7 @@ MessageHandler guessHandler() {
     final game = WordleDB.today;
 
     // Check if admin is trying to set broadcast
-    bool isAdminSettingBroadcast = ctx.id.isAdmin &&
+    bool isAdminSettingBroadcast = IsAdmin(ctx.id).isAdmin &&
         ctx.message.replyToMessage != null &&
         ctx.message.replyToMessage?.text == Admin.broadcastPrompt;
 

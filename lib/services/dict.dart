@@ -1,13 +1,10 @@
+part of xwordle;
+
 /// This file contains the dictionary service.
 /// It is used to get the meaning of a word from the dictionary api.
 ///
 /// All the models are defined according to the API response.
 /// More info: https://api.dictionaryapi.dev
-
-import 'dart:convert';
-
-import 'package:http/http.dart';
-
 class Dictionary {
   String word;
 

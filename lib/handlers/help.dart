@@ -1,5 +1,6 @@
-import 'package:televerse/televerse.dart';
-import 'package:xwordle/config/consts.dart';
+part of xwordle;
+
+
 
 /// Handles the /help command
 MessageHandler helpHandler() {

@@ -1,9 +1,4 @@
-import 'package:televerse/telegram.dart';
-import 'package:televerse/televerse.dart';
-import 'package:xwordle/config/consts.dart';
-import 'package:xwordle/models/user.dart';
-import 'package:xwordle/utils/utils.dart';
-import 'package:xwordle/xwordle.dart';
+part of xwordle;
 
 MessageHandler shapeHandler() {
   return (ctx) async {

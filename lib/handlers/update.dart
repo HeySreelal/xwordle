@@ -1,15 +1,4 @@
-import 'dart:async';
-
-import 'package:televerse/telegram.dart';
-import 'package:televerse/televerse.dart';
-import 'package:xwordle/config/consts.dart';
-import 'package:xwordle/config/day.dart';
-import 'package:xwordle/config/words.dart';
-import 'package:xwordle/handlers/error.dart';
-import 'package:xwordle/models/user.dart';
-import 'package:xwordle/services/db.dart';
-import 'package:xwordle/utils/utils.dart';
-import 'package:xwordle/xwordle.dart';
+part of xwordle;
 
 DateTime launch = DateTime(2023, 7, 14, 12, 00);
 

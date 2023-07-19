@@ -1,6 +1,7 @@
-import 'package:televerse/televerse.dart';
-import 'package:xwordle/config/consts.dart';
-import 'package:xwordle/models/user.dart';
+part of xwordle;
+
+
+
 
 Pattern notificationPattern = RegExp(r"notify_(yes|no)");
 

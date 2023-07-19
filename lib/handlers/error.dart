@@ -1,7 +1,4 @@
-import 'package:televerse/telegram.dart';
-import 'package:televerse/televerse.dart';
-import 'package:xwordle/config/config.dart';
-import 'package:xwordle/utils/utils.dart';
+part of xwordle;
 
 Future<void> errorHandler(Object err, StackTrace stack) async {
   try {

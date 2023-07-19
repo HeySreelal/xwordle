@@ -1,3 +1,4 @@
+part of xwordle;
 // I know this is shit :)
 // But, just to keep all the strings in one place
 

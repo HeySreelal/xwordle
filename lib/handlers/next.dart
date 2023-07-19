@@ -1,7 +1,8 @@
-import 'package:televerse/televerse.dart';
-import 'package:xwordle/config/consts.dart';
-import 'package:xwordle/services/db.dart';
-import 'package:xwordle/utils/utils.dart';
+part of xwordle;
+
+
+
+
 
 /// Handles the /next command
 ///
