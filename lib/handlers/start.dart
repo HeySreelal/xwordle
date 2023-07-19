@@ -10,7 +10,7 @@ MessageHandler startHandler() {
 
     if (game.index == user.lastGame) {
       final msg = random(MessageStrings.alreadyPlayed).replaceAll(
-        "{TIME}",
+        "{DURATION}",
         game.formattedDurationTillNext,
       );
       await ctx.reply(
