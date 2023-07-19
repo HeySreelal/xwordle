@@ -170,4 +170,13 @@ Show some love by sharing the bot with your friends!
     "What shape would you like your hints to be? Choose from the keyboard. Or, you can let me surprise you by pressing the Random button.",
     "Choose your hint shape from the following: circle, square, or heart. Or, if you're feeling adventurous, press the Random button.",
   ];
+
+  static const feedbackPrompts = [
+    "Are there any features you would like to see added to the Wordle Bot?",
+    "What do you think of the difficulty level of the Wordle Bot? Or write me anything on your mind.",
+    "If you could add one feature to the bot, what would it be? Feel free to write me anything.",
+    "Let me know your thoughts, may be what about answering: what is one thing you wish the bot did better?",
+    "Sure, let me know your thoughts. What is your favorite thing about Wordle Bot?",
+    "Do you think the bot is challenging enough? Or feel free to shoot your suggestion.",
+  ];
 }

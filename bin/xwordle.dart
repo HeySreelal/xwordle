@@ -1,5 +1,6 @@
 import 'package:xwordle/handlers/admin.dart';
 import 'package:xwordle/handlers/error.dart';
+import 'package:xwordle/handlers/feedback.dart';
 import 'package:xwordle/handlers/guess.dart';
 import 'package:xwordle/handlers/help.dart';
 import 'package:xwordle/handlers/meaning.dart';
@@ -28,6 +29,7 @@ void main(List<String> args) {
   bot.command("profile", profileHandler());
   bot.command('meaning', meaningHandler());
   bot.command('shape', shapeHandler());
+  bot.command('feedback', feedbackHandler());
   bot.onText(guessHandler());
 
   // Admin Handlers
