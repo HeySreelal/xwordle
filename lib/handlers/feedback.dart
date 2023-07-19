@@ -11,6 +11,14 @@ MessageHandler feedbackHandler() {
     await ctx.reply(random(MessageStrings.feedbackPrompts));
     await ctx.reply("Just know you can send /cancel to sending the feedback.");
     final replyCtx = await conv.waitForTextMessage(chatId: ctx.id);
+
+    if (replyCtx.message.text == "/cancel") {
+      await ctx.reply(
+        "I guess you changed your mind. Feel free to send feedback anytime.",
+      );
+      return;
+    }
+
     await replyCtx.reply("Thanks for your feedback! Happy Wordling! 🤓");
     final feedbackMeta = "💬 Feedback\n"
         "--------------\n\n"

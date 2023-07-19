@@ -30,6 +30,7 @@ void main(List<String> args) {
   bot.command('meaning', meaningHandler());
   bot.command('shape', shapeHandler());
   bot.command('feedback', feedbackHandler());
+  bot.command('cancel', (ctx) {});
   bot.onText(guessHandler());
 
   // Admin Handlers

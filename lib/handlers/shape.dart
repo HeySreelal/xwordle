@@ -23,12 +23,18 @@ MessageHandler shapeHandler() {
     final txt = random(MessageStrings.shapesPrompts);
 
     await ctx.reply(txt, replyMarkup: keyboard);
+    await ctx.reply("Just know you can send /cancel to cancel the command.");
 
     do {
       final reply = await conv.waitForTextMessage(chatId: ctx.id);
       if (reply.message.text?.isEmpty ?? true) {
         await ctx.reply("Please choose from the keyboard.");
         continue;
+      }
+
+      if (reply.message.text == "/cancel") {
+        await ctx.reply("Got it, let's do this later.");
+        return;
       }
 
       final text = reply.message.text;
