@@ -2,7 +2,7 @@
 
 <!-- Version & License Badges -->
 
-![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg) ![License](https://img.shields.io/badge/License-MIT-blue.svg)
+![Version](https://img.shields.io/badge/Version-1.1.1-blue.svg) ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 
 Wordle Bot is a simple bot that allows you to play the popular word game Wordle in Telegram. The bot is entirely written in Dart with Televerse, and it uses the Free Dictionary API to check the validity of words.
 
@@ -11,7 +11,10 @@ Wordle Bot is a simple bot that allows you to play the popular word game Wordle 
 - Play Wordle in Telegram
 - Get daily word puzzles
 - Track your win streak
+- ✨ Get word meaning
 - Get notified when new puzzles are available
+- Customizable hint settings
+- Feedback system
 
 ## ⚡️ Usage
 
