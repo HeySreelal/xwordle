@@ -5,6 +5,7 @@ import 'package:televerse/televerse.dart';
 import 'package:xwordle/config/consts.dart';
 import 'package:xwordle/config/day.dart';
 import 'package:xwordle/config/words.dart';
+import 'package:xwordle/handlers/error.dart';
 import 'package:xwordle/models/user.dart';
 import 'package:xwordle/services/db.dart';
 import 'package:xwordle/utils/utils.dart';
@@ -22,14 +23,20 @@ String getWord() {
   return words[gameNo() % words.length];
 }
 
-void updateWord() {
+void updateWord() async {
   WordleDay day;
   try {
     day = WordleDB.today;
     day.word = getWord();
     day.index = gameNo();
     day.next = launch.add(Duration(days: gameNo() + 1));
-  } catch (e) {
+  } catch (e, s) {
+    try {
+      await sendLogs("Error while updating word");
+      await errorHandler(e, s);
+    } catch (e) {
+      print(e);
+    }
     int index = gameNo();
     String word = getWord();
     day = WordleDay(word, index, DateTime.now());
@@ -39,7 +46,7 @@ void updateWord() {
   final durationToNext = day.next.difference(DateTime.now());
   print(durationToNext);
   Timer(durationToNext, () {
-    dailyLog(autoLog: true);
+    sendDailyLog();
     day.resetCounters();
     updateWord();
     notifyUsers();
