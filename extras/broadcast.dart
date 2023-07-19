@@ -21,7 +21,7 @@ void main(List<String> args) async {
 
   int count = ids.length;
   int sent = 0, failed = 0;
-  List<List<String>> failedIDsAndReason = [];
+  List<ErrorUser> failedIDsAndReason = [];
   Message? statusMessage = await sendLogs(progressMessage(count, 0, 0));
 
   for (int i = 0; i < count; i++) {
@@ -43,7 +43,7 @@ void main(List<String> args) async {
       print("Failed to send message to ${ids[i].id}");
       failed++;
       failedIDsAndReason.add(
-        ["${ids[i].id}", e.toString().replaceAll("\n", " ")],
+        ErrorUser(ids[i].id, e.toString()),
       );
       WordleUser user = WordleUser.init(ids[i].id);
       user.optedOutOfBroadcast = true;
@@ -60,7 +60,7 @@ void main(List<String> args) async {
     File f = File("failed.txt");
     if (!f.existsSync()) f.createSync();
     f.writeAsStringSync(
-      failedIDsAndReason.map((e) => "${e[0]}: ${e[1]}").join("\n"),
+      failedIDsAndReason.map((e) => e.line).join("\n"),
     );
     if (failedIDsAndReason.isNotEmpty) {
       await bot.api.sendDocument(

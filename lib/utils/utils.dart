@@ -42,6 +42,8 @@ class ErrorUser {
   final String reason;
 
   ErrorUser(this.userId, String reason) : reason = reason.replaceAll("\n", " ");
+
+  String get line => "$userId: $reason\n";
 }
 
 Future<void> createLogFileAndSend(List<ErrorUser> errorUsers) async {
