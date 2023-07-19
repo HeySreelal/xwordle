@@ -1,8 +1,4 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:xwordle/config/day.dart';
-import 'package:xwordle/models/user.dart';
+part of xwordle;
 
 /// Represents the database for the Wordle game.
 class WordleDB {

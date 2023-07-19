@@ -1,9 +1,4 @@
-import 'package:televerse/telegram.dart' hide File;
-import 'package:televerse/televerse.dart';
-import 'package:xwordle/config/config.dart';
-import 'package:xwordle/models/admin.dart';
-import 'package:xwordle/services/db.dart';
-import 'package:xwordle/utils/utils.dart';
+part of xwordle;
 
 class Admin {
   // Some text constants

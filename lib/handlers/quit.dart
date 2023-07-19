@@ -1,7 +1,4 @@
-import 'package:televerse/televerse.dart';
-import 'package:xwordle/config/consts.dart';
-import 'package:xwordle/models/user.dart';
-import 'package:xwordle/services/db.dart';
+part of xwordle;
 
 /// Handles the /quit command
 ///
@@ -20,7 +17,7 @@ MessageHandler quitHandler() {
         .add("No, I don't.", "quit:no");
 
     await ctx.reply(
-      "Are you sure you want to quit the game?",
+      "Are you sure you want to quit the game? This will reset your streak.",
       replyMarkup: keyboard,
     );
   };

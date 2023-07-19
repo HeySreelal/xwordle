@@ -1,3 +1,4 @@
+part of xwordle;
 // I know this is shit :)
 // But, just to keep all the strings in one place
 
@@ -187,5 +188,14 @@ Show some love by sharing the bot with your friends!
     "Let me know your thoughts, may be what about answering: what is one thing you wish the bot did better?",
     "Sure, let me know your thoughts. What is your favorite thing about Wordle Bot?",
     "Do you think the bot is challenging enough? Or feel free to shoot your suggestion.",
+  ];
+
+  /// Cancel
+  static const cancel = [
+    "To cancel {ACTION}, simply type /cancel.",
+    "If you've changed your mind, you can always cancel {ACTION} by typing /cancel.",
+    "Not sure what to do next? Just type /cancel to cancel the current command.",
+    "Need to change your mind? No problem! Just type /cancel to cancel the current command.",
+    "Made a mistake? No worries! Just type /cancel to start over.",
   ];
 }

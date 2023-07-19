@@ -1,14 +1,4 @@
-import 'dart:io';
-import 'dart:math';
-
-import 'package:televerse/telegram.dart' show Message;
-import 'package:televerse/televerse.dart';
-import 'package:xwordle/config/config.dart';
-import 'package:xwordle/config/day.dart';
-import 'package:xwordle/handlers/error.dart';
-import 'package:xwordle/models/user.dart';
-import 'package:xwordle/services/db.dart';
-import 'package:xwordle/xwordle.dart';
+part of xwordle;
 
 String random(List<String> list) => list[Random().nextInt(list.length)];
 
@@ -52,6 +42,8 @@ class ErrorUser {
   final String reason;
 
   ErrorUser(this.userId, String reason) : reason = reason.replaceAll("\n", " ");
+
+  String get line => "$userId: $reason\n";
 }
 
 Future<void> createLogFileAndSend(List<ErrorUser> errorUsers) async {

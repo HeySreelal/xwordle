@@ -1,10 +1,11 @@
-import 'package:televerse/televerse.dart';
-import 'package:xwordle/config/consts.dart';
-import 'package:xwordle/config/day.dart';
-import 'package:xwordle/models/user.dart';
-import 'package:xwordle/services/db.dart';
-import 'package:xwordle/services/dict.dart';
-import 'package:xwordle/utils/utils.dart';
+part of xwordle;
+
+
+
+
+
+
+
 
 MessageHandler meaningHandler() {
   return (ctx) async {

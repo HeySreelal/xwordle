@@ -1,9 +1,4 @@
-import 'package:televerse/telegram.dart';
-import 'package:televerse/televerse.dart';
-import 'package:xwordle/config/config.dart';
-import 'package:xwordle/config/consts.dart';
-import 'package:xwordle/utils/utils.dart';
-import 'package:xwordle/xwordle.dart';
+part of xwordle;
 
 /// Handles the feedback command
 MessageHandler feedbackHandler() {
@@ -11,6 +6,14 @@ MessageHandler feedbackHandler() {
     await ctx.reply(random(MessageStrings.feedbackPrompts));
     await ctx.reply("Just know you can send /cancel to sending the feedback.");
     final replyCtx = await conv.waitForTextMessage(chatId: ctx.id);
+
+    if (replyCtx.message.text == "/cancel") {
+      await ctx.reply(
+        "I guess you changed your mind. Feel free to send feedback anytime.",
+      );
+      return;
+    }
+
     await replyCtx.reply("Thanks for your feedback! Happy Wordling! 🤓");
     final feedbackMeta = "💬 Feedback\n"
         "--------------\n\n"

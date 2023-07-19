@@ -1,38 +1,54 @@
 import 'dart:io';
+import 'package:televerse/telegram.dart' hide File;
 import 'package:televerse/televerse.dart';
-import 'package:xwordle/config/config.dart';
-import 'package:xwordle/services/db.dart';
-import 'package:xwordle/utils/utils.dart';
 import 'package:xwordle/xwordle.dart';
 
 void main(List<String> args) async {
-  final text = "Dear Wordle Game Users,\n\n"
-      "We apologize for the extended downtime of our Wordle Game bot on Telegram. Due to server space limitations, we were unable to keep the bot running. We deeply regret any inconvenience caused and was actively working to resolve the issue from the last week. Thank you for your patience and continued support. We are extremely thrilled to announce that the bot is back online again.\n\n"
-      "Now that we said that - ready, set, go! Send /start to start the game again! 🎮\n\n"
-      "Best regards!";
+  final text =
+      "Hey Wordler! I'm excited to announce two new features for the bot.\n\n"
+      "1. /meaning\n"
+      "The meaning command shouts the meaning of today's word. Well, only after you finish the game. 😉 This is a great way to learn new vocabulary. Out of the ordinary, I really think\n\n"
+      "2. /shape\n"
+      "Now, what about a little bit of customization.  The shape command lets you choose the shape of the hints for your guess. Currently supports three choices - circle, square, or... Well, I guess you'll figure it out. 👀\n\n"
+      "I'm always looking for ways to improve the Wordle Bot, so if you have any thoughts on improving this bot, feel free to share it either using the /feedback command or shoot the thoughts on @Xooniverse post.\n\n"
+      "I hope you enjoy these new features! Regards ✨";
 
   final keyboard = InlineKeyboard()
-      .addUrl("View Full Story 📝", "https://t.me/xooniverse/16")
-      .row()
-      .addUrl("Vote 🗳️", "https://t.me/xooniverse/17");
+      .addUrl("Xooniverse Post 💬", "https://t.me/xooniverse/5");
 
   final users = WordleDB.getUsers();
   final ids = users.map((e) => ChatID(e.userId)).toList();
 
   int count = ids.length;
   int sent = 0, failed = 0;
-  List<List<String>> failedIDsAndReason = [];
+  List<ErrorUser> failedIDsAndReason = [];
+  Message? statusMessage = await sendLogs(progressMessage(count, 0, 0));
+
   for (int i = 0; i < count; i++) {
     try {
       await bot.api.sendMessage(ids[i], text, replyMarkup: keyboard);
       sent++;
       await Future.delayed(Duration(milliseconds: 2000));
+
+      if (i % 10 == 0) {
+        if (statusMessage != null) {
+          await editLog(
+            statusMessage.messageId,
+            progressMessage(count, sent, failed),
+          );
+          await Future.delayed(Duration(milliseconds: 2000));
+        }
+      }
     } catch (e) {
       print("Failed to send message to ${ids[i].id}");
       failed++;
       failedIDsAndReason.add(
-        ["${ids[i].id}", e.toString().replaceAll("\n", " ")],
+        ErrorUser(ids[i].id, e.toString()),
       );
+      WordleUser user = WordleUser.init(ids[i].id);
+      user.optedOutOfBroadcast = true;
+      user.id = ids[i].id;
+      user.saveToFile();
     }
   }
 
@@ -44,7 +60,7 @@ void main(List<String> args) async {
     File f = File("failed.txt");
     if (!f.existsSync()) f.createSync();
     f.writeAsStringSync(
-      failedIDsAndReason.map((e) => "${e[0]}: ${e[1]}").join("\n"),
+      failedIDsAndReason.map((e) => e.line).join("\n"),
     );
     if (failedIDsAndReason.isNotEmpty) {
       await bot.api.sendDocument(
@@ -53,7 +69,7 @@ void main(List<String> args) async {
         caption: "Failed IDs",
       );
     }
-    Future.delayed(Duration(seconds: 5), () {
+    await Future.delayed(Duration(seconds: 5), () {
       try {
         f.deleteSync();
       } catch (e) {

@@ -1,10 +1,4 @@
-import 'dart:io';
-
-import 'package:televerse/televerse.dart';
-
-void main(List<String> args) {
-  print(WordleConfig.isDebug);
-}
+part of xwordle;
 
 class WordleConfig {
   /// Returns boolean value if bot is running in production mode
