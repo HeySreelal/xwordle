@@ -4,6 +4,8 @@ void main(List<String> args) {
   updateWord();
   bot.initSession(WordleUser.init);
   bot.start(startHandler());
+  bot.settings(settingsHandler());
+  bot.callbackQuery(settingsPattern, settingsCallback());
   bot.onError(errorHandler);
   bot.command("notify", notifyHandler());
   bot.callbackQuery(notificationPattern, handleNotificationTap());

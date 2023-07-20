@@ -169,4 +169,22 @@ class WordleUser extends Session {
   bool hasPlayedInLast4Days() {
     return (gameNo() - lastGame) < 4;
   }
+
+  void resetProfile([String? n]) {
+    currentGame = 0;
+    lastGame = lastGame;
+    maxStreak = 0;
+    name = n ?? defaultName;
+    notify = true;
+    onGame = false;
+    role = defaultName;
+    streak = 0;
+    totalGamesPlayed = 0;
+    totalWins = 0;
+    tries = [];
+    perfectGames = 0;
+    hintShape = HintShape.circle;
+    optedOutOfBroadcast = false;
+    saveToFile();
+  }
 }
