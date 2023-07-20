@@ -16,6 +16,19 @@ void main(List<String> args) async {
   final keyboard = InlineKeyboard()
       .addUrl("Xooniverse Post 💬", "https://t.me/xooniverse/5");
 
+  // await postToXooniverse(text, keyboard);
+  await broadcastLogic(text, keyboard);
+}
+
+Future<void> postToXooniverse(String text, ReplyMarkup markup) async {
+  await bot.api.sendMessage(
+    ChannelID("@xooniverse"),
+    text,
+    replyMarkup: markup,
+  );
+}
+
+Future<void> broadcastLogic(String text, ReplyMarkup markup) async {
   final users = WordleDB.getUsers();
   final ids = users.map((e) => ChatID(e.userId)).toList();
 
@@ -26,7 +39,7 @@ void main(List<String> args) async {
 
   for (int i = 0; i < count; i++) {
     try {
-      await bot.api.sendMessage(ids[i], text, replyMarkup: keyboard);
+      await bot.api.sendMessage(ids[i], text, replyMarkup: markup);
       sent++;
       await Future.delayed(Duration(milliseconds: 2000));
 
