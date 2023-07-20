@@ -80,10 +80,15 @@ A new word will be available every day. The bot will send you notification when 
 📱 <b>Available Commands</b>
 /start - Start the game
 /notify - Enable/Disable notifications
+/next - Shows time left for next word
+/meaning - Get the meaning of the word
+/profile - Show your profile and stats
+/shape - Change the shape of the hint
+/feedback - Send feedback to the developer
 /help - Show this help message
 /about - Show about message
-/quit - Quit the current game (Resets your streak)
-/profile - Show your profile and stats
+/settings - Show settings
+/quit - Quit the current game
 
 Happy Wordleing! 🤓
 """;
@@ -197,5 +202,14 @@ Show some love by sharing the bot with your friends!
     "Not sure what to do next? Just type /cancel to cancel the current command.",
     "Need to change your mind? No problem! Just type /cancel to cancel the current command.",
     "Made a mistake? No worries! Just type /cancel to start over.",
+  ];
+
+  /// Nothing to cancel
+  static const nothingToCancel = [
+    "I don't think you're doing anything that can be canceled right now.",
+    "You don't have anything to cancel.",
+    "You're not currently doing anything that can be canceled.",
+    "I'm not sure what you're trying to cancel.",
+    "Can you please clarify what you're trying to cancel?",
   ];
 }

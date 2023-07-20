@@ -169,3 +169,7 @@ String statsMessage({int? requestedUser, bool autoLog = false}) {
 
   return msg;
 }
+
+extension FullName on User {
+  String get fullName => "$firstName ${lastName ?? ""}";
+}

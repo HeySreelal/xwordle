@@ -4,6 +4,8 @@ void main(List<String> args) {
   updateWord();
   bot.initSession(WordleUser.init);
   bot.start(startHandler());
+  bot.settings(settingsHandler());
+  bot.callbackQuery(settingsPattern, settingsCallback());
   bot.onError(errorHandler);
   bot.command("notify", notifyHandler());
   bot.callbackQuery(notificationPattern, handleNotificationTap());
@@ -16,7 +18,7 @@ void main(List<String> args) {
   bot.command('meaning', meaningHandler());
   bot.command('shape', shapeHandler());
   bot.command('feedback', feedbackHandler());
-  bot.command('cancel', (ctx) {});
+  bot.command('cancel', cancelHandler());
   bot.onText(guessHandler());
 
   // Admin Handlers

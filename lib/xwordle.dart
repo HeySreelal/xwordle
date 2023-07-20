@@ -30,6 +30,8 @@ part 'models/user.dart';
 part 'services/db.dart';
 part 'services/dict.dart';
 part 'utils/utils.dart';
+part 'handlers/cancel.dart';
+part 'handlers/settings.dart';
 
 Bot<WordleUser> bot = Bot<WordleUser>(WordleConfig.instance.token);
 Conversation conv = Conversation(bot);
