@@ -80,10 +80,15 @@ A new word will be available every day. The bot will send you notification when 
 📱 <b>Available Commands</b>
 /start - Start the game
 /notify - Enable/Disable notifications
+/next - Shows time left for next word
+/meaning - Get the meaning of the word
+/profile - Show your profile and stats
+/shape - Change the shape of the hint
+/feedback - Send feedback to the developer
 /help - Show this help message
 /about - Show about message
-/quit - Quit the current game (Resets your streak)
-/profile - Show your profile and stats
+/settings - Show settings
+/quit - Quit the current game
 
 Happy Wordleing! 🤓
 """;
