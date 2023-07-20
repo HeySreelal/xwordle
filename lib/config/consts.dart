@@ -198,4 +198,13 @@ Show some love by sharing the bot with your friends!
     "Need to change your mind? No problem! Just type /cancel to cancel the current command.",
     "Made a mistake? No worries! Just type /cancel to start over.",
   ];
+
+  /// Nothing to cancel
+  static const nothingToCancel = [
+    "I don't think you're doing anything that can be canceled right now.",
+    "You don't have anything to cancel.",
+    "You're not currently doing anything that can be canceled.",
+    "I'm not sure what you're trying to cancel.",
+    "Can you please clarify what you're trying to cancel?",
+  ];
 }
