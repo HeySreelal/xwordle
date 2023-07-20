@@ -10,6 +10,7 @@ MessageHandler feedbackHandler() {
     if (replyCtx.message.text == "/cancel") {
       await ctx.reply(
         "I guess you changed your mind. Feel free to send feedback anytime.",
+        replyMarkup: ReplyKeyboardRemove(),
       );
       return;
     }

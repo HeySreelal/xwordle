@@ -28,7 +28,10 @@ MessageHandler shapeHandler() {
       }
 
       if (reply.message.text == "/cancel") {
-        await ctx.reply("Got it, let's do this later.");
+        await ctx.reply(
+          "Got it, let's do this later.",
+          replyMarkup: ReplyKeyboardRemove(),
+        );
         return;
       }
 
