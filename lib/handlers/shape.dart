@@ -23,11 +23,21 @@ MessageHandler shapeHandler() {
 }
 
 Future<bool> setShapeHandler(ID chatId) async {
+  int tries = 0;
   do {
+    if (tries >= 3) {
+      await bot.api.sendMessage(
+        chatId,
+        "I'm sorry, I didn't understand that. I'm cancelling shape selection. Please try again later.",
+        replyMarkup: ReplyKeyboardRemove(),
+      );
+      return false;
+    }
     final ctx = await conv.waitForTextMessage(chatId: chatId);
     WordleUser user = ctx.session as WordleUser;
     if (ctx.message.text?.isEmpty ?? true) {
       await ctx.reply("Please choose from the keyboard.");
+      tries++;
       continue;
     }
 
@@ -44,8 +54,10 @@ Future<bool> setShapeHandler(ID chatId) async {
         text != HintShape.squareText &&
         text != HintShape.heartText &&
         text != HintShape.randText) {
+      tries++;
+
       await ctx.reply(
-        "Uh oh, I didn't understand that. Please choose from the keyboard.",
+        "Uh oh, I didn't understand that. Please choose a valid shape from the keyboard. Or send /cancel to cancel the command.",
         replyMarkup: hintShapesKeyboard,
       );
       continue;
