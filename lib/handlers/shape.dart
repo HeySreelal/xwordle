@@ -23,10 +23,9 @@ MessageHandler shapeHandler() {
 }
 
 Future<bool> setShapeHandler(ID chatId) async {
-  final ctx = await conv.waitForTextMessage(chatId: chatId);
-  WordleUser user = ctx.session as WordleUser;
-
   do {
+    final ctx = await conv.waitForTextMessage(chatId: chatId);
+    WordleUser user = ctx.session as WordleUser;
     if (ctx.message.text?.isEmpty ?? true) {
       await ctx.reply("Please choose from the keyboard.");
       continue;
