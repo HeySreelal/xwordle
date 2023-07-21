@@ -60,6 +60,11 @@ Future<void> notifyUsers() async {
 
   for (int i = 0; i < count; i++) {
     try {
+      final user = WordleUser.init(notificationEnabledUsers[i].userId);
+      if (user.lastGame == gameNo() || user.currentGame == gameNo()) {
+        success++;
+        continue;
+      }
       await bot.api.sendMessage(
         ChatID(notificationEnabledUsers[i].userId),
         random(MessageStrings.notificationMsgs),
