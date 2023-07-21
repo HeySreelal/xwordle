@@ -63,6 +63,7 @@ Future<bool> setShapeHandler(ID chatId) async {
       parseMode: ParseMode.html,
       replyMarkup: ReplyKeyboardRemove(),
     );
-    return true;
+    break;
   } while (true);
+  return true;
 }
