@@ -50,10 +50,11 @@ MessageHandler feedbackHandler() {
 /// This handler will be called by the admin's channel post to the logs channel.
 Future<void> respondToFeedback(MessageContext ctx) async {
   final response = ctx.message.text;
-  if (response == null) return;
-
   final replyToMessage = ctx.message.replyToMessage;
-  if (replyToMessage == null) return;
+  if (response == null || WordleConfig.isDebug || replyToMessage == null) {
+    return;
+  }
+
   final RegExp matchID = RegExp(r"ID: (\d+)");
   final idOfTheUser = matchID.firstMatch(replyToMessage.text!)?.group(1);
   final chatId = ChatID(int.parse(idOfTheUser!));

@@ -65,8 +65,19 @@ class Admin {
       final text = ctx.message.text!;
 
       if (text == setBroadcast) {
-        await ctx.reply(broadcastPrompt, replyMarkup: ForceReply());
+        await ctx.reply(broadcastPrompt);
+        final replyCtx = await conv.waitForTextMessage(chatId: ctx.id);
+        final broadcast = replyCtx.message.text!;
+        AdminFile? admin = AdminFile.read();
+        admin ??= AdminFile.create();
+
+        admin.message = broadcast;
+        admin.createdAt = DateTime.now().toUtc();
+        admin.createdBy = replyCtx.id.id;
+        await admin.saveToFile();
+        await replyCtx.reply("Broadcast message set!");
       }
+
       if (text == seeBroadcast) {
         AdminFile? admin = AdminFile.read();
         if (admin == null) {
