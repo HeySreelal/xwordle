@@ -17,12 +17,13 @@ MessageHandler shapeHandler() {
 
     await ctx.reply(txt, replyMarkup: hintShapesKeyboard);
     await ctx.reply("Just know you can send /cancel to cancel the command.");
-    final reply = await conv.waitForTextMessage(chatId: ctx.id);
-    await setShapeHandler(reply);
+
+    await setShapeHandler(ctx.id);
   };
 }
 
-Future<bool> setShapeHandler(MessageContext ctx) async {
+Future<bool> setShapeHandler(ID chatId) async {
+  final ctx = await conv.waitForTextMessage(chatId: chatId);
   WordleUser user = ctx.session as WordleUser;
 
   do {
