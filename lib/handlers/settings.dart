@@ -186,9 +186,7 @@ Future<bool> changeHintShapeCallback(CallbackQueryContext ctx) async {
     ctx.id,
     "Just know you can send /cancel to cancel the command.",
   );
-
-  final replyCtx = await conv.waitForTextMessage(chatId: ctx.id);
-  return await setShapeHandler(replyCtx);
+  return await setShapeHandler(ctx.id);
 }
 
 /// Handles the reset profile callback query
