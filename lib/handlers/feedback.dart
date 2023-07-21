@@ -43,3 +43,28 @@ MessageHandler feedbackHandler() {
     );
   };
 }
+
+/// It's possible that users send feedback that is a question. This handler
+/// will be used to respond to such questions.
+///
+/// This handler will be called by the admin's channel post to the logs channel.
+Future<void> respondToFeedback(MessageContext ctx) async {
+  final response = ctx.message.text;
+  if (response == null) return;
+
+  final replyToMessage = ctx.message.replyToMessage;
+  if (replyToMessage == null) return;
+  final RegExp matchID = RegExp(r"ID: (\d+)");
+  final idOfTheUser = matchID.firstMatch(replyToMessage.text!)?.group(1);
+  final chatId = ChatID(int.parse(idOfTheUser!));
+
+  await ctx.api.sendMessage(
+    chatId,
+    "$response\n\n💬 - Admin",
+    entities: ctx.message.entities,
+  );
+  await ctx.api.sendMessage(
+    chatId,
+    "ℹ️ This is a response from the admin about your feedback. Please note that replies to this message will not be seen by the admin. If you have any further questions, reach us at @XooniverseChat or using /feedback again.",
+  );
+}

@@ -28,4 +28,5 @@ void main(List<String> args) {
   bot.command('stats', Admin.statsHandler());
   bot.hears(Admin.broadcastPattern, Admin.handleAdminText());
   bot.callbackQuery(Admin.releasePattern, Admin.handleConfirmation());
+  bot.onChannelPost(respondToFeedback);
 }
