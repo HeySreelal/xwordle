@@ -6,24 +6,6 @@ MessageHandler guessHandler() {
     final user = ctx.session as WordleUser;
     final game = WordleDB.today;
 
-    // Check if admin is trying to set broadcast
-    bool isAdminSettingBroadcast = IsAdmin(ctx.id).isAdmin &&
-        ctx.message.replyToMessage != null &&
-        ctx.message.replyToMessage?.text == Admin.broadcastPrompt;
-
-    if (isAdminSettingBroadcast) {
-      final broadcast = ctx.message.text!;
-      AdminFile? admin = AdminFile.read();
-      admin ??= AdminFile.create();
-
-      admin.message = broadcast;
-      admin.createdAt = DateTime.now().toUtc();
-      admin.createdBy = ctx.id.id;
-      await admin.saveToFile();
-      await ctx.reply("Broadcast message set!");
-      return;
-    }
-
     // If the user is not playing a game, tell them to start one
     if (!user.onGame) {
       await ctx.reply(random(MessageStrings.notOnGameMessages));
