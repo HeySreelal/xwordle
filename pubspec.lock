@@ -310,10 +310,10 @@ packages:
     description:
       path: "."
       ref: dev
-      resolved-ref: "504e124e6c707bbbccfe527e2eb3df0b1012f54a"
+      resolved-ref: "4cb1b816876d3f02cb8cec27bb3c1df70baa82b8"
       url: "https://github.com/HeySreelal/televerse/"
     source: git
-    version: "1.10.4"
+    version: "1.10.6"
   term_glyph:
     dependency: transitive
     description:
