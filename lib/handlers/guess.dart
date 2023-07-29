@@ -12,6 +12,12 @@ MessageHandler guessHandler() {
       return;
     }
 
+    // If the user is playing a previous game, tell them to start a new one
+    if (user.currentGame != game.index) {
+      await ctx.reply(random(MessageStrings.notOnGameMessages));
+      return;
+    }
+
     final guess = ctx.message.text!.trim().toLowerCase();
     if (guess.length != 5) {
       await ctx.reply(random(MessageStrings.mustBe5Letters));
