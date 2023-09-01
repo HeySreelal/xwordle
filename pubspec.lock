@@ -81,6 +81,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.8"
+  dio:
+    dependency: transitive
+    description:
+      name: dio
+      sha256: ce75a1b40947fea0a0e16ce73337122a86762e38b982e1ccb909daa3b9bc4197
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.3.2"
   file:
     dependency: transitive
     description:
@@ -310,10 +318,10 @@ packages:
     description:
       path: "."
       ref: dev
-      resolved-ref: "4cb1b816876d3f02cb8cec27bb3c1df70baa82b8"
+      resolved-ref: "2b85bc3e5318b578a8eb336bd675203282e3e2c3"
       url: "https://github.com/HeySreelal/televerse/"
     source: git
-    version: "1.10.6"
+    version: "1.11.0"
   term_glyph:
     dependency: transitive
     description:
