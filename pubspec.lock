@@ -77,10 +77,10 @@ packages:
     dependency: transitive
     description:
       name: dart_internal
-      sha256: dae3976f383beddcfcd07ad5291a422df2c8c0a8a03c52cda63ac7b4f26e0f4e
+      sha256: "689dccc3d5f62affd339534cca548dce12b3a6b32f0f10861569d3025efc0567"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.8"
+    version: "0.2.9"
   dio:
     dependency: transitive
     description:
@@ -318,10 +318,10 @@ packages:
     description:
       path: "."
       ref: dev
-      resolved-ref: "6089bba1ed852d7f13e87e0877d3602b65b64fb6"
+      resolved-ref: f31988c56fa2a4c6b24212e52daa129d5a518e0c
       url: "https://github.com/HeySreelal/televerse/"
     source: git
-    version: "1.11.2"
+    version: "1.11.4"
   term_glyph:
     dependency: transitive
     description:
