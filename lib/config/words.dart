@@ -1,4 +1,5 @@
-part of xwordle;
+part of '../xwordle.dart';
+
 /// Look away if you don't want to see the words.
 const List<String> words = [
   "vivid",

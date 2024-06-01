@@ -1,4 +1,4 @@
-part of xwordle;
+part of '../xwordle.dart';
 
 /// Available settings
 enum Settings {
@@ -56,9 +56,9 @@ InlineKeyboard settingsKeyboard(WordleUser user) {
       );
 }
 
-MessageHandler settingsHandler() {
+Handler settingsHandler() {
   return (ctx) async {
-    final user = ctx.session as WordleUser;
+    final user = WordleUser.init(ctx.id.id);
 
     final currentMessage = settingsMessage(user);
     await ctx.reply(
@@ -90,9 +90,9 @@ String settingsMessage(WordleUser user) {
 final settingsPattern = RegExp(r"settings:(.*)");
 
 /// Handles the settings callback query
-CallbackQueryHandler settingsCallback() {
+Handler settingsCallback() {
   return (ctx) async {
-    final s = settingsPattern.firstMatch(ctx.data!)!.group(1)!;
+    final s = settingsPattern.firstMatch(ctx.callbackQuery!.data!)!.group(1)!;
     final setting = Settings.fromString(s);
     bool hasChange = false;
     switch (setting) {
@@ -112,13 +112,13 @@ CallbackQueryHandler settingsCallback() {
         hasChange = await resetProfileCallback(ctx);
         break;
       case Settings.nothing:
-        await ctx.answer(text: "Nothing to do here.");
+        await ctx.answerCallbackQuery(text: "Nothing to do here.");
         break;
     }
     if (!hasChange) return;
 
-    final user = ctx.session as WordleUser;
-    await ctx.editMessage(
+    final user = WordleUser.init(ctx.id.id);
+    await ctx.editMessageText(
       settingsMessage(user),
       parseMode: ParseMode.html,
       replyMarkup: settingsKeyboard(user),
@@ -127,7 +127,7 @@ CallbackQueryHandler settingsCallback() {
 }
 
 /// Hnadles the change name callback query
-Future<bool> changeNameCallback(CallbackQueryContext ctx) async {
+Future<bool> changeNameCallback(Context ctx) async {
   await ctx.api.sendMessage(ctx.id, "Okay, send me your new name.");
   await ctx.api.sendMessage(
     ctx.id,
@@ -136,15 +136,15 @@ Future<bool> changeNameCallback(CallbackQueryContext ctx) async {
       "changing profile name",
     ),
   );
-  await ctx.answer();
+  await ctx.answerCallbackQuery();
   final replyCtx = await conv.waitForTextMessage(chatId: ctx.id);
-  if (replyCtx.message.text == "/cancel") {
+  if (replyCtx?.message?.text == "/cancel") {
     await ctx.api.sendMessage(ctx.id, "Okay, I won't change your name.");
     return false;
   }
 
-  final user = ctx.session as WordleUser;
-  user.name = replyCtx.message.text!;
+  final user = WordleUser.init(ctx.id.id);
+  user.name = replyCtx!.message!.text!;
   user.saveToFile();
   await ctx.api.sendMessage(
     ctx.id,
@@ -154,11 +154,11 @@ Future<bool> changeNameCallback(CallbackQueryContext ctx) async {
 }
 
 /// Handles the toggle notifications callback query
-Future<bool> toggleNotificationsCallback(CallbackQueryContext ctx) async {
-  final user = ctx.session as WordleUser;
+Future<bool> toggleNotificationsCallback(Context ctx) async {
+  final user = WordleUser.init(ctx.id.id);
   user.notify = !user.notify;
   user.saveToFile();
-  await ctx.answer(
+  await ctx.answerCallbackQuery(
     text: "Okay, I'll${user.notify ? '' : 'not '} update you on new games.",
   );
 
@@ -166,11 +166,11 @@ Future<bool> toggleNotificationsCallback(CallbackQueryContext ctx) async {
 }
 
 /// Handles the toggle product updates callback query
-Future<bool> toggleProductUpdatesCallback(CallbackQueryContext ctx) async {
-  final user = ctx.session as WordleUser;
+Future<bool> toggleProductUpdatesCallback(Context ctx) async {
+  final user = WordleUser.init(ctx.id.id);
   user.optedOutOfBroadcast = !user.optedOutOfBroadcast;
   user.saveToFile();
-  await ctx.answer(
+  await ctx.answerCallbackQuery(
     text:
         "Okay, you're now opted ${user.optedOutOfBroadcast ? 'out of' : 'into'} product updates.",
   );
@@ -178,9 +178,9 @@ Future<bool> toggleProductUpdatesCallback(CallbackQueryContext ctx) async {
 }
 
 /// Handles the change hint shape callback query
-Future<bool> changeHintShapeCallback(CallbackQueryContext ctx) async {
+Future<bool> changeHintShapeCallback(Context ctx) async {
   final txt = random(MessageStrings.shapesPrompts);
-  await ctx.answer(text: "Okay, send me your new hint shape.");
+  await ctx.answerCallbackQuery(text: "Okay, send me your new hint shape.");
   await ctx.api.sendMessage(ctx.id, txt, replyMarkup: hintShapesKeyboard);
   await ctx.api.sendMessage(
     ctx.id,
@@ -190,10 +190,10 @@ Future<bool> changeHintShapeCallback(CallbackQueryContext ctx) async {
 }
 
 /// Handles the reset profile callback query
-Future<bool> resetProfileCallback(CallbackQueryContext ctx) async {
-  final user = ctx.session as WordleUser;
-  user.resetProfile(ctx.callbackQuery.user.fullName);
+Future<bool> resetProfileCallback(Context ctx) async {
+  final user = WordleUser.init(ctx.id.id);
+  user.resetProfile(ctx.callbackQuery!.from.fullName);
   user.saveToFile();
-  await ctx.answer(text: "Okay, I've reset your profile.");
+  await ctx.answerCallbackQuery(text: "Okay, I've reset your profile.");
   return true;
 }

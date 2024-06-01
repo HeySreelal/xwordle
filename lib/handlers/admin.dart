@@ -1,4 +1,4 @@
-part of xwordle;
+part of '../xwordle.dart';
 
 class Admin {
   // Some text constants
@@ -37,7 +37,7 @@ class Admin {
   }
 
   /// Handles the /mod command
-  static MessageHandler modHandler() {
+  static Handler modHandler() {
     return (ctx) async {
       if (!check(ctx.id)) {
         await markUnauthorizedAttempt(ctx);
@@ -56,26 +56,26 @@ class Admin {
   static const String broadcastPrompt = "Send me the broadcast message!";
 
   /// Handles the keyboard button presses
-  static MessageHandler handleAdminText() {
+  static Handler handleAdminText() {
     return (ctx) async {
       if (!check(ctx.id)) {
         await markUnauthorizedAttempt(ctx);
         return;
       }
-      final text = ctx.message.text!;
+      final text = ctx.message?.text!;
 
       if (text == setBroadcast) {
         await ctx.reply(broadcastPrompt);
         final replyCtx = await conv.waitForTextMessage(chatId: ctx.id);
-        final broadcast = replyCtx.message.text!;
+        final broadcast = replyCtx?.message?.text!;
         AdminFile? admin = AdminFile.read();
         admin ??= AdminFile.create();
 
         admin.message = broadcast;
         admin.createdAt = DateTime.now().toUtc();
-        admin.createdBy = replyCtx.id.id;
+        admin.createdBy = replyCtx?.id.id;
         await admin.saveToFile();
-        await replyCtx.reply("Broadcast message set!");
+        await replyCtx?.reply("Broadcast message set!");
       }
 
       if (text == seeBroadcast) {
@@ -100,21 +100,21 @@ class Admin {
   }
 
   /// Marks an unauthorized attempt to access admin commands
-  static Future<void> markUnauthorizedAttempt(MessageContext ctx) async {
+  static Future<void> markUnauthorizedAttempt(Context ctx) async {
     await sendLogs(
       "Unauthorized access attempt by ${ctx.from?.firstName}! (${ctx.id})",
     );
   }
 
   /// Handles the inline key press to confirm release
-  static CallbackQueryHandler handleConfirmation() {
+  static Handler handleConfirmation() {
     return (ctx) async {
       if (!check(ctx.id)) {
         return;
       }
-      final confirm = ctx.data == "release:yes";
+      final confirm = ctx.callbackQuery?.data == "release:yes";
       if (!confirm) {
-        await ctx.editMessage(
+        await ctx.editMessageText(
           "Phew! That was close. Let's do this next time. 🫡",
         );
         return;
@@ -122,7 +122,7 @@ class Admin {
       final admin = AdminFile.read();
       final message = admin?.message;
       if (admin == null || message == null) {
-        await ctx.editMessage("No broadcast message set!");
+        await ctx.editMessageText("No broadcast message set!");
         return;
       }
 
@@ -145,7 +145,7 @@ class Admin {
         }
 
         if (i % 10 == 0) {
-          await ctx.editMessage(
+          await ctx.editMessageText(
             "Sending broadcast message...\n\n"
             "Sent: $sent\n"
             "Failed: $failed\n"
@@ -157,13 +157,13 @@ class Admin {
           "Sent: $sent\n"
           "Failed: $failed\n"
           "Total: $count";
-      await ctx.editMessage(resultMsg);
+      await ctx.editMessageText(resultMsg);
       await sendLogs("$resultMsg\n\n#broadcast");
     };
   }
 
   /// Test Broadcast Message
-  static MessageHandler testBroadcastHandler() {
+  static Handler testBroadcastHandler() {
     return (ctx) async {
       if (!check(ctx.id)) {
         await markUnauthorizedAttempt(ctx);
@@ -190,7 +190,7 @@ class Admin {
   }
 
   /// Handles count command
-  static MessageHandler countHandler() {
+  static Handler countHandler() {
     return (ctx) async {
       if (!check(ctx.id)) {
         await markUnauthorizedAttempt(ctx);
@@ -203,14 +203,14 @@ class Admin {
   }
 
   /// /stats command handler
-  static MessageHandler statsHandler() {
+  static Handler statsHandler() {
     return (ctx) async {
       if (!check(ctx.id)) {
         await markUnauthorizedAttempt(ctx);
         return;
       }
       await ctx.replyWithChatAction(ChatAction.typing);
-      final msg = statsMessage(requestedUser: ctx.chat.id);
+      final msg = statsMessage(requestedUser: ctx.chat?.id);
       await ctx.reply(msg, parseMode: ParseMode.html);
     };
   }

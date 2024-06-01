@@ -1,9 +1,7 @@
-part of xwordle;
-
-
+part of '../xwordle.dart';
 
 /// Handles the /help command
-MessageHandler helpHandler() {
+Handler helpHandler() {
   return (ctx) async {
     await ctx.reply(
       MessageStrings.helpMessage,
@@ -13,7 +11,7 @@ MessageHandler helpHandler() {
 }
 
 /// Handles the /about command
-MessageHandler aboutHandler() {
+Handler aboutHandler() {
   return (ctx) async {
     await ctx.reply(
       MessageStrings.aboutMessage,

@@ -1,4 +1,4 @@
-part of xwordle;
+part of '../xwordle.dart';
 
 /// This file contains the dictionary service.
 /// It is used to get the meaning of a word from the dictionary api.

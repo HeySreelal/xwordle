@@ -1,4 +1,4 @@
-part of xwordle;
+part of '../xwordle.dart';
 
 /// This class represents a Wordle Day
 class WordleDay {

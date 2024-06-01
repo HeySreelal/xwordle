@@ -1,4 +1,4 @@
-part of xwordle;
+part of '../xwordle.dart';
 // I know this is shit :)
 // But, just to keep all the strings in one place
 

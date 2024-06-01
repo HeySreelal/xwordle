@@ -2,7 +2,6 @@ import 'package:xwordle/xwordle.dart';
 
 void main(List<String> args) {
   updateWord();
-  bot.initSession(WordleUser.init);
   bot.start(startHandler());
   bot.settings(settingsHandler());
   bot.callbackQuery(settingsPattern, settingsCallback());

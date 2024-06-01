@@ -1,4 +1,4 @@
-part of xwordle;
+part of '../xwordle.dart';
 
 /// The wordle hint shape, used to display the hint
 enum HintShape {
@@ -44,7 +44,7 @@ enum HintShape {
 }
 
 /// The wordle session, keeps track of the current wordle of the user, and their progress
-class WordleUser extends Session {
+class WordleUser {
   /// The current game id
   int currentGame;
 
@@ -114,7 +114,6 @@ class WordleUser extends Session {
   })  : joinedDate = joinedDate ?? DateTime.now(),
         hintShape = hintShape ?? HintShape.circle;
 
-  @override
   Map<String, dynamic> toJson() {
     return {
       'currentGame': currentGame,
@@ -161,8 +160,24 @@ class WordleUser extends Session {
 
   static const String defaultName = 'Player';
 
+  static WordleUser? loadFromFile(
+    WordleUser Function(Map<String, dynamic>) fromMap, {
+    int? id,
+  }) {
+    if (id == null) return null;
+
+    final f = File(".sessions/$id.json");
+    if (!f.existsSync()) return null;
+    final content = f.readAsStringSync();
+    return fromMap(jsonDecode(content));
+  }
+
+  void saveToFile() {
+    File(".sessions/$userId.json").writeAsStringSync(toJson().toString());
+  }
+
   static WordleUser init(int id) {
-    final ses = Session.loadFromFile(WordleUser.fromMap, id: id);
+    final ses = loadFromFile(WordleUser.fromMap, id: id);
     return ses ?? WordleUser(userId: id, name: defaultName, role: defaultName);
   }
 

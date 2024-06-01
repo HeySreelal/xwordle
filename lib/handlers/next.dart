@@ -1,14 +1,10 @@
-part of xwordle;
-
-
-
-
+part of '../xwordle.dart';
 
 /// Handles the /next command
 ///
 /// This command is used to tell the user how much time is left for the next
 /// word to be available.
-MessageHandler nextWordHandler() {
+Handler nextWordHandler() {
   return (ctx) async {
     final game = WordleDB.today;
     final msg = random(MessageStrings.excitedMessages).replaceAll(

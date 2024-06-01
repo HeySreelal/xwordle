@@ -1,4 +1,4 @@
-part of xwordle;
+part of '../xwordle.dart';
 
 String random(List<String> list) => list[Random().nextInt(list.length)];
 
@@ -76,7 +76,7 @@ Future<void> createLogFileAndSend(List<ErrorUser> errorUsers) async {
     });
   } catch (err, stack) {
     try {
-      await errorHandler(err, stack);
+      await errorHandler(BotError(err, stack));
     } catch (e) {
       print(e);
     }
@@ -92,7 +92,7 @@ Future<Message?> sendLogs(String text) async {
     );
   } catch (err, stack) {
     try {
-      await errorHandler(err, stack);
+      await errorHandler(BotError(err, stack));
     } catch (e) {
       print(e);
     }
@@ -109,7 +109,7 @@ Future<void> editLog(int messageId, String text) async {
     );
   } catch (err, stack) {
     try {
-      await errorHandler(err, stack);
+      await errorHandler(BotError(err, stack));
     } catch (e) {
       print(e);
     }
@@ -121,7 +121,7 @@ Future<void> sendDailyLog() async {
     await sendLogs(statsMessage(autoLog: true));
   } catch (err, stack) {
     try {
-      await errorHandler(err, stack);
+      await errorHandler(BotError(err, stack));
     } catch (e) {
       print(e);
     }

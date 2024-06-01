@@ -1,7 +1,4 @@
-part of xwordle;
-
-
-
+part of '../xwordle.dart';
 
 Pattern notificationPattern = RegExp(r"notify_(yes|no)");
 
@@ -20,9 +17,9 @@ InlineKeyboard notificationMenu(
 }
 
 /// Handles the /notify command
-MessageHandler notifyHandler() {
+Handler notifyHandler() {
   return (ctx) async {
-    final user = ctx.session as WordleUser;
+    final user = WordleUser.init(ctx.id.id);
     await ctx.reply(
       MessageStrings.notificationPrompt,
       replyMarkup: notificationMenu(user.notify, true),
@@ -31,13 +28,13 @@ MessageHandler notifyHandler() {
 }
 
 /// Handles enables the notification
-CallbackQueryHandler handleNotificationTap() {
+Handler handleNotificationTap() {
   return (ctx) async {
-    final user = ctx.session as WordleUser;
+    final user = WordleUser.init(ctx.id.id);
 
-    user.notify = ctx.data == "notify_yes";
+    user.notify = ctx.callbackQuery?.data == "notify_yes";
     user.saveToFile();
-    await ctx.editMessage(
+    await ctx.editMessageText(
       "$notificationSettings\n\nYou will ${!user.notify ? 'not ' : ''}be notified when new word is available.",
       replyMarkup: notificationMenu(user.notify, false),
       parseMode: ParseMode.html,

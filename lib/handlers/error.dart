@@ -1,6 +1,8 @@
-part of xwordle;
+part of '../xwordle.dart';
 
-Future<void> errorHandler(Object err, StackTrace stack) async {
+Future<void> errorHandler(BotError error) async {
+  final Object err = error.error;
+  final StackTrace stack = error.stackTrace;
   try {
     if (WordleConfig.isDebug) {
       print("Error: $err");

@@ -1,4 +1,4 @@
-part of xwordle;
+part of '../xwordle.dart';
 
 /// Represents the database for the Wordle game.
 class WordleDB {

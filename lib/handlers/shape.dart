@@ -1,4 +1,4 @@
-part of xwordle;
+part of '../xwordle.dart';
 
 final hintShapesKeyboard = Keyboard()
     .addText(HintShape.circleText)
@@ -11,7 +11,7 @@ final hintShapesKeyboard = Keyboard()
     .oneTime()
     .resized();
 
-MessageHandler shapeHandler() {
+Handler shapeHandler() {
   return (ctx) async {
     final txt = random(MessageStrings.shapesPrompts);
 
@@ -34,29 +34,29 @@ Future<bool> setShapeHandler(ID chatId) async {
       return false;
     }
     final ctx = await conv.waitForTextMessage(chatId: chatId);
-    WordleUser user = ctx.session as WordleUser;
-    if (ctx.message.text?.isEmpty ?? true) {
-      await ctx.reply("Please choose from the keyboard.");
+    WordleUser user = WordleUser.init(ctx?.id.id);
+    if (ctx?.message?.text?.isEmpty ?? true) {
+      await ctx?.reply("Please choose from the keyboard.");
       tries++;
       continue;
     }
 
-    if (ctx.message.text == "/cancel") {
-      await ctx.reply(
+    if (ctx?.message?.text == "/cancel") {
+      await ctx?.reply(
         "Got it, let's do this later.",
         replyMarkup: ReplyKeyboardRemove(),
       );
       return false;
     }
 
-    final text = ctx.message.text;
+    final text = ctx?.message?.text;
     if (text != HintShape.circleText &&
         text != HintShape.squareText &&
         text != HintShape.heartText &&
         text != HintShape.randText) {
       tries++;
 
-      await ctx.reply(
+      await ctx?.reply(
         "Uh oh, I didn't understand that. Please choose a valid shape from the keyboard. Or send /cancel to cancel the command.",
         replyMarkup: hintShapesKeyboard,
       );
@@ -70,7 +70,7 @@ Future<bool> setShapeHandler(ID chatId) async {
     }
 
     user.saveToFile();
-    await ctx.reply(
+    await ctx?.reply(
       "Your hint shape has been updated to <b>${user.hintShape.name.toUpperCase()}</b> ${user.hintShape.shapes}",
       parseMode: ParseMode.html,
       replyMarkup: ReplyKeyboardRemove(),

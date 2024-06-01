@@ -60,7 +60,7 @@ Future<void> broadcastLogic(String text, ReplyMarkup markup) async {
       );
       WordleUser user = WordleUser.init(ids[i].id);
       user.optedOutOfBroadcast = true;
-      user.id = ids[i].id;
+      user.userId = ids[i].id;
       user.saveToFile();
     }
   }

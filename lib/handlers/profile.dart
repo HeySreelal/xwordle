@@ -1,9 +1,9 @@
-part of xwordle;
+part of '../xwordle.dart';
 
 /// Handles the /profile command
-MessageHandler profileHandler() {
+Handler profileHandler() {
   return (ctx) async {
-    final user = ctx.session as WordleUser;
+    final user = WordleUser.init(ctx.id.id);
     await ctx.reply(
       "Hello <b>${user.name}</b>\n\n${profileDetails(user)}",
       parseMode: ParseMode.html,

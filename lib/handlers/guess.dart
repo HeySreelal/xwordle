@@ -1,9 +1,9 @@
-part of xwordle;
+part of '../xwordle.dart';
 
 /// Handles the user guesses
-MessageHandler guessHandler() {
+Handler guessHandler() {
   return (ctx) async {
-    final user = ctx.session as WordleUser;
+    final user = WordleUser.init(ctx.id.id);
     final game = WordleDB.today;
 
     // If the user is not playing a game, tell them to start one
@@ -18,7 +18,7 @@ MessageHandler guessHandler() {
       return;
     }
 
-    final guess = ctx.message.text!.trim().toLowerCase();
+    final guess = ctx.message!.text!.trim().toLowerCase();
     if (guess.length != 5) {
       await ctx.reply(random(MessageStrings.mustBe5Letters));
       return;

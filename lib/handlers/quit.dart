@@ -1,11 +1,11 @@
-part of xwordle;
+part of '../xwordle.dart';
 
 /// Handles the /quit command
 ///
 /// This command is used to quit the current game.
-MessageHandler quitHandler() {
+Handler quitHandler() {
   return (ctx) async {
-    final user = ctx.session as WordleUser;
+    final user = WordleUser.init(ctx.id.id);
     if (!user.onGame) {
       await ctx.reply(MessageStrings.notOnGame);
       return;
@@ -27,11 +27,11 @@ MessageHandler quitHandler() {
 final quitPattern = RegExp(r"quit:(yes|no)");
 
 /// Handles the callback query for the quit interaction
-CallbackQueryHandler handleQuitInteraction() {
+Handler handleQuitInteraction() {
   return (ctx) async {
-    final user = ctx.session as WordleUser;
+    final user = WordleUser.init(ctx.id.id);
     final game = WordleDB.today;
-    final data = ctx.data!;
+    final data = ctx.callbackQuery!.data!;
     bool quit = data == "quit:yes";
 
     await ctx.api.deleteMessage(ctx.id, ctx.message!.messageId);

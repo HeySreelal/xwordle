@@ -1,6 +1,6 @@
-part of xwordle;
+part of '../xwordle.dart';
 
-MessageHandler cancelHandler() {
+Handler cancelHandler() {
   return (ctx) async {
     await ctx.reply(
       random(MessageStrings.nothingToCancel),

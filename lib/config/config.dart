@@ -1,4 +1,4 @@
-part of xwordle;
+part of '../xwordle.dart';
 
 class WordleConfig {
   /// Returns boolean value if bot is running in production mode

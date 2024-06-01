@@ -1,13 +1,13 @@
-part of xwordle;
+part of '../xwordle.dart';
 
 /// Handles the feedback command
-MessageHandler feedbackHandler() {
+Handler feedbackHandler() {
   return (ctx) async {
     await ctx.reply(random(MessageStrings.feedbackPrompts));
     await ctx.reply("Just know you can send /cancel to sending the feedback.");
     final replyCtx = await conv.waitForTextMessage(chatId: ctx.id);
 
-    if (replyCtx.message.text == "/cancel") {
+    if (replyCtx?.message?.text == "/cancel") {
       await ctx.reply(
         "I guess you changed your mind. Feel free to send feedback anytime.",
         replyMarkup: ReplyKeyboardRemove(),
@@ -15,15 +15,15 @@ MessageHandler feedbackHandler() {
       return;
     }
 
-    await replyCtx.reply("Thanks for your feedback! Happy Wordling! 🤓");
+    await replyCtx?.reply("Thanks for your feedback! Happy Wordling! 🤓");
     final feedbackMeta = "💬 Feedback\n"
         "--------------\n\n"
-        "From: ${ctx.chat.firstName} ${ctx.chat.lastName ?? ''}\n"
-        "ID: ${ctx.chat.id}\n\n";
+        "From: ${ctx.chat?.firstName} ${ctx.chat?.lastName ?? ''}\n"
+        "ID: ${ctx.chat?.id}\n\n";
     final feedbackMessage =
-        "$feedbackMeta${replyCtx.message.text ?? ""}\n\n#feedback";
+        "$feedbackMeta${replyCtx?.message?.text ?? ""}\n\n#feedback";
 
-    List<MessageEntity>? entities = replyCtx.message.entities?.map((e) {
+    List<MessageEntity>? entities = replyCtx?.message?.entities?.map((e) {
       return MessageEntity(
         type: e.type,
         offset: e.offset + feedbackMeta.length,
@@ -39,7 +39,9 @@ MessageHandler feedbackHandler() {
       WordleConfig.instance.logsChannel,
       feedbackMessage,
       entities: entities,
-      disableWebPagePreview: true,
+      linkPreviewOptions: LinkPreviewOptions(
+        isDisabled: true,
+      ),
     );
   };
 }
@@ -48,9 +50,9 @@ MessageHandler feedbackHandler() {
 /// will be used to respond to such questions.
 ///
 /// This handler will be called by the admin's channel post to the logs channel.
-Future<void> respondToFeedback(MessageContext ctx) async {
-  final response = ctx.message.text;
-  final replyToMessage = ctx.message.replyToMessage;
+Future<void> respondToFeedback(Context ctx) async {
+  final response = ctx.message?.text;
+  final replyToMessage = ctx.message?.replyToMessage;
   if (response == null || WordleConfig.isDebug || replyToMessage == null) {
     return;
   }
@@ -62,7 +64,7 @@ Future<void> respondToFeedback(MessageContext ctx) async {
   await ctx.api.sendMessage(
     chatId,
     "$response\n\n💬 - Admin",
-    entities: ctx.message.entities,
+    entities: ctx.message?.entities,
   );
   await ctx.api.sendMessage(
     chatId,

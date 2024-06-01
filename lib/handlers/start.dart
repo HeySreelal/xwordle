@@ -1,11 +1,11 @@
-part of xwordle;
+part of '../xwordle.dart';
 
-MessageHandler startHandler() {
-  return (MessageContext ctx) async {
+Handler startHandler() {
+  return (Context ctx) async {
     final game = WordleDB.today;
-    final user = ctx.session as WordleUser;
-    if (user.name == WordleUser.defaultName && ctx.message.from != null) {
-      user.name = ctx.message.from!.firstName;
+    final user = WordleUser.init(ctx.id.id);
+    if (user.name == WordleUser.defaultName && ctx.message!.from != null) {
+      user.name = ctx.message!.from!.firstName;
     }
 
     if (game.index == user.lastGame) {
@@ -15,7 +15,9 @@ MessageHandler startHandler() {
       );
       await ctx.reply(
         msg,
-        replyToMessageId: ctx.message.messageId,
+        replyParameters: ReplyParameters(
+          messageId: ctx.message!.messageId,
+        ),
       );
       return;
     }

@@ -1,16 +1,9 @@
-part of xwordle;
+part of '../xwordle.dart';
 
-
-
-
-
-
-
-
-MessageHandler meaningHandler() {
+Handler meaningHandler() {
   return (ctx) async {
     WordleDay day = WordleDB.today;
-    WordleUser user = ctx.session as WordleUser;
+    WordleUser user = WordleUser.init(ctx.id.id);
 
     if (user.lastGame != day.index) {
       await ctx.reply(random(MessageStrings.meaningBeforePlayingResponse));

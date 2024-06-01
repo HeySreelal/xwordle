@@ -1,4 +1,4 @@
-part of xwordle;
+part of '../xwordle.dart';
 
 DateTime launch = DateTime(2023, 7, 14, 12, 00);
 
@@ -22,7 +22,7 @@ void updateWord() async {
   } catch (e, s) {
     try {
       await sendLogs("Error while updating word");
-      await errorHandler(e, s);
+      await errorHandler(BotError(e, s));
     } catch (e) {
       print(e);
     }
@@ -136,7 +136,7 @@ void turnOffNotificationForFailedUsers(List<ErrorUser> errorUsers) {
   for (int i = 0; i < l; i++) {
     WordleUser user = WordleUser.init(errorUsers[i].userId);
     user.notify = false;
-    user.id = errorUsers[i].userId;
+    user.userId = errorUsers[i].userId;
     user.saveToFile();
   }
 }

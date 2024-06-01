@@ -1,4 +1,4 @@
-part of xwordle;
+part of '../xwordle.dart';
 
 class AdminFile {
   /// Admin File path
