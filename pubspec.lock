@@ -318,10 +318,10 @@ packages:
     description:
       path: "."
       ref: dev
-      resolved-ref: a94203b79ae9e2d10a97ca932119d37cedbaa94a
+      resolved-ref: c98619bc83b8ce0089602574e6ba030afae927eb
       url: "https://github.com/HeySreelal/televerse/"
     source: git
-    version: "1.17.1"
+    version: "1.20.0"
   term_glyph:
     dependency: transitive
     description:
