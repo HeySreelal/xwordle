@@ -1,4 +1,4 @@
-library xwordle;
+library;
 
 import 'dart:async';
 import 'dart:convert';
@@ -29,9 +29,14 @@ part 'models/admin.dart';
 part 'models/user.dart';
 part 'services/db.dart';
 part 'services/dict.dart';
+part 'services/auto_chat_action.dart';
 part 'utils/utils.dart';
 part 'handlers/cancel.dart';
 part 'handlers/settings.dart';
 
-final bot = Bot(WordleConfig.instance.token);
-Conversation conv = Conversation(bot);
+final bot = Bot(
+  WordleConfig.instance.token,
+  fetcher: LongPolling.allUpdates(),
+);
+
+final conv = Conversation(bot);

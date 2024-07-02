@@ -56,25 +56,25 @@ class WordleConfig {
   }
 
   static Map<String, dynamic> get env {
-    File file = File('.env');
+    final file = File('.env');
     if (!file.existsSync()) {
       throw Exception('.env file not found');
     }
-    String contents = file.readAsStringSync();
+    final contents = file.readAsStringSync();
     final lines = contents.split('\n');
-    String token = lines
+    final token = lines
         .firstWhere((element) => element.startsWith('TOKEN='))
         .split('=')[1];
-    String logs = lines
+    final logs = lines
         .firstWhere((element) => element.startsWith('LOGS='))
         .split('=')[1];
-    String admins = lines
+    final admins = lines
         .firstWhere((element) => element.startsWith('ADMINS='))
         .split('=')[1];
-    String testToken = lines
+    final testToken = lines
         .firstWhere((element) => element.startsWith('TEST_TOKEN='))
         .split('=')[1];
-    String mode = lines
+    final mode = lines
         .firstWhere(
           (element) => element.startsWith('MODE='),
           orElse: () => 'MODE=debug',

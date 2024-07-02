@@ -173,7 +173,11 @@ class WordleUser {
   }
 
   void saveToFile() {
-    File(".sessions/$userId.json").writeAsStringSync(toJson().toString());
+    File(".sessions/$userId.json").writeAsStringSync(
+      JsonEncoder.withIndent('  ').convert(
+        toJson(),
+      ),
+    );
   }
 
   static WordleUser init(int id) {
