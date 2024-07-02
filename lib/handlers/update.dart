@@ -44,7 +44,7 @@ void updateWord() async {
 
 /// Notify users about the new word
 Future<void> notifyUsers() async {
-  final users = WordleDB.getUsers();
+  final users = await WordleDB.getUsers();
   final notificationEnabledUsers = users.where((e) {
     return e.notify && e.hasPlayedInLast4Days();
   }).toList();

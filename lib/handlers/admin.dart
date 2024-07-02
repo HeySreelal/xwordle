@@ -126,7 +126,7 @@ class Admin {
         return;
       }
 
-      final users = WordleDB.getUsers();
+      final users = await WordleDB.getUsers();
       int count = users.length;
       int sent = 0, failed = 0;
 
@@ -196,7 +196,7 @@ class Admin {
         await markUnauthorizedAttempt(ctx);
         return;
       }
-      final users = WordleDB.getUsers();
+      final users = await WordleDB.getUsers();
       int count = users.length;
       await ctx.reply("Total users: $count");
     };
@@ -211,7 +211,7 @@ class Admin {
       }
       await ctx.replyWithChatAction(ChatAction.typing);
       final msg = statsMessage(requestedUser: ctx.chat?.id);
-      await ctx.reply(msg, parseMode: ParseMode.html);
+      await ctx.reply(await msg, parseMode: ParseMode.html);
     };
   }
 }

@@ -29,7 +29,7 @@ Future<void> postToXooniverse(String text, ReplyMarkup markup) async {
 }
 
 Future<void> broadcastLogic(String text, ReplyMarkup markup) async {
-  final users = WordleDB.getUsers();
+  final users = await WordleDB.getUsers();
   final ids = users.map((e) => ChatID(e.userId)).toList();
 
   int count = ids.length;

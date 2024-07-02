@@ -118,7 +118,7 @@ Future<void> editLog(int messageId, String text) async {
 
 Future<void> sendDailyLog() async {
   try {
-    await sendLogs(statsMessage(autoLog: true));
+    await sendLogs(await statsMessage(autoLog: true));
   } catch (err, stack) {
     try {
       await errorHandler(BotError(err, stack));
@@ -128,7 +128,7 @@ Future<void> sendDailyLog() async {
   }
 }
 
-String statsMessage({int? requestedUser, bool autoLog = false}) {
+Future<String> statsMessage({int? requestedUser, bool autoLog = false}) async {
   WordleDay day = WordleDB.today;
   WordleUser? user;
   if (requestedUser != null) {
@@ -159,7 +159,7 @@ String statsMessage({int? requestedUser, bool autoLog = false}) {
 
   String msg = "ℹ️ Wordle Day ${day.index + 1}\n\n"
       "$wordString"
-      "Total Users: ${WordleDB.getUsers().length}\n"
+      "Total Users: ${(await WordleDB.getUsers()).length}\n"
       "Total Plays: ${day.totalPlayed}\n"
       "Total Wins: ${day.totalWinners}\n"
       "Total Losers: ${day.totalLosers}\n"

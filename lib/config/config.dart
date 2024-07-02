@@ -80,12 +80,17 @@ class WordleConfig {
           orElse: () => 'MODE=debug',
         )
         .split('=')[1];
+    final projectId = lines
+        .firstWhere((element) => element.startsWith('PROJECT_ID='))
+        .split('=')[1];
+
     return {
       'TOKEN': token,
       'LOGS': logs,
       'ADMINS': admins,
       "TEST_TOKEN": testToken,
       "MODE": mode,
+      "PROJECT_ID": projectId,
     };
   }
 }

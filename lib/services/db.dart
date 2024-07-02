@@ -10,16 +10,8 @@ class WordleDB {
     return WordleDay.fromMap(jsonDecode(file.readAsStringSync()));
   }
 
-  static List<WordleUser> getUsers() {
-    List<FileSystemEntity> files = Directory(".televerse/sessions").listSync();
-    List<File> jsonFiles = files
-        .where((e) => e is File && e.path.endsWith(".json"))
-        .toList()
-        .cast<File>();
-    final users = jsonFiles.map((e) {
-      final contents = e.readAsStringSync();
-      return WordleUser.fromMap(jsonDecode(contents));
-    }).toList();
-    return users;
+  static Future<List<WordleUser>> getUsers() async {
+    final qs = await db.collection("players").get();
+    return qs.docs.map((e) => WordleUser.fromMap(e.data())).toList();
   }
 }
