@@ -86,6 +86,7 @@ Handler guessHandler() {
         "New word will be available in ${game.formattedDurationTillNext}",
       );
       user.tries = [];
+      await Future.delayed(Duration(seconds: 1));
       nudgeDonation(ctx);
     } else if (user.tries.length >= 6) {
       user.onGame = false;
