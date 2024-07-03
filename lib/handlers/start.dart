@@ -28,6 +28,10 @@ Handler startHandler({bool callback = false}) {
     if (callback) {
       await ctx.answerCallbackQuery();
     }
+    if (ctx.args.isNotEmpty && ctx.args[0] == 'donate') {
+      await donateHandler()(ctx);
+      return;
+    }
     final game = await WordleDB.today();
     final user = await WordleUser.init(ctx.id.id);
     if (user.firstTime) {

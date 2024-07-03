@@ -67,6 +67,9 @@ void main(List<String> args) async {
     options: ScopeOptions.forked(),
   );
 
+  // Listen for inline queries
+  bot.onInlineQuery(inlineHandler());
+
   // Start the bot
   bot.start();
 }

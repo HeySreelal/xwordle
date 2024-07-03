@@ -85,7 +85,6 @@ Handler guessHandler() {
       await ctx.reply(
         "New word will be available in ${game.formattedDurationTillNext}",
       );
-      user.tries = [];
       await Future.delayed(Duration(seconds: 1));
       nudgeDonation(ctx);
     } else if (user.tries.length >= 6) {
@@ -112,7 +111,6 @@ Handler guessHandler() {
       await ctx.reply(
         "New word will be available in ${game.formattedDurationTillNext}",
       );
-      user.tries = [];
       game.totalLosers++;
     } else {
       await ctx.reply(result.join(" "));

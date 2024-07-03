@@ -2,6 +2,20 @@ part of '../xwordle.dart';
 
 String random(List<String> list) => list[Random().nextInt(list.length)];
 
+String getRandomString({int length = 10}) {
+  final chars =
+      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  final rnd = Random.secure();
+  return String.fromCharCodes(
+    Iterable.generate(
+      length,
+      (_) => chars.codeUnitAt(
+        rnd.nextInt(chars.length),
+      ),
+    ),
+  );
+}
+
 class DateUtil {
   static const months = [
     'January',

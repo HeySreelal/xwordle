@@ -38,6 +38,7 @@ part 'services/db.dart';
 part 'services/dict.dart';
 part 'utils/utils.dart';
 part 'handlers/donate.dart';
+part 'handlers/inline.dart';
 
 late Bot bot;
 late Conversation conv;
