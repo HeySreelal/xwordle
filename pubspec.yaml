@@ -9,10 +9,7 @@ environment:
 
 dependencies:
   http: ^1.0.0
-  televerse:
-    git:
-      url: https://github.com/HeySreelal/televerse/
-      ref: dev
+  televerse: ^1.21.1
   dart_firebase_admin: ^0.3.1
 
 dev_dependencies:

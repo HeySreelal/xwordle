@@ -101,13 +101,13 @@ Happy Wordleing! 🤓
   static const aboutMessage = """<b>🧑🏻‍💻 About</b>
 
 Wordle Bot is Telegram bot version of the <a href="https://www.nytimes.com/games/wordle/index.html">Wordle</a> game.
-Created by @HeySreelal with ❤️ for Telegram.
+Created by @Xooniverse with ❤️ for Telegram.
 
 The bot is open source and source is available on <a href="https://github.com/HeySreelal/xwordle">GitHub</a>. Feel free to contribute.
 
 Show some love by sharing the bot with your friends!
 
-<a href="https://twitter.com/HeySreelal">Twitter</a> | <a href="https://t.me/xooniverse">Xooniverse</a>
+<a href="https://t.me/xooniverse">Xooniverse</a>
 """;
 
   /// **Notification Messages**
