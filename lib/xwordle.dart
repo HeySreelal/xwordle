@@ -39,9 +39,18 @@ part 'services/dict.dart';
 part 'utils/utils.dart';
 part 'handlers/donate.dart';
 
-final bot = Bot(
-  WordleConfig.instance.token,
-  fetcher: LongPolling.allUpdates(),
-);
+late Bot bot;
+late Conversation conv;
 
-final conv = Conversation(bot);
+Future<void> init() async {
+  final server = await HttpServer.bind(InternetAddress.anyIPv6, 8080);
+  final webhook = WordleConfig.isDebug
+      ? LongPolling.allUpdates()
+      : Webhook(
+          server,
+          shouldSetWebhook: false,
+          allowedUpdates: UpdateType.values,
+        );
+  bot = Bot(WordleConfig.instance.token, fetcher: webhook);
+  conv = Conversation(bot);
+}
