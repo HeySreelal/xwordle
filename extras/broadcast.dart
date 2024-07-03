@@ -29,12 +29,12 @@ Future<void> postToXooniverse(String text, ReplyMarkup markup) async {
 }
 
 Future<void> broadcastLogic(String text, ReplyMarkup markup) async {
-  final users = WordleDB.getUsers();
-  final ids = users.map((e) => ChatID(e.userId)).toList();
+  final users = await WordleDB.getUsers();
+  final ids = users.map((e) => ChatID(e.id)).toList();
 
   int count = ids.length;
   int sent = 0, failed = 0;
-  List<ErrorUser> failedIDsAndReason = [];
+  List<ErrorUser> errorUsers = [];
   Message? statusMessage = await sendLogs(progressMessage(count, 0, 0));
 
   for (int i = 0; i < count; i++) {
@@ -55,13 +55,13 @@ Future<void> broadcastLogic(String text, ReplyMarkup markup) async {
     } catch (e) {
       print("Failed to send message to ${ids[i].id}");
       failed++;
-      failedIDsAndReason.add(
+      errorUsers.add(
         ErrorUser(ids[i].id, e.toString()),
       );
-      WordleUser user = WordleUser.init(ids[i].id);
+      WordleUser user = await WordleUser.init(ids[i].id);
       user.optedOutOfBroadcast = true;
-      user.userId = ids[i].id;
-      user.saveToFile();
+      user.id = ids[i].id;
+      user.save();
     }
   }
 
@@ -73,9 +73,9 @@ Future<void> broadcastLogic(String text, ReplyMarkup markup) async {
     File f = File("failed.txt");
     if (!f.existsSync()) f.createSync();
     f.writeAsStringSync(
-      failedIDsAndReason.map((e) => e.line).join("\n"),
+      errorUsers.map((e) => e.line).join("\n"),
     );
-    if (failedIDsAndReason.isNotEmpty) {
+    if (errorUsers.isNotEmpty) {
       await bot.api.sendDocument(
         WordleConfig.instance.logsChannel,
         InputFile.fromFile(f),

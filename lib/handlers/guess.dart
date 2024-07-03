@@ -3,8 +3,8 @@ part of '../xwordle.dart';
 /// Handles the user guesses
 Handler guessHandler() {
   return (ctx) async {
-    final user = WordleUser.init(ctx.id.id);
-    final game = WordleDB.today;
+    final user = await WordleUser.init(ctx.id.id);
+    final game = await WordleDB.today();
 
     // If the user is not playing a game, tell them to start one
     if (!user.onGame) {
@@ -71,9 +71,16 @@ Handler guessHandler() {
           shareUrl,
         ),
       );
+
+      await ctx.react("🎉", isBig: true);
+
       await ctx.reply(
-        "You guessed the word!\n\nThe word was <b>${game.word.toUpperCase()}</b>! 🚀",
+        MessageStrings.guessedWordMessage.replaceAll(
+          "{WORD}",
+          game.word.toUpperCase(),
+        ),
         parseMode: ParseMode.html,
+        messageEffectId: "5046509860389126442",
       );
       await ctx.reply(
         "New word will be available in ${game.formattedDurationTillNext}",
@@ -94,7 +101,10 @@ Handler guessHandler() {
         replyMarkup: InlineKeyboard().addUrl("Share 📤", shareUrl),
       );
       await ctx.reply(
-        "You lost the game!\n\nThe word was <b>${game.word.toUpperCase()}</b>! 🔥",
+        MessageStrings.lostGameMessage.replaceAll(
+          '{WORD}',
+          game.word.toUpperCase(),
+        ),
         parseMode: ParseMode.html,
       );
       await ctx.reply(
@@ -106,39 +116,56 @@ Handler guessHandler() {
       await ctx.reply(result.join(" "));
       await ctx.reply(getGuessPrompt(user.tries.length));
     }
-    user.saveToFile();
-    game.save();
+    await user.save();
+    await game.save();
   };
 }
 
-/// Creates the boxes for the given guess
-List<String> getBoxes(
-  String correct,
-  String guess, {
-  WordleUser? user,
-}) {
-  HintShape shape = user?.hintShape ?? HintShape.circle;
-  List<String> result = ['', '', '', '', ''];
+String eval(String word, String guess) {
+  const correctSymbol = "+";
+  const wrongSymbol = "-";
+  const misplacedSymbol = "x";
+
+  List<String> result = List.filled(5, "");
+  List<String> tracked = List.filled(5, "");
+
+  // First pass: mark correct letters
   for (int i = 0; i < 5; i++) {
-    if (correct[i] == guess[i]) {
-      result[i] = shape.correct;
-      correct = correct.replaceRange(i, i + 1, " ");
-      guess = guess.replaceRange(i, i + 1, " ");
-    }
-  }
-  for (int i = 0; i < 5; i++) {
-    if (correct.contains(guess[i]) && result[i] == "") {
-      result[i] = shape.misplaced;
-      correct = correct.replaceFirst(guess[i], " ");
+    if (guess[i] == word[i]) {
+      result[i] = correctSymbol;
+      tracked[i] = guess[i];
     }
   }
 
+  // Second pass: mark misplaced letters
   for (int i = 0; i < 5; i++) {
     if (result[i] == "") {
-      result[i] = shape.wrong;
+      // If not marked as correct
+      if (word.contains(guess[i]) && !tracked.contains(guess[i])) {
+        result[i] = misplacedSymbol;
+        // Track the misplaced letter
+        tracked[tracked.indexOf("")] = guess[i];
+      } else {
+        result[i] = wrongSymbol;
+      }
     }
   }
-  return result;
+
+  return result.join("");
+}
+
+List<String> getBoxes(
+  String word,
+  String guess, {
+  WordleUser? user,
+}) {
+  final shape = user?.hintShape ?? HintShape.circle;
+
+  String list = eval(word, guess);
+  list = list.replaceAll("+", shape.correct);
+  list = list.replaceAll("-", shape.wrong);
+  list = list.replaceAll("x", shape.misplaced);
+  return list.split(",");
 }
 
 /// Creates the result grid for the user

@@ -58,7 +58,7 @@ InlineKeyboard settingsKeyboard(WordleUser user) {
 
 Handler settingsHandler() {
   return (ctx) async {
-    final user = WordleUser.init(ctx.id.id);
+    final user = await WordleUser.init(ctx.id.id);
 
     final currentMessage = settingsMessage(user);
     await ctx.reply(
@@ -72,7 +72,7 @@ Handler settingsHandler() {
 String settingsMessage(WordleUser user) {
   return "<b>Settings</b> ⚙️\n------------\n"
       "💬 Name: ${user.name}\n"
-      "🆔 ID: ${user.userId}\n\n"
+      "🆔 ID: ${user.id}\n\n"
       "${notificationIcon(user)} Notifications: ${user.notify ? 'Enabled' : 'Disabled'}\n"
       "🔄 Product Update Messages: ${!user.optedOutOfBroadcast ? 'Enabled' : 'Disabled'}\n"
       "${user.hintShape.correct} Hint Shape: ${user.hintShape.name}\n\n"
@@ -117,7 +117,7 @@ Handler settingsCallback() {
     }
     if (!hasChange) return;
 
-    final user = WordleUser.init(ctx.id.id);
+    final user = await WordleUser.init(ctx.id.id);
     await ctx.editMessageText(
       settingsMessage(user),
       parseMode: ParseMode.html,
@@ -143,9 +143,9 @@ Future<bool> changeNameCallback(Context ctx) async {
     return false;
   }
 
-  final user = WordleUser.init(ctx.id.id);
+  final user = await WordleUser.init(ctx.id.id);
   user.name = replyCtx!.message!.text!;
-  user.saveToFile();
+  user.save();
   await ctx.api.sendMessage(
     ctx.id,
     "Okay, I've changed your name to ${user.name}.",
@@ -155,9 +155,9 @@ Future<bool> changeNameCallback(Context ctx) async {
 
 /// Handles the toggle notifications callback query
 Future<bool> toggleNotificationsCallback(Context ctx) async {
-  final user = WordleUser.init(ctx.id.id);
+  final user = await WordleUser.init(ctx.id.id);
   user.notify = !user.notify;
-  user.saveToFile();
+  user.save();
   await ctx.answerCallbackQuery(
     text: "Okay, I'll${user.notify ? '' : 'not '} update you on new games.",
   );
@@ -167,9 +167,9 @@ Future<bool> toggleNotificationsCallback(Context ctx) async {
 
 /// Handles the toggle product updates callback query
 Future<bool> toggleProductUpdatesCallback(Context ctx) async {
-  final user = WordleUser.init(ctx.id.id);
+  final user = await WordleUser.init(ctx.id.id);
   user.optedOutOfBroadcast = !user.optedOutOfBroadcast;
-  user.saveToFile();
+  user.save();
   await ctx.answerCallbackQuery(
     text:
         "Okay, you're now opted ${user.optedOutOfBroadcast ? 'out of' : 'into'} product updates.",
@@ -191,9 +191,9 @@ Future<bool> changeHintShapeCallback(Context ctx) async {
 
 /// Handles the reset profile callback query
 Future<bool> resetProfileCallback(Context ctx) async {
-  final user = WordleUser.init(ctx.id.id);
+  final user = await WordleUser.init(ctx.id.id);
   user.resetProfile(ctx.callbackQuery!.from.fullName);
-  user.saveToFile();
+  user.save();
   await ctx.answerCallbackQuery(text: "Okay, I've reset your profile.");
   return true;
 }

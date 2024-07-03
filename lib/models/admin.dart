@@ -1,60 +1,56 @@
 part of '../xwordle.dart';
 
-class AdminFile {
-  /// Admin File path
-  static const filePath = ".televerse/admin.json";
+class AdminConfig {
+  /// No of total blocked players
+  int blockedPlayers;
 
-  /// Creates the admin file if it doesn't exist
-  static AdminFile create() {
-    File adminFile = File(filePath);
-    if (!adminFile.existsSync()) {
-      adminFile.createSync();
-      adminFile.writeAsStringSync("{}");
-    }
+  /// The release note.
+  String releaseNote;
 
-    return AdminFile();
+  /// Target user's type for the particular release note
+  String targetPlayers;
+
+  /// Total Players
+  int totalPlayers;
+
+  AdminConfig(
+    this.blockedPlayers,
+    this.releaseNote,
+    this.targetPlayers,
+    this.totalPlayers,
+  );
+
+  static Future<AdminConfig> get() async {
+    final doc = await db.doc("game/config").get();
+    return AdminConfig.fromMap(doc.data()!);
   }
 
-  /// Broadcast message
-  String? message;
+  static Future<void> setReleaseNote(String note) async {
+    await db.doc("game/config").update({
+      "releaseNote": note,
+    });
+  }
 
-  /// ID of the user who created the broadcast
-  int? createdBy;
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'blockedPlayers': blockedPlayers,
+      'releaseNote': releaseNote,
+      'targetPlayers': targetPlayers,
+      'totalPlayers': totalPlayers,
+    };
+  }
 
-  /// Time at which the broadcast was created
-  DateTime? createdAt;
-
-  AdminFile({
-    this.message,
-    this.createdBy,
-    this.createdAt,
-  });
-
-  static AdminFile? read() {
-    File adminFile = File(filePath);
-    if (!adminFile.existsSync()) {
-      return null;
-    }
-    final admin = jsonDecode(adminFile.readAsStringSync());
-    return AdminFile(
-      message: admin["message"],
-      createdBy: admin["createdBy"],
-      createdAt: DateTime.fromMillisecondsSinceEpoch(
-        (admin["createdAt"] ?? 0) * 1000,
-      ),
+  factory AdminConfig.fromMap(Map<String, dynamic> map) {
+    return AdminConfig(
+      map['blockedPlayers'] as int,
+      map['releaseNote'] as String,
+      map['targetPlayers'] as String,
+      map['totalPlayers'] as int,
     );
   }
 
-  /// Update the admin file
-  Future<void> saveToFile() async {
-    File adminFile = File(filePath);
-    if (!adminFile.existsSync()) {
-      adminFile.createSync();
-    }
-    await adminFile.writeAsString(JsonEncoder.withIndent('  ').convert({
-      "message": message,
-      "createdBy": createdBy,
-      "createdAt": (createdAt?.millisecondsSinceEpoch ?? 0) ~/ 1000,
-    }));
-  }
+  String toJson() => json.encode(toMap());
+
+  factory AdminConfig.fromJson(String source) =>
+      AdminConfig.fromMap(json.decode(source) as Map<String, dynamic>);
 }

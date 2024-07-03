@@ -13,6 +13,7 @@ dependencies:
     git:
       url: https://github.com/HeySreelal/televerse/
       ref: dev
+  dart_firebase_admin: ^0.3.1
 
 dev_dependencies:
   lints: ^4.0.0

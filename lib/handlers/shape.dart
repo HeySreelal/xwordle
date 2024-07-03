@@ -34,7 +34,7 @@ Future<bool> setShapeHandler(ID chatId) async {
       return false;
     }
     final ctx = await conv.waitForTextMessage(chatId: chatId);
-    WordleUser user = WordleUser.init(ctx?.id.id);
+    WordleUser user = await WordleUser.init(ctx?.id.id);
     if (ctx?.message?.text?.isEmpty ?? true) {
       await ctx?.reply("Please choose from the keyboard.");
       tries++;
@@ -69,7 +69,7 @@ Future<bool> setShapeHandler(ID chatId) async {
       user.hintShape = HintShape.fromText(text!);
     }
 
-    user.saveToFile();
+    user.save();
     await ctx?.reply(
       "Your hint shape has been updated to <b>${user.hintShape.name.toUpperCase()}</b> ${user.hintShape.shapes}",
       parseMode: ParseMode.html,
