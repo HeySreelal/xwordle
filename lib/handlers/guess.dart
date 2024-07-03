@@ -3,7 +3,7 @@ part of '../xwordle.dart';
 /// Handles the user guesses
 Handler guessHandler() {
   return (ctx) async {
-    final user = WordleUser.init(ctx.id.id);
+    final user = await WordleUser.init(ctx.id.id);
     final game = await WordleDB.today();
 
     // If the user is not playing a game, tell them to start one
@@ -106,8 +106,8 @@ Handler guessHandler() {
       await ctx.reply(result.join(" "));
       await ctx.reply(getGuessPrompt(user.tries.length));
     }
-    user.saveToFile();
-    game.save();
+    await user.save();
+    await game.save();
   };
 }
 

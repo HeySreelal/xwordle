@@ -129,7 +129,7 @@ class Admin {
       for (int i = 0; i < count; i++) {
         try {
           await ctx.api.sendMessage(
-            ChatID(users[i].userId),
+            ChatID(users[i].id),
             message,
             parseMode: ParseMode.html,
           );

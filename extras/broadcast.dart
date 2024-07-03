@@ -30,7 +30,7 @@ Future<void> postToXooniverse(String text, ReplyMarkup markup) async {
 
 Future<void> broadcastLogic(String text, ReplyMarkup markup) async {
   final users = await WordleDB.getUsers();
-  final ids = users.map((e) => ChatID(e.userId)).toList();
+  final ids = users.map((e) => ChatID(e.id)).toList();
 
   int count = ids.length;
   int sent = 0, failed = 0;
@@ -58,10 +58,10 @@ Future<void> broadcastLogic(String text, ReplyMarkup markup) async {
       failedIDsAndReason.add(
         ErrorUser(ids[i].id, e.toString()),
       );
-      WordleUser user = WordleUser.init(ids[i].id);
+      WordleUser user = await WordleUser.init(ids[i].id);
       user.optedOutOfBroadcast = true;
-      user.userId = ids[i].id;
-      user.saveToFile();
+      user.id = ids[i].id;
+      user.save();
     }
   }
 

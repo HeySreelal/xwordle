@@ -132,7 +132,7 @@ Future<String> statsMessage({int? requestedUser, bool autoLog = false}) async {
   WordleDay day = await WordleDB.today();
   WordleUser? user;
   if (requestedUser != null) {
-    user = WordleUser.init(requestedUser);
+    user = await WordleUser.init(requestedUser);
   }
 
   String wordString = (user != null && user.lastGame == day.index) || autoLog

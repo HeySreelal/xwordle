@@ -49,7 +49,7 @@ class WordleUser {
   int currentGame;
 
   /// The user id
-  int userId;
+  int id;
 
   /// The date the user joined
   DateTime joinedDate;
@@ -96,7 +96,7 @@ class WordleUser {
   /// Constructs a WordleSession
   WordleUser({
     this.currentGame = 0,
-    this.userId = 0,
+    this.id = 0,
     this.lastGame = 0,
     this.maxStreak = 0,
     this.name = '',
@@ -117,7 +117,7 @@ class WordleUser {
   Map<String, dynamic> toJson() {
     return {
       'currentGame': currentGame,
-      'userId': userId,
+      'id': id,
       'joinedDate': joinedDate.millisecondsSinceEpoch ~/ 1000,
       'lastGame': lastGame,
       'maxStreak': maxStreak,
@@ -138,7 +138,7 @@ class WordleUser {
   factory WordleUser.fromMap(Map<String, dynamic> map) {
     return WordleUser(
       currentGame: map['currentGame'] as int,
-      userId: map['userId'] as int,
+      id: map['id'] as int,
       joinedDate: DateTime.fromMillisecondsSinceEpoch(
         (map['joinedDate'] as int) * 1000,
       ),
@@ -160,36 +160,20 @@ class WordleUser {
 
   static const String defaultName = 'Player';
 
-  static WordleUser? loadFromFile(
-    WordleUser Function(Map<String, dynamic>) fromMap, {
-    int? id,
-  }) {
-    if (id == null) return null;
-
-    final f = File(".sessions/$id.json");
-    if (!f.existsSync()) return null;
-    final content = f.readAsStringSync();
-    return fromMap(jsonDecode(content));
+  Future<void> save() async {
+    await db.doc("players/$id").update(toJson());
   }
 
-  void saveToFile() {
-    File(".sessions/$userId.json").writeAsStringSync(
-      JsonEncoder.withIndent('  ').convert(
-        toJson(),
-      ),
-    );
-  }
-
-  static WordleUser init(int id) {
-    final ses = loadFromFile(WordleUser.fromMap, id: id);
-    return ses ?? WordleUser(userId: id, name: defaultName, role: defaultName);
+  static Future<WordleUser> init(int id) async {
+    final doc = await db.doc("users/$id").get();
+    return WordleUser.fromMap(doc.data()!);
   }
 
   bool hasPlayedInLast4Days() {
     return (gameNo() - lastGame) < 4;
   }
 
-  void resetProfile([String? n]) {
+  Future<void> resetProfile([String? n]) async {
     currentGame = 0;
     lastGame = lastGame;
     maxStreak = 0;
@@ -204,6 +188,6 @@ class WordleUser {
     perfectGames = 0;
     hintShape = HintShape.circle;
     optedOutOfBroadcast = false;
-    saveToFile();
+    await save();
   }
 }

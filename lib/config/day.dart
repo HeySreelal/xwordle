@@ -70,10 +70,10 @@ class WordleDay {
 
   set meaning(Word? word) {
     dictionaryWord = word;
-    save();
+    save().ignore();
   }
 
-  /// Save day to day.json
+  /// Save day to database
   Future<void> save() async {
     await WordleDB.saveToday(this);
   }

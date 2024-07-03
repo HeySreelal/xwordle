@@ -3,7 +3,7 @@ part of '../xwordle.dart';
 Handler startHandler() {
   return (Context ctx) async {
     final game = await WordleDB.today();
-    final user = WordleUser.init(ctx.id.id);
+    final user = await WordleUser.init(ctx.id.id);
     if (user.name == WordleUser.defaultName && ctx.message!.from != null) {
       user.name = ctx.message!.from!.firstName;
     }
@@ -39,7 +39,7 @@ Handler startHandler() {
       user.tries = [];
       user.totalGamesPlayed++;
     }
-    user.saveToFile();
+    user.save();
     game.save();
   };
 }

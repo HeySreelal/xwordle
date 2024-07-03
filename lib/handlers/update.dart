@@ -60,13 +60,13 @@ Future<void> notifyUsers() async {
 
   for (int i = 0; i < count; i++) {
     try {
-      final user = WordleUser.init(notificationEnabledUsers[i].userId);
+      final user = await WordleUser.init(notificationEnabledUsers[i].id);
       if (user.lastGame == gameNo() || user.currentGame == gameNo()) {
         success++;
         continue;
       }
       await bot.api.sendMessage(
-        ChatID(notificationEnabledUsers[i].userId),
+        ChatID(notificationEnabledUsers[i].id),
         random(MessageStrings.notificationMsgs),
       );
       success++;
@@ -74,7 +74,7 @@ Future<void> notifyUsers() async {
     } catch (e) {
       failure++;
       errorUsers.add(ErrorUser(
-        notificationEnabledUsers[i].userId,
+        notificationEnabledUsers[i].id,
         e.toString(),
       ));
     }
@@ -130,13 +130,13 @@ String progressPercent(double completePercent) {
   return completedStr + remStr;
 }
 
-void turnOffNotificationForFailedUsers(List<ErrorUser> errorUsers) {
+void turnOffNotificationForFailedUsers(List<ErrorUser> errorUsers) async {
   print('Turning off notifications for ${errorUsers.length} failed users');
   final l = errorUsers.length;
   for (int i = 0; i < l; i++) {
-    WordleUser user = WordleUser.init(errorUsers[i].userId);
+    WordleUser user = await WordleUser.init(errorUsers[i].userId);
     user.notify = false;
-    user.userId = errorUsers[i].userId;
-    user.saveToFile();
+    user.id = errorUsers[i].userId;
+    user.save();
   }
 }
