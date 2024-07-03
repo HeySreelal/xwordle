@@ -51,9 +51,9 @@ Handler feedbackHandler() {
 ///
 /// This handler will be called by the admin's channel post to the logs channel.
 Future<void> respondToFeedback(Context ctx) async {
-  final response = ctx.message?.text;
-  final replyToMessage = ctx.message?.replyToMessage;
-  if (response == null || WordleConfig.isDebug || replyToMessage == null) {
+  final response = ctx.msg?.text;
+  final replyToMessage = ctx.msg?.replyToMessage;
+  if (response == null || replyToMessage == null) {
     return;
   }
 
