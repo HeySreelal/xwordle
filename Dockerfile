@@ -1,4 +1,4 @@
-# Use the Dart image
+# Use the Dart image for the build stage
 FROM dart:stable AS build
 
 # Resolve app dependencies
@@ -27,6 +27,7 @@ RUN dart compile exe bin/xwordle.dart -o bin/xwordle
 # Build minimal serving image from AOT-compiled `/server` and required system
 # libraries and configuration files stored in `/runtime/` from the build stage.
 FROM scratch
+WORKDIR /app
 COPY --from=build /runtime/ /
 COPY --from=build /app/bin/xwordle /app/bin/
 COPY --from=build /app/.env /app/
@@ -36,4 +37,4 @@ COPY --from=build /app/service-account.json /app/
 EXPOSE 8080
 
 # Start webhook
-CMD ["/app/bin/xwordle"]
+CMD ["./bin/xwordle"]
