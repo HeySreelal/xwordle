@@ -28,6 +28,7 @@ void main(List<String> args) async {
   bot.command("feedback", feedbackHandler());
   bot.command("cancel", cancelHandler());
   bot.command("donate", donateHandler());
+  bot.command("nudge", nudgeDonation);
 
   // Handling errors
   bot.onError(errorHandler);
@@ -65,6 +66,9 @@ void main(List<String> args) async {
     (ctx) => ctx.answerCallbackQuery(),
     options: ScopeOptions.forked(),
   );
+
+  // Listen for inline queries
+  bot.onInlineQuery(inlineHandler());
 
   // Start the bot
   bot.start();

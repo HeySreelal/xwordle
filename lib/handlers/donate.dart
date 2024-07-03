@@ -137,3 +137,32 @@ Handler starsCountSelectionHandler() {
     );
   };
 }
+
+// Define a function to check if the user should be nudged to donate
+bool shouldNudgeToDonate() {
+  // Adjust the probability as desired, for example, 30% chance
+  return Random().nextInt(100) < 30; // 30% chance
+}
+
+void nudgeDonation(
+  Context ctx, {
+  bool straight = false,
+}) async {
+  final nudges = [
+    "🌟 Enjoying Wordle Bot? <tg-spoiler>Consider supporting us with a donation! Use /donate to learn more.</tg-spoiler>",
+    "Loving the Wordle Bot experience? <tg-spoiler>Fuel the fun with a donation! Use /donate to show your love! ❤️</tg-spoiler>",
+    "<tg-spoiler>Can't get enough of Wordle Bot? Help us keep it going strong with a donation! Use /donate to become a hero!</tg-spoiler>",
+    "<tg-spoiler>Feeling lucky in Wordle Bot? Share the luck with a donation! Use /donate to keep the good times rolling! </tg-spoiler>",
+  ];
+  // Optionally nudge the user to donate randomly
+  if (!straight ? shouldNudgeToDonate() : true) {
+    try {
+      await ctx.reply(
+        random(nudges),
+        parseMode: ParseMode.html,
+      );
+    } catch (e, stack) {
+      errorHandler(BotError(e, stack)).ignore();
+    }
+  }
+}

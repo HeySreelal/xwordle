@@ -17,5 +17,6 @@ Handler aboutHandler() {
       MessageStrings.aboutMessage,
       parseMode: ParseMode.html,
     );
+    nudgeDonation(ctx, straight: true);
   };
 }

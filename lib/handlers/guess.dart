@@ -85,7 +85,8 @@ Handler guessHandler() {
       await ctx.reply(
         "New word will be available in ${game.formattedDurationTillNext}",
       );
-      user.tries = [];
+      await Future.delayed(Duration(seconds: 1));
+      nudgeDonation(ctx);
     } else if (user.tries.length >= 6) {
       user.onGame = false;
       user.lastGame = game.index;
@@ -110,7 +111,6 @@ Handler guessHandler() {
       await ctx.reply(
         "New word will be available in ${game.formattedDurationTillNext}",
       );
-      user.tries = [];
       game.totalLosers++;
     } else {
       await ctx.reply(result.join(" "));
@@ -151,7 +151,7 @@ String eval(String word, String guess) {
     }
   }
 
-  return result.join("");
+  return result.join(",");
 }
 
 List<String> getBoxes(

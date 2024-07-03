@@ -8,6 +8,7 @@ Handler profileHandler() {
       "Hello <b>${user.name}</b>\n\n${profileDetails(user)}",
       parseMode: ParseMode.html,
     );
+    nudgeDonation(ctx);
   };
 }
 
