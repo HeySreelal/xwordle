@@ -62,9 +62,9 @@ Handler startHandler({bool callback = false}) {
     await ctx.reply(MessageStrings.letsStart, parseMode: ParseMode.html);
     user.onGame = true;
     game.totalPlayed++;
+    user.tries = [];
     if (user.currentGame != game.index) {
       user.currentGame = game.index;
-      user.tries = [];
       user.totalGamesPlayed++;
     }
     user.save();

@@ -41,7 +41,7 @@ class MessageStrings {
       "You are already playing the game. Shoot the guesses. 😇";
   static const notOnGame = "You are not currently playing the game. 😇";
   static const letsStart =
-      "Let's start the game, shoot your first guess!\n\nMeanwhile, send <code>/help</code> anytime if you want to check instructions.";
+      "Let's start the game, shoot your first guess!\n\nMeanwhile, send /help anytime if you want to check instructions.";
 
   /// When bot tries to send message to the user who has blocked the bot.
   static const blocked = "Forbidden: bot was blocked by the user";
