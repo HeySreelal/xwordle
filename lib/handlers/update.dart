@@ -1,6 +1,6 @@
 part of '../xwordle.dart';
 
-final launch = DateTime(2023, 7, 14, 12, 00);
+final launch = DateTime(2024, 7, 1, 12, 00);
 
 /// Returns the number of games since launch date
 int gameNo() {
