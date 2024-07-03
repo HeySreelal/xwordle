@@ -20,5 +20,11 @@ COPY service-account.json service-account.json
 # AOT compile the application
 RUN dart compile exe bin/xwordle.dart -o bin/xwordle
 
+# Ensure the compiled binary has execute permissions
+RUN chmod +x bin/xwordle
+
+# Expose the port
+EXPOSE 8080
+
 # Start webhook
 CMD ["./bin/xwordle"]
