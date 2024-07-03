@@ -111,34 +111,51 @@ Handler guessHandler() {
   };
 }
 
-/// Creates the boxes for the given guess
-List<String> getBoxes(
-  String correct,
-  String guess, {
-  WordleUser? user,
-}) {
-  HintShape shape = user?.hintShape ?? HintShape.circle;
-  List<String> result = ['', '', '', '', ''];
+String eval(String word, String guess) {
+  const correctSymbol = "+";
+  const wrongSymbol = "-";
+  const misplacedSymbol = "x";
+
+  List<String> result = List.filled(5, "");
+  List<String> tracked = List.filled(5, "");
+
+  // First pass: mark correct letters
   for (int i = 0; i < 5; i++) {
-    if (correct[i] == guess[i]) {
-      result[i] = shape.correct;
-      correct = correct.replaceRange(i, i + 1, " ");
-      guess = guess.replaceRange(i, i + 1, " ");
-    }
-  }
-  for (int i = 0; i < 5; i++) {
-    if (correct.contains(guess[i]) && result[i] == "") {
-      result[i] = shape.misplaced;
-      correct = correct.replaceFirst(guess[i], " ");
+    if (guess[i] == word[i]) {
+      result[i] = correctSymbol;
+      tracked[i] = guess[i];
     }
   }
 
+  // Second pass: mark misplaced letters
   for (int i = 0; i < 5; i++) {
     if (result[i] == "") {
-      result[i] = shape.wrong;
+      // If not marked as correct
+      if (word.contains(guess[i]) && !tracked.contains(guess[i])) {
+        result[i] = misplacedSymbol;
+        // Track the misplaced letter
+        tracked[tracked.indexOf("")] = guess[i];
+      } else {
+        result[i] = wrongSymbol;
+      }
     }
   }
-  return result;
+
+  return result.join("");
+}
+
+List<String> getBoxes(
+  String word,
+  String guess, {
+  WordleUser? user,
+}) {
+  final shape = user?.hintShape ?? HintShape.circle;
+
+  String list = eval(word, guess);
+  list = list.replaceAll("+", shape.correct);
+  list = list.replaceAll("-", shape.wrong);
+  list = list.replaceAll("x", shape.misplaced);
+  return list.split(",");
 }
 
 /// Creates the result grid for the user
