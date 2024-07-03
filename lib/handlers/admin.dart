@@ -33,6 +33,7 @@ class Admin {
   /// Checks if the given [ctx] is an admin
   static bool check(Context ctx) {
     final config = WordleConfig.instance;
+    markUnauthorizedAttempt(ctx).ignore();
     return config.adminChats.contains(ctx.id);
   }
 
@@ -93,7 +94,7 @@ class Admin {
   /// Marks an unauthorized attempt to access admin commands
   static Future<void> markUnauthorizedAttempt(Context ctx) async {
     await sendLogs(
-      "Unauthorized access attempt by ${ctx.from?.firstName}! (${ctx.id})",
+      "Unauthorized access attempt by ${ctx.from?.firstName}! (${ctx.id.id})",
     );
   }
 
