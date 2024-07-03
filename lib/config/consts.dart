@@ -218,4 +218,19 @@ Good luck, and have fun! 🎯
     "I'm not sure what you're trying to cancel.",
     "Can you please clarify what you're trying to cancel?",
   ];
+
+  /// The correct word is gussed
+  static const String guessedWordMessage = """
+🎉 Congratulations! 🎉 You cracked the word! 🎊
+
+The word was: <b>{WORD}</b> 🚀
+""";
+
+  static const String lostGameMessage = """
+😢 Oh no, you didn't guess the word this time.
+
+The word was: <b>{WORD}</b> 🔥
+
+Don't worry, try hard to make it next time! 💪
+""";
 }

@@ -71,9 +71,16 @@ Handler guessHandler() {
           shareUrl,
         ),
       );
+
+      await ctx.react("🎉", isBig: true);
+
       await ctx.reply(
-        "You guessed the word!\n\nThe word was <b>${game.word.toUpperCase()}</b>! 🚀",
+        MessageStrings.guessedWordMessage.replaceAll(
+          "{WORD}",
+          game.word.toUpperCase(),
+        ),
         parseMode: ParseMode.html,
+        messageEffectId: "5046509860389126442",
       );
       await ctx.reply(
         "New word will be available in ${game.formattedDurationTillNext}",
@@ -94,7 +101,10 @@ Handler guessHandler() {
         replyMarkup: InlineKeyboard().addUrl("Share 📤", shareUrl),
       );
       await ctx.reply(
-        "You lost the game!\n\nThe word was <b>${game.word.toUpperCase()}</b>! 🔥",
+        MessageStrings.lostGameMessage.replaceAll(
+          '{WORD}',
+          game.word.toUpperCase(),
+        ),
         parseMode: ParseMode.html,
       );
       await ctx.reply(
