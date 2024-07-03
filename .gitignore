@@ -8,3 +8,4 @@ tools
 logs.txt
 .sessions
 service-account.json
+bin/xwordle

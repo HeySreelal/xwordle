@@ -70,6 +70,9 @@ void main(List<String> args) async {
   // Listen for inline queries
   bot.onInlineQuery(inlineHandler());
 
+  // Successful payments
+  bot.onSuccessfulPayment(successPaymentHandler());
+
   // Start the bot
   bot.start();
 }
