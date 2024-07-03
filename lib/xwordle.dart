@@ -46,7 +46,11 @@ Future<void> init() async {
   final server = await HttpServer.bind(InternetAddress.anyIPv6, 8080);
   final webhook = WordleConfig.isDebug
       ? LongPolling.allUpdates()
-      : Webhook(server, shouldSetWebhook: false);
+      : Webhook(
+          server,
+          shouldSetWebhook: false,
+          allowedUpdates: UpdateType.values,
+        );
   bot = Bot(WordleConfig.instance.token, fetcher: webhook);
   conv = Conversation(bot);
 }
