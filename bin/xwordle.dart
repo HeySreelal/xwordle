@@ -2,6 +2,9 @@ import 'package:televerse/televerse.dart';
 import 'package:xwordle/xwordle.dart';
 
 void main(List<String> args) async {
+  // Init the bot
+  await init();
+
   // Update the word
   await updateWord();
 
