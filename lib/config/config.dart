@@ -55,37 +55,46 @@ class WordleConfig {
     return _instance!;
   }
 
+  static Map<String, dynamic>? _env;
+
   static Map<String, dynamic> get env {
-    File file = File('.env');
+    if (_env != null) return _env!;
+
+    final file = File('.env');
     if (!file.existsSync()) {
       throw Exception('.env file not found');
     }
-    String contents = file.readAsStringSync();
-    final lines = contents.split('\n');
-    String token = lines
-        .firstWhere((element) => element.startsWith('TOKEN='))
-        .split('=')[1];
-    String logs = lines
-        .firstWhere((element) => element.startsWith('LOGS='))
-        .split('=')[1];
-    String admins = lines
-        .firstWhere((element) => element.startsWith('ADMINS='))
-        .split('=')[1];
-    String testToken = lines
-        .firstWhere((element) => element.startsWith('TEST_TOKEN='))
-        .split('=')[1];
-    String mode = lines
-        .firstWhere(
-          (element) => element.startsWith('MODE='),
-          orElse: () => 'MODE=debug',
-        )
-        .split('=')[1];
-    return {
-      'TOKEN': token,
-      'LOGS': logs,
-      'ADMINS': admins,
-      "TEST_TOKEN": testToken,
-      "MODE": mode,
-    };
+    final lines = file.readAsLinesSync();
+
+    /// Env Keys
+    final keys = [
+      "TOKEN",
+      "TEST_TOKEN",
+      "LOGS",
+      "ADMINS",
+      "MODE",
+      "PROJECT_ID",
+      "TON_ADDRESS",
+      "SOL_ON_SOLANA",
+      "SOL_ON_BEP20",
+      "USDT_TRC20",
+      "USDT_ON_TON",
+    ];
+
+    final config = {for (var key in keys) key: _getVal(lines, key)};
+    config["MODE"] ??= "debug";
+
+    _env = config;
+    return config;
+  }
+
+  static String? _getVal(List<String> lines, String key) {
+    try {
+      return lines
+          .firstWhere((element) => element.startsWith('$key='))
+          .split('=')[1];
+    } catch (_) {
+      return null;
+    }
   }
 }

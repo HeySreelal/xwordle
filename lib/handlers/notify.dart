@@ -19,7 +19,7 @@ InlineKeyboard notificationMenu(
 /// Handles the /notify command
 Handler notifyHandler() {
   return (ctx) async {
-    final user = WordleUser.init(ctx.id.id);
+    final user = await WordleUser.init(ctx.id.id);
     await ctx.reply(
       MessageStrings.notificationPrompt,
       replyMarkup: notificationMenu(user.notify, true),
@@ -30,10 +30,10 @@ Handler notifyHandler() {
 /// Handles enables the notification
 Handler handleNotificationTap() {
   return (ctx) async {
-    final user = WordleUser.init(ctx.id.id);
+    final user = await WordleUser.init(ctx.id.id);
 
     user.notify = ctx.callbackQuery?.data == "notify_yes";
-    user.saveToFile();
+    user.save();
     await ctx.editMessageText(
       "$notificationSettings\n\nYou will ${!user.notify ? 'not ' : ''}be notified when new word is available.",
       replyMarkup: notificationMenu(user.notify, false),

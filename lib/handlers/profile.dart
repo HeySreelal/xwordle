@@ -3,7 +3,7 @@ part of '../xwordle.dart';
 /// Handles the /profile command
 Handler profileHandler() {
   return (ctx) async {
-    final user = WordleUser.init(ctx.id.id);
+    final user = await WordleUser.init(ctx.id.id);
     await ctx.reply(
       "Hello <b>${user.name}</b>\n\n${profileDetails(user)}",
       parseMode: ParseMode.html,

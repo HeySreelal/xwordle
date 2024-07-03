@@ -6,7 +6,7 @@ part of '../xwordle.dart';
 /// word to be available.
 Handler nextWordHandler() {
   return (ctx) async {
-    final game = WordleDB.today;
+    final game = await WordleDB.today();
     final msg = random(MessageStrings.excitedMessages).replaceAll(
       "{TIME}",
       game.formattedDurationTillNext,

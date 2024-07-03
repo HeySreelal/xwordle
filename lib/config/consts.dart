@@ -142,11 +142,17 @@ Show some love by sharing the bot with your friends!
   /// **Welcome Messages**
   ///
   /// Messages to be sent when the user first joins the chat.
-  static const welcomeMessages = [
-    "Welcome to Wordle! Glad to have you here <b>{name}</b>! 🤓",
-    "Welcome to Wordle Bot, {name}! 🤖 Let's play today's Wordle! 🚀",
-    "Hey there, {name}! Greetings from Wordle Bot! 🚀",
-  ];
+  static const welcomeMessage = """
+🤖 Welcome to Wordle Bot! 🤖
+
+Ready to challenge your vocabulary skills? You're on the right place, I guess! 🎉
+
+ℹ️ To get started, simply type /start again to begin a new game.
+
+ℹ️ If you need help at any time, type /help to see detailed instructions.
+
+Good luck, and have fun! 🎯
+  """;
 
   /// Notification prompt
   static const notificationPrompt =
@@ -212,4 +218,64 @@ Show some love by sharing the bot with your friends!
     "I'm not sure what you're trying to cancel.",
     "Can you please clarify what you're trying to cancel?",
   ];
+
+  /// The correct word is gussed
+  static const String guessedWordMessage = """
+🎉 Congratulations! 🎉 You cracked the word! 🎊
+
+The word was: <b>{WORD}</b> 🚀
+""";
+
+  static const String lostGameMessage = """
+😢 Oh no, you didn't guess the word this time.
+
+The word was: <b>{WORD}</b> 🔥
+
+Don't worry, try hard to make it next time! 💪
+""";
+
+  static const starDonationPrompt =
+      "Shine bright! How many stars you'd like to donate to keep the game sparkling";
+  static const donationDescription =
+      "Your donations help keep the game running smoothly and bring new features to enjoy!  Consider a small contribution to fuel the fun!";
+
+  static const tonDonation =
+      """Thanks for condering donating over \$TON. Here is the wallet addresses you can donate to:
+
+1. On TON Network
+<code>{ADDRESS1}</code>
+
+<i>(You can tap on the address to copy)</i>
+
+Your donations help keep the game running smoothly and bring new features to enjoy! 💖
+""";
+
+  static const solDonation =
+      """Thanks for condering donating over Solana (\$SOL). Here are the wallet addresses you can donate to:
+
+1. On Solana Network
+<code>{ADDRESS1}</code>
+
+2. On BNB Smart Chain (BEP20) Network
+<code>{ADDRESS2}</code>
+
+<i>(You can tap on the address to copy)</i>
+
+Your donations help keep the game running smoothly and bring new features to enjoy! 💖
+""";
+
+  static const usdtDonation =
+      """Thanks for condering donating over \$USDT. Here are the wallet addresses you can donate to:
+
+1. On Tron (TRC20) Network
+<code>{ADDRESS1}</code>
+
+2. On TON Network
+<code>{ADDRESS2}</code>
+
+
+<i>(You can tap on the address to copy)</i>
+
+Your donations help keep the game running smoothly and bring new features to enjoy! 💖
+""";
 }

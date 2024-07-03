@@ -6,3 +6,5 @@ sessions.zip
 .DS_Store
 tools
 logs.txt
+.sessions
+service-account.json

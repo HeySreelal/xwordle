@@ -1,23 +1,26 @@
 part of '../xwordle.dart';
 
-DateTime launch = DateTime(2023, 7, 14, 12, 00);
+final launch = DateTime(2023, 7, 14, 12, 00);
 
+/// Returns the number of games since launch date
 int gameNo() {
   DateTime now = DateTime.now();
 
   return now.difference(launch).inDays;
 }
 
-String getWord() {
-  return words[gameNo() % words.length];
+/// Returns today's word
+String getWord(int index) {
+  return words[index % words.length];
 }
 
-void updateWord() async {
+/// Updates the words, sends notification to subscribed users.
+Future<void> updateWord() async {
   WordleDay day;
   try {
-    day = WordleDB.today;
-    day.word = getWord();
+    day = await WordleDB.today();
     day.index = gameNo();
+    day.word = getWord(day.index);
     day.next = launch.add(Duration(days: gameNo() + 1));
   } catch (e, s) {
     try {
@@ -27,16 +30,16 @@ void updateWord() async {
       print(e);
     }
     int index = gameNo();
-    String word = getWord();
+    String word = getWord(index);
     day = WordleDay(word, index, DateTime.now());
   }
-  day.save();
+  await day.save();
 
   final durationToNext = day.next.difference(DateTime.now());
-  print(durationToNext);
-  Timer(durationToNext, () {
+  print("Duration to next update call: $durationToNext");
+  Timer(durationToNext, () async {
     sendDailyLog();
-    day.resetCounters();
+    day.resetCounters().ignore();
     updateWord();
     notifyUsers();
   });
@@ -44,7 +47,7 @@ void updateWord() async {
 
 /// Notify users about the new word
 Future<void> notifyUsers() async {
-  final users = WordleDB.getUsers();
+  final users = await WordleDB.getUsers();
   final notificationEnabledUsers = users.where((e) {
     return e.notify && e.hasPlayedInLast4Days();
   }).toList();
@@ -53,20 +56,20 @@ Future<void> notifyUsers() async {
   await sendLogs("🔔 Notifying $count users");
   Message? statusMessage = await sendLogs(progressMessage(count, 0, 0));
 
-  Stopwatch stopwatch = Stopwatch()..start();
+  final stopwatch = Stopwatch()..start();
 
   int success = 0, failure = 0;
   List<ErrorUser> errorUsers = [];
 
   for (int i = 0; i < count; i++) {
     try {
-      final user = WordleUser.init(notificationEnabledUsers[i].userId);
+      final user = await WordleUser.init(notificationEnabledUsers[i].id);
       if (user.lastGame == gameNo() || user.currentGame == gameNo()) {
         success++;
         continue;
       }
       await bot.api.sendMessage(
-        ChatID(notificationEnabledUsers[i].userId),
+        ChatID(notificationEnabledUsers[i].id),
         random(MessageStrings.notificationMsgs),
       );
       success++;
@@ -74,7 +77,7 @@ Future<void> notifyUsers() async {
     } catch (e) {
       failure++;
       errorUsers.add(ErrorUser(
-        notificationEnabledUsers[i].userId,
+        notificationEnabledUsers[i].id,
         e.toString(),
       ));
     }
@@ -130,13 +133,18 @@ String progressPercent(double completePercent) {
   return completedStr + remStr;
 }
 
-void turnOffNotificationForFailedUsers(List<ErrorUser> errorUsers) {
-  print('Turning off notifications for ${errorUsers.length} failed users');
+void turnOffNotificationForFailedUsers(List<ErrorUser> errorUsers) async {
+  sendLogs('Turning off notifications for ${errorUsers.length} failed users');
   final l = errorUsers.length;
   for (int i = 0; i < l; i++) {
-    WordleUser user = WordleUser.init(errorUsers[i].userId);
+    final user = await WordleUser.init(errorUsers[i].userId);
     user.notify = false;
-    user.userId = errorUsers[i].userId;
-    user.saveToFile();
+    user.id = errorUsers[i].userId;
+    user.save();
   }
+  final blocked = errorUsers
+      .where((e) => e.reason.contains(MessageStrings.blocked))
+      .toList()
+      .length;
+  WordleDB.incrementBlockedCount(blocked).ignore();
 }

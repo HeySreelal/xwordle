@@ -5,7 +5,7 @@ part of '../xwordle.dart';
 /// This command is used to quit the current game.
 Handler quitHandler() {
   return (ctx) async {
-    final user = WordleUser.init(ctx.id.id);
+    final user = await WordleUser.init(ctx.id.id);
     if (!user.onGame) {
       await ctx.reply(MessageStrings.notOnGame);
       return;
@@ -29,8 +29,8 @@ final quitPattern = RegExp(r"quit:(yes|no)");
 /// Handles the callback query for the quit interaction
 Handler handleQuitInteraction() {
   return (ctx) async {
-    final user = WordleUser.init(ctx.id.id);
-    final game = WordleDB.today;
+    final user = await WordleUser.init(ctx.id.id);
+    final game = await WordleDB.today();
     final data = ctx.callbackQuery!.data!;
     bool quit = data == "quit:yes";
 
@@ -44,9 +44,9 @@ Handler handleQuitInteraction() {
     user.lastGame = game.index;
     user.streak = 0;
     user.tries = [];
-    user.saveToFile();
+    await user.save();
     game.totalLosers++;
-    game.save();
+    await game.save();
 
     // Now let's tell the user today's word
     await ctx.api.sendMessage(
