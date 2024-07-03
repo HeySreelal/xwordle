@@ -63,29 +63,21 @@ class Admin {
       if (text == setBroadcast) {
         await ctx.reply(broadcastPrompt);
         final replyCtx = await conv.waitForTextMessage(chatId: ctx.id);
-        final broadcast = replyCtx?.message?.text!;
-        AdminFile? admin = AdminFile.read();
-        admin ??= AdminFile.create();
-
-        admin.message = broadcast;
-        admin.createdAt = DateTime.now().toUtc();
-        admin.createdBy = replyCtx?.id.id;
-        await admin.saveToFile();
+        if (replyCtx?.message?.text == null) return;
+        final broadcast = replyCtx?.message?.text;
+        await AdminConfig.setReleaseNote(broadcast!);
         await replyCtx?.reply("Broadcast message set!");
       }
 
       if (text == seeBroadcast) {
-        AdminFile? admin = AdminFile.read();
-        if (admin == null) {
-          await ctx.reply("No broadcast message set!");
-          return;
-        }
+        final admin = await AdminConfig.get();
         await ctx.reply(
-          "Broadcast message:\n\n${admin.message}",
+          "Broadcast message:\n\n${admin.releaseNote}",
           replyMarkup: adminKeyboard,
           parseMode: ParseMode.html,
         );
       }
+
       if (text == releaseBroadcast) {
         ctx.reply(
           "Are you sure want to release the broadcast?",
@@ -105,9 +97,6 @@ class Admin {
   /// Handles the inline key press to confirm release
   static Handler handleConfirmation() {
     return (ctx) async {
-      if (!check(ctx)) {
-        return;
-      }
       final confirm = ctx.callbackQuery?.data == "release:yes";
       if (!confirm) {
         await ctx.editMessageText(
@@ -115,12 +104,8 @@ class Admin {
         );
         return;
       }
-      final admin = AdminFile.read();
-      final message = admin?.message;
-      if (admin == null || message == null) {
-        await ctx.editMessageText("No broadcast message set!");
-        return;
-      }
+      final admin = await AdminConfig.get();
+      final message = admin.releaseNote;
 
       final users = await WordleDB.getUsers();
       int count = users.length;
@@ -161,12 +146,8 @@ class Admin {
   /// Test Broadcast Message
   static Handler testBroadcastHandler() {
     return (ctx) async {
-      final admin = AdminFile.read();
-      final message = admin?.message;
-      if (admin == null || message == null) {
-        await ctx.reply("No broadcast message set!");
-        return;
-      }
+      final admin = await AdminConfig.get();
+      final message = admin.releaseNote;
       final admins = WordleConfig.instance.adminChats;
       for (int i = 0; i < admins.length; i++) {
         await ctx.api.sendMessage(

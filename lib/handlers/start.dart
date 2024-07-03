@@ -4,13 +4,16 @@ Future<void> doFirstTimeStuffs(Context ctx) async {
   if (ctx.args.isNotEmpty) {
     final referrer = int.tryParse(ctx.args[0]);
     if (referrer != null) {
-      await ctx.api.sendMessage(
-        ChatID(referrer),
-        "🎉 ${ctx.from?.firstName} joined with your referral link.",
-      );
-      await WordleDB.referralUpdate(ctx.id.id, referrer);
+      ctx.api
+          .sendMessage(
+            ChatID(referrer),
+            "🎉 ${ctx.from?.firstName} joined with your referral link.",
+          )
+          .ignore();
+      WordleDB.referralUpdate(ctx.id.id, referrer).ignore();
     }
   }
+  WordleDB.incrementUserCount().ignore();
   await ctx.replyWithPhoto(
     InputFile.fromUrl(
       "https://televerse-space.web.app/assets/wordle-welcome.png",
