@@ -166,3 +166,14 @@ void nudgeDonation(
     }
   }
 }
+
+Handler successPaymentHandler() {
+  return (ctx) async {
+    final r = ctx.msg!.successfulPayment!;
+    db.collection("payments").add(r.toJson()).ignore();
+    await ctx.reply(
+      "✅ Payment #${r.telegramPaymentChargeId} success\n\n"
+      "Thank you so much for your generous contribution! Your donation helps power our bot development. We have successfully received ${r.totalAmount} in Telegram Stars ⭐️.",
+    );
+  };
+}
