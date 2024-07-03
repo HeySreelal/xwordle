@@ -31,4 +31,14 @@ class WordleDB {
   static Future<void> saveToday(WordleDay day) async {
     await db.doc("game/today").update(day.toMap());
   }
+
+  static Future<void> referralUpdate(int user, int referredBy) async {
+    await db.doc("players/$user").update({
+      "referredBy": referredBy,
+    });
+    await db.doc("players/$referredBy").update({
+      "referralCount": FieldValue.increment(1),
+      "referrals": FieldValue.arrayUnion([user])
+    });
+  }
 }

@@ -142,11 +142,17 @@ Show some love by sharing the bot with your friends!
   /// **Welcome Messages**
   ///
   /// Messages to be sent when the user first joins the chat.
-  static const welcomeMessages = [
-    "Welcome to Wordle! Glad to have you here <b>{name}</b>! 🤓",
-    "Welcome to Wordle Bot, {name}! 🤖 Let's play today's Wordle! 🚀",
-    "Hey there, {name}! Greetings from Wordle Bot! 🚀",
-  ];
+  static const welcomeMessage = """
+🤖 Welcome to Wordle Bot! 🤖
+
+Ready to challenge your vocabulary skills? You're on the right place, I guess! 🎉
+
+ℹ️ To get started, simply type /start again to begin a new game.
+
+ℹ️ If you need help at any time, type /help to see detailed instructions.
+
+Good luck, and have fun! 🎯
+  """;
 
   /// Notification prompt
   static const notificationPrompt =

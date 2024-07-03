@@ -93,6 +93,9 @@ class WordleUser {
   /// Whether the user is opted out for broadcast messages
   bool optedOutOfBroadcast;
 
+  /// Whether the user is a first time visitor
+  bool firstTime;
+
   /// Constructs a WordleSession
   WordleUser({
     this.currentGame = 0,
@@ -111,6 +114,7 @@ class WordleUser {
     DateTime? joinedDate,
     HintShape? hintShape,
     this.optedOutOfBroadcast = false,
+    this.firstTime = false,
   })  : joinedDate = joinedDate ?? DateTime.now(),
         hintShape = hintShape ?? HintShape.circle;
 
@@ -161,11 +165,20 @@ class WordleUser {
   static const String defaultName = 'Player';
 
   Future<void> save() async {
-    await db.doc("players/$id").update(toJson());
+    if (firstTime) {
+      await db.doc("players/$id").set(toJson());
+    } else {
+      await db.doc("players/$id").update(toJson());
+    }
   }
 
   static Future<WordleUser> init(int id) async {
-    final doc = await db.doc("users/$id").get();
+    final doc = await db.doc("players/$id").get();
+    if (!doc.exists) {
+      final user = WordleUser(id: id, firstTime: true);
+      user.save();
+      return user;
+    }
     return WordleUser.fromMap(doc.data()!);
   }
 

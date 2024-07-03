@@ -28,6 +28,7 @@ void main(List<String> args) async {
   bot.callbackQuery(notificationPattern, handleNotificationTap());
   bot.callbackQuery(quitPattern, handleQuitInteraction());
   bot.callbackQuery(settingsPattern, settingsCallback());
+  bot.callbackQuery("start", startHandler(callback: true));
 
   // Admin lock checker
   final checker = ScopeOptions(customPredicate: Admin.check);
@@ -51,6 +52,12 @@ void main(List<String> args) async {
 
   // Handle guessed word
   bot.onText(guessHandler());
+
+  // Handle any unanswered callback queries
+  bot.onCallbackQuery(
+    (ctx) => ctx.answerCallbackQuery(),
+    options: ScopeOptions.forked(),
+  );
 
   // Start the bot
   bot.start();

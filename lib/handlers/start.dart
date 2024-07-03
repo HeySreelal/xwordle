@@ -1,10 +1,37 @@
 part of '../xwordle.dart';
 
-Handler startHandler() {
+Future<void> doFirstTimeStuffs(Context ctx) async {
+  if (ctx.args.isNotEmpty) {
+    final referrer = int.tryParse(ctx.args[0]);
+    if (referrer != null) {
+      await ctx.api.sendMessage(
+        ChatID(referrer),
+        "🎉 ${ctx.from?.firstName} joined with your referral link.",
+      );
+      await WordleDB.referralUpdate(ctx.id.id, referrer);
+    }
+  }
+  await ctx.replyWithPhoto(
+    InputFile.fromUrl(
+      "https://televerse-space.web.app/assets/wordle-welcome.png",
+    ),
+    caption: MessageStrings.welcomeMessage,
+    replyMarkup: InlineKeyboard().add("🎮 Start Game", "start"),
+  );
+}
+
+Handler startHandler({bool callback = false}) {
   return (Context ctx) async {
+    if (callback) {
+      await ctx.answerCallbackQuery();
+    }
     final game = await WordleDB.today();
     final user = await WordleUser.init(ctx.id.id);
-    if (user.name == WordleUser.defaultName && ctx.message!.from != null) {
+    if (user.firstTime) {
+      await doFirstTimeStuffs(ctx);
+      return;
+    }
+    if (user.name == WordleUser.defaultName && ctx.from != null) {
       user.name = ctx.message!.from!.firstName;
     }
 
@@ -24,13 +51,11 @@ Handler startHandler() {
 
     /// If the user is already playing a game, tell them to finish it first
     if (user.onGame && user.currentGame == game.index) {
-      await ctx.api.sendChatAction(ctx.id, ChatAction.typing);
       await ctx.reply(MessageStrings.alreadyPlaying);
       return;
     }
 
     /// Let's start a new game
-    await ctx.api.sendChatAction(ctx.id, ChatAction.typing);
     await ctx.reply(MessageStrings.letsStart, parseMode: ParseMode.html);
     user.onGame = true;
     game.totalPlayed++;
