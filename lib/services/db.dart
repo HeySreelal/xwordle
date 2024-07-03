@@ -2,16 +2,33 @@ part of '../xwordle.dart';
 
 /// Represents the database for the Wordle game.
 class WordleDB {
-  static WordleDay get today {
-    File file = File('day.json');
-    if (!file.existsSync()) {
-      throw Exception('day.json not found');
+  static WordleDay? _td;
+
+  static Future<WordleDay> today() async {
+    if (_td != null) {
+      final dt = DateTime.now();
+      if (dt.isBefore(_td!.next)) {
+        return _td!;
+      }
     }
-    return WordleDay.fromMap(jsonDecode(file.readAsStringSync()));
+
+    final game = await getToday();
+    _td = game;
+    return game;
+  }
+
+  static Future<WordleDay> getToday() async {
+    final doc = await db.doc("game/today").get();
+    final map = doc.data();
+    return WordleDay.fromMap(map!);
   }
 
   static Future<List<WordleUser>> getUsers() async {
     final qs = await db.collection("players").get();
     return qs.docs.map((e) => WordleUser.fromMap(e.data())).toList();
+  }
+
+  static Future<void> saveToday(WordleDay day) async {
+    await db.doc("game/today").update(day.toMap());
   }
 }

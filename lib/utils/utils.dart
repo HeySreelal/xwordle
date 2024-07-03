@@ -129,7 +129,7 @@ Future<void> sendDailyLog() async {
 }
 
 Future<String> statsMessage({int? requestedUser, bool autoLog = false}) async {
-  WordleDay day = WordleDB.today;
+  WordleDay day = await WordleDB.today();
   WordleUser? user;
   if (requestedUser != null) {
     user = WordleUser.init(requestedUser);

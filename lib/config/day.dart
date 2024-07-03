@@ -46,7 +46,7 @@ class WordleDay {
   factory WordleDay.fromMap(Map<String, dynamic> map) {
     return WordleDay(
       map['word'],
-      map['index'],
+      map['id'],
       DateTime.fromMillisecondsSinceEpoch(map['date'] * 1000),
       totalWinners: map['totalWinners'] ?? 0,
       totalLosers: map['totalLosers'] ?? 0,
@@ -74,12 +74,8 @@ class WordleDay {
   }
 
   /// Save day to day.json
-  void save() {
-    final file = File('day.json');
-    if (!file.existsSync()) {
-      file.createSync();
-    }
-    file.writeAsStringSync(JsonEncoder.withIndent('  ').convert(toMap()));
+  Future<void> save() async {
+    await WordleDB.saveToday(this);
   }
 
   /// Returns a map from the day
@@ -93,6 +89,7 @@ class WordleDay {
       'totalPlayed': totalPlayed,
       'dictionaryWord': dictionaryWord?.toJson(),
       'meaningCheckCount': meaningCheckCount,
+      "next": next.millisecondsSinceEpoch ~/ 1000,
     };
   }
 

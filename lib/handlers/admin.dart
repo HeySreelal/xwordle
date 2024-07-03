@@ -33,8 +33,12 @@ class Admin {
   /// Checks if the given [ctx] is an admin
   static bool check(Context ctx) {
     final config = WordleConfig.instance;
-    markUnauthorizedAttempt(ctx).ignore();
-    return config.adminChats.contains(ctx.id);
+
+    final contains = config.adminChats.contains(ctx.id);
+    if (!contains) {
+      markUnauthorizedAttempt(ctx).ignore();
+    }
+    return contains;
   }
 
   /// Handles the /mod command

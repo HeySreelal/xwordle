@@ -2,7 +2,7 @@ part of '../xwordle.dart';
 
 Handler startHandler() {
   return (Context ctx) async {
-    final game = WordleDB.today;
+    final game = await WordleDB.today();
     final user = WordleUser.init(ctx.id.id);
     if (user.name == WordleUser.defaultName && ctx.message!.from != null) {
       user.name = ctx.message!.from!.firstName;

@@ -8,16 +8,16 @@ int gameNo() {
   return now.difference(launch).inDays;
 }
 
-String getWord() {
-  return words[gameNo() % words.length];
+String getWord(int index) {
+  return words[index % words.length];
 }
 
-void updateWord() async {
+Future<void> updateWord() async {
   WordleDay day;
   try {
-    day = WordleDB.today;
-    day.word = getWord();
+    day = await WordleDB.today();
     day.index = gameNo();
+    day.word = getWord(day.index);
     day.next = launch.add(Duration(days: gameNo() + 1));
   } catch (e, s) {
     try {
@@ -27,13 +27,13 @@ void updateWord() async {
       print(e);
     }
     int index = gameNo();
-    String word = getWord();
+    String word = getWord(index);
     day = WordleDay(word, index, DateTime.now());
   }
-  day.save();
+  await day.save();
 
   final durationToNext = day.next.difference(DateTime.now());
-  print(durationToNext);
+  print("Duration to next update call: $durationToNext");
   Timer(durationToNext, () {
     sendDailyLog();
     day.resetCounters();

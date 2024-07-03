@@ -30,7 +30,7 @@ final quitPattern = RegExp(r"quit:(yes|no)");
 Handler handleQuitInteraction() {
   return (ctx) async {
     final user = WordleUser.init(ctx.id.id);
-    final game = WordleDB.today;
+    final game = await WordleDB.today();
     final data = ctx.callbackQuery!.data!;
     bool quit = data == "quit:yes";
 

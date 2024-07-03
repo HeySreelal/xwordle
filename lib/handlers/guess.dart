@@ -4,7 +4,7 @@ part of '../xwordle.dart';
 Handler guessHandler() {
   return (ctx) async {
     final user = WordleUser.init(ctx.id.id);
-    final game = WordleDB.today;
+    final game = await WordleDB.today();
 
     // If the user is not playing a game, tell them to start one
     if (!user.onGame) {

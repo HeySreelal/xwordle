@@ -1,9 +1,9 @@
 import 'package:televerse/televerse.dart';
 import 'package:xwordle/xwordle.dart';
 
-void main(List<String> args) {
+void main(List<String> args) async {
   // Update the word
-  updateWord();
+  await updateWord();
 
   bot.use(AutoChatAction());
 
