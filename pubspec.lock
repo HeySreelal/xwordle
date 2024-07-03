@@ -435,7 +435,7 @@ packages:
     description:
       path: "."
       ref: dev
-      resolved-ref: "21076b3b7d605059531eab00ddc1d90c31de862c"
+      resolved-ref: "7b3d2a09f004dd56c459596980affe1a4d77644c"
       url: "https://github.com/HeySreelal/televerse/"
     source: git
     version: "1.21.0"

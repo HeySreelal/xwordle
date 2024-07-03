@@ -30,20 +30,15 @@ class Admin {
       .row()
       .add("Step back, now! 🙅🏻‍♂️", "release:no");
 
-  /// Checks if the given [id] is an admin
-  static bool check(ID id) {
+  /// Checks if the given [ctx] is an admin
+  static bool check(Context ctx) {
     final config = WordleConfig.instance;
-    return config.adminChats.contains(id);
+    return config.adminChats.contains(ctx.id);
   }
 
   /// Handles the /mod command
   static Handler modHandler() {
     return (ctx) async {
-      if (!check(ctx.id)) {
-        await markUnauthorizedAttempt(ctx);
-        return;
-      }
-
       await ctx.reply(
         "Welcome, ${ctx.from?.firstName}! You know what to do.",
         replyMarkup: adminKeyboard,
@@ -58,10 +53,6 @@ class Admin {
   /// Handles the keyboard button presses
   static Handler handleAdminText() {
     return (ctx) async {
-      if (!check(ctx.id)) {
-        await markUnauthorizedAttempt(ctx);
-        return;
-      }
       final text = ctx.message?.text!;
 
       if (text == setBroadcast) {
@@ -109,7 +100,7 @@ class Admin {
   /// Handles the inline key press to confirm release
   static Handler handleConfirmation() {
     return (ctx) async {
-      if (!check(ctx.id)) {
+      if (!check(ctx)) {
         return;
       }
       final confirm = ctx.callbackQuery?.data == "release:yes";
@@ -165,10 +156,6 @@ class Admin {
   /// Test Broadcast Message
   static Handler testBroadcastHandler() {
     return (ctx) async {
-      if (!check(ctx.id)) {
-        await markUnauthorizedAttempt(ctx);
-        return;
-      }
       final admin = AdminFile.read();
       final message = admin?.message;
       if (admin == null || message == null) {
@@ -192,10 +179,6 @@ class Admin {
   /// Handles count command
   static Handler countHandler() {
     return (ctx) async {
-      if (!check(ctx.id)) {
-        await markUnauthorizedAttempt(ctx);
-        return;
-      }
       final users = await WordleDB.getUsers();
       int count = users.length;
       await ctx.reply("Total users: $count");
@@ -205,10 +188,6 @@ class Admin {
   /// /stats command handler
   static Handler statsHandler() {
     return (ctx) async {
-      if (!check(ctx.id)) {
-        await markUnauthorizedAttempt(ctx);
-        return;
-      }
       await ctx.replyWithChatAction(ChatAction.typing);
       final msg = statsMessage(requestedUser: ctx.chat?.id);
       await ctx.reply(await msg, parseMode: ParseMode.html);
@@ -217,7 +196,7 @@ class Admin {
 }
 
 /// Extension isAdmin on ID
-extension IsAdmin on ID {
+extension IsAdmin on Context {
   /// Checks if the given [id] is an admin
   bool get isAdmin => Admin.check(this);
 }

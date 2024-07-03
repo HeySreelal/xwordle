@@ -1,3 +1,4 @@
+import 'package:televerse/televerse.dart';
 import 'package:xwordle/xwordle.dart';
 
 void main(List<String> args) {
@@ -28,18 +29,25 @@ void main(List<String> args) {
   bot.callbackQuery(quitPattern, handleQuitInteraction());
   bot.callbackQuery(settingsPattern, settingsCallback());
 
+  // Admin lock checker
+  final checker = ScopeOptions(customPredicate: Admin.check);
+
   // Admin Handlers
-  bot.command("mod", Admin.modHandler());
-  bot.command("count", Admin.countHandler());
-  bot.command('testbroadcast', Admin.testBroadcastHandler());
-  bot.command('stats', Admin.statsHandler());
+  bot.command("mod", Admin.modHandler(), options: checker);
+  bot.command("count", Admin.countHandler(), options: checker);
+  bot.command('testbroadcast', Admin.testBroadcastHandler(), options: checker);
+  bot.command('stats', Admin.statsHandler(), options: checker);
 
   // Admin Broadcast pattern
-  bot.hears(Admin.broadcastPattern, Admin.handleAdminText());
+  bot.hears(Admin.broadcastPattern, Admin.handleAdminText(), options: checker);
   bot.onChannelPost(respondToFeedback);
 
   // Admin release callback query
-  bot.callbackQuery(Admin.releasePattern, Admin.handleConfirmation());
+  bot.callbackQuery(
+    Admin.releasePattern,
+    Admin.handleConfirmation(),
+    options: checker,
+  );
 
   // Handle guessed word
   bot.onText(guessHandler());
