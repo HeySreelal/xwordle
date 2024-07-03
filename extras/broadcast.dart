@@ -4,20 +4,31 @@ import 'package:televerse/televerse.dart';
 import 'package:xwordle/xwordle.dart';
 
 void main(List<String> args) async {
-  final text =
-      "Hey Wordler! I'm excited to announce two new features for the bot.\n\n"
-      "1. /meaning\n"
-      "The meaning command shouts the meaning of today's word. Well, only after you finish the game. 😉 This is a great way to learn new vocabulary. Out of the ordinary, I really think\n\n"
-      "2. /shape\n"
-      "Now, what about a little bit of customization.  The shape command lets you choose the shape of the hints for your guess. Currently supports three choices - circle, square, or... Well, I guess you'll figure it out. 👀\n\n"
-      "I'm always looking for ways to improve the Wordle Bot, so if you have any thoughts on improving this bot, feel free to share it either using the /feedback command or shoot the thoughts on @Xooniverse post.\n\n"
-      "I hope you enjoy these new features! Regards ✨";
+  await init();
+  final text = """
+Hey Wordler! This message might come as a surprise, but unexpected things happen, right? 😊
+
+Great news: the Wordle Bot is back and available for you to play! 🎉 We know you might have missed the bot and the fun of guessing the word of the day. We apologize for the sudden downtime.
+
+However, we’re facing some challenges with covering the server costs to keep the bot running. In fact we need your help in keeping the Wordle Bot up and healthy :) Your support means the world to us! A small contribution can make a big difference. 
+
+We’ve added the /donate command to make it easy for you to support us. Every little bit helps.
+
+We’d also love to know if you enjoy playing the Wordle game. Would you mind letting us know by voting in the linked poll?
+
+If there's anything on your mind, please feel free to let us know. We truly value your feedback! Use the /feedback command to tell us what you think and how we can improve your Wordle experience.
+
+Thank you for being part of our Wordle community. Enjoy the game, and let’s keep the fun going! ✨
+""";
 
   final keyboard = InlineKeyboard()
       .addUrl("Xooniverse Post 💬", "https://t.me/xooniverse/5");
 
-  // await postToXooniverse(text, keyboard);
-  await broadcastLogic(text, keyboard);
+  await postToXooniverse(text, keyboard);
+}
+
+Future<void> testBroadcast(String text) async {
+  bot.api.sendMessage(ChatID(1726826785), text);
 }
 
 Future<void> postToXooniverse(String text, ReplyMarkup markup) async {
