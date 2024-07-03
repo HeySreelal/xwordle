@@ -5,6 +5,7 @@ void main(List<String> args) async {
   // Update the word
   await updateWord();
 
+  // Use auto-chat-action to send chat actions automatically
   bot.use(AutoChatAction());
 
   // Handle commands
