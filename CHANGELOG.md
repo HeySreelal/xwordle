@@ -1,3 +1,12 @@
+## 1.2.0
+
+- Updated coloring logic to whole new one
+- Improved performance
+- Now uses Firebase Firestore as Databaes
+- Supports inline queries for basic functionalities
+- Accepting donations from now on
+- Moved to Webhook for getting updates
+
 ## 1.1.1
 
 - Meaning of the word 📖
@@ -10,10 +19,13 @@
 - Error log to logsChannel 👀
 - Meaning & refactors ❤️‍🔥
 - Improved Notifications
-- Fix [#8](https://github.com/HeySreelal/xwordle/issues/8): Updated coloring logic 🚀
+- Fix [#8](https://github.com/HeySreelal/xwordle/issues/8): Updated coloring
+  logic 🚀
 - Fix [#20](https://github.com/HeySreelal/xwordle/issues/20)
-- Fix [#17](https://github.com/HeySreelal/xwordle/issues/17) - only for people who recently played
-- Fix [#27](https://github.com/HeySreelal/xwordle/issues/27) - cause i remember it all too well
+- Fix [#17](https://github.com/HeySreelal/xwordle/issues/17) - only for people
+  who recently played
+- Fix [#27](https://github.com/HeySreelal/xwordle/issues/27) - cause i remember
+  it all too well
 
 ## 1.1.0
 
@@ -30,5 +42,7 @@
 ## 1.0.0
 
 - Initial version.
-- The Wordle game inspired by the [Wordle game](https://www.nytimes.com/games/wordle/index.html) from the New York Times as Telegram bot.
+- The Wordle game inspired by the
+  [Wordle game](https://www.nytimes.com/games/wordle/index.html) from the New
+  York Times as Telegram bot.
 - Every day a new word is generated.
