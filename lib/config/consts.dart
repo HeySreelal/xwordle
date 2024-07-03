@@ -90,6 +90,8 @@ A new word will be available every day. The bot will send you notification when 
 /settings - Show settings
 /quit - Quit the current game
 
+👛 /donate - Support bot development with a small donation 
+
 Happy Wordleing! 🤓
 """;
 

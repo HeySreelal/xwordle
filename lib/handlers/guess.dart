@@ -86,6 +86,7 @@ Handler guessHandler() {
         "New word will be available in ${game.formattedDurationTillNext}",
       );
       user.tries = [];
+      nudgeDonation(ctx);
     } else if (user.tries.length >= 6) {
       user.onGame = false;
       user.lastGame = game.index;
@@ -151,7 +152,7 @@ String eval(String word, String guess) {
     }
   }
 
-  return result.join("");
+  return result.join(",");
 }
 
 List<String> getBoxes(

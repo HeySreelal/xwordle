@@ -43,12 +43,8 @@ Handler startHandler({bool callback = false}) {
         "{DURATION}",
         game.formattedDurationTillNext,
       );
-      await ctx.reply(
-        msg,
-        replyParameters: ReplyParameters(
-          messageId: ctx.message!.messageId,
-        ),
-      );
+      await ctx.reply(msg);
+      nudgeDonation(ctx);
       return;
     }
 
