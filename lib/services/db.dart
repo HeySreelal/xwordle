@@ -41,4 +41,16 @@ class WordleDB {
       "referrals": FieldValue.arrayUnion([user])
     });
   }
+
+  static Future<void> incrementUserCount() async {
+    await db.doc("game/config").update({
+      "totalPlayers": FieldValue.increment(1),
+    });
+  }
+
+  static Future<void> incrementBlockedCount(int newBlocks) async {
+    await db.doc("game/config").update({
+      "blockedPlayers": FieldValue.increment(newBlocks),
+    });
+  }
 }

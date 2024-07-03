@@ -1,17 +1,20 @@
 part of '../xwordle.dart';
 
-DateTime launch = DateTime(2023, 7, 14, 12, 00);
+final launch = DateTime(2023, 7, 14, 12, 00);
 
+/// Returns the number of games since launch date
 int gameNo() {
   DateTime now = DateTime.now();
 
   return now.difference(launch).inDays;
 }
 
+/// Returns today's word
 String getWord(int index) {
   return words[index % words.length];
 }
 
+/// Updates the words, sends notification to subscribed users.
 Future<void> updateWord() async {
   WordleDay day;
   try {
@@ -34,9 +37,9 @@ Future<void> updateWord() async {
 
   final durationToNext = day.next.difference(DateTime.now());
   print("Duration to next update call: $durationToNext");
-  Timer(durationToNext, () {
+  Timer(durationToNext, () async {
     sendDailyLog();
-    day.resetCounters();
+    day.resetCounters().ignore();
     updateWord();
     notifyUsers();
   });
@@ -53,7 +56,7 @@ Future<void> notifyUsers() async {
   await sendLogs("🔔 Notifying $count users");
   Message? statusMessage = await sendLogs(progressMessage(count, 0, 0));
 
-  Stopwatch stopwatch = Stopwatch()..start();
+  final stopwatch = Stopwatch()..start();
 
   int success = 0, failure = 0;
   List<ErrorUser> errorUsers = [];
@@ -131,12 +134,17 @@ String progressPercent(double completePercent) {
 }
 
 void turnOffNotificationForFailedUsers(List<ErrorUser> errorUsers) async {
-  print('Turning off notifications for ${errorUsers.length} failed users');
+  sendLogs('Turning off notifications for ${errorUsers.length} failed users');
   final l = errorUsers.length;
   for (int i = 0; i < l; i++) {
-    WordleUser user = await WordleUser.init(errorUsers[i].userId);
+    final user = await WordleUser.init(errorUsers[i].userId);
     user.notify = false;
     user.id = errorUsers[i].userId;
     user.save();
   }
+  final blocked = errorUsers
+      .where((e) => e.reason.contains(MessageStrings.blocked))
+      .toList()
+      .length;
+  WordleDB.incrementBlockedCount(blocked).ignore();
 }

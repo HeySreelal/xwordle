@@ -93,11 +93,11 @@ class WordleDay {
     };
   }
 
-  void resetCounters() {
+  Future<void> resetCounters() async {
     totalPlayed = 0;
     totalWinners = 0;
     totalLosers = 0;
     meaningCheckCount = 0;
-    save();
+    await save();
   }
 }
