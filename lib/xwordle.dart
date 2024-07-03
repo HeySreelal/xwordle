@@ -37,6 +37,7 @@ part 'services/auto_chat_action.dart';
 part 'services/db.dart';
 part 'services/dict.dart';
 part 'utils/utils.dart';
+part 'handlers/donate.dart';
 
 final bot = Bot(
   WordleConfig.instance.token,

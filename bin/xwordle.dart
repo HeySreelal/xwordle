@@ -21,6 +21,7 @@ void main(List<String> args) async {
   bot.command("shape", shapeHandler());
   bot.command("feedback", feedbackHandler());
   bot.command("cancel", cancelHandler());
+  bot.command("donate", donateHandler());
 
   // Handling errors
   bot.onError(errorHandler);
@@ -29,6 +30,8 @@ void main(List<String> args) async {
   bot.callbackQuery(notificationPattern, handleNotificationTap());
   bot.callbackQuery(quitPattern, handleQuitInteraction());
   bot.callbackQuery(settingsPattern, settingsCallback());
+  bot.callbackQuery(donatePattern, donateCallbackHandler());
+  bot.callbackQuery(starsCountPattern, starsCountSelectionHandler());
   bot.callbackQuery("start", startHandler(callback: true));
 
   // Admin lock checker

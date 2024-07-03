@@ -233,4 +233,49 @@ The word was: <b>{WORD}</b> 🔥
 
 Don't worry, try hard to make it next time! 💪
 """;
+
+  static const starDonationPrompt =
+      "Shine bright! How many stars you'd like to donate to keep the game sparkling";
+  static const donationDescription =
+      "Your donations help keep the game running smoothly and bring new features to enjoy!  Consider a small contribution to fuel the fun!";
+
+  static const tonDonation =
+      """Thanks for condering donating over \$TON. Here is the wallet addresses you can donate to:
+
+1. On TON Network
+<code>{ADDRESS1}</code>
+
+<i>(You can tap on the address to copy)</i>
+
+Your donations help keep the game running smoothly and bring new features to enjoy! 💖
+""";
+
+  static const solDonation =
+      """Thanks for condering donating over Solana (\$SOL). Here are the wallet addresses you can donate to:
+
+1. On Solana Network
+<code>{ADDRESS1}</code>
+
+2. On BNB Smart Chain (BEP20) Network
+<code>{ADDRESS2}</code>
+
+<i>(You can tap on the address to copy)</i>
+
+Your donations help keep the game running smoothly and bring new features to enjoy! 💖
+""";
+
+  static const usdtDonation =
+      """Thanks for condering donating over \$USDT. Here are the wallet addresses you can donate to:
+
+1. On Tron (TRC20) Network
+<code>{ADDRESS1}</code>
+
+2. On TON Network
+<code>{ADDRESS2}</code>
+
+
+<i>(You can tap on the address to copy)</i>
+
+Your donations help keep the game running smoothly and bring new features to enjoy! 💖
+""";
 }
