@@ -8,6 +8,9 @@ void main(List<String> args) async {
   // Update the word
   await updateWord();
 
+  // Handle guessed word
+  bot.onText(guessHandler());
+
   // Use auto-chat-action to send chat actions automatically
   bot.use(AutoChatAction());
 
@@ -56,9 +59,6 @@ void main(List<String> args) async {
     Admin.handleConfirmation(),
     options: checker,
   );
-
-  // Handle guessed word
-  bot.onText(guessHandler());
 
   // Handle any unanswered callback queries
   bot.onCallbackQuery(

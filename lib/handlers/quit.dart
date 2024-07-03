@@ -29,14 +29,18 @@ final quitPattern = RegExp(r"quit:(yes|no)");
 /// Handles the callback query for the quit interaction
 Handler handleQuitInteraction() {
   return (ctx) async {
+    ctx.answerCallbackQuery();
     final user = await WordleUser.init(ctx.id.id);
     final game = await WordleDB.today();
     final data = ctx.callbackQuery!.data!;
     bool quit = data == "quit:yes";
 
-    await ctx.api.deleteMessage(ctx.id, ctx.message!.messageId);
+    await ctx.editMessageText(
+      "✅ Quit confirmed.",
+      replyMarkup: InlineKeyboard(),
+    );
     if (!quit) {
-      await ctx.api.sendMessage(ctx.id, "Alright, let's continue.");
+      await ctx.reply("Alright, let's continue.");
       return;
     }
 
@@ -49,13 +53,11 @@ Handler handleQuitInteraction() {
     await game.save();
 
     // Now let's tell the user today's word
-    await ctx.api.sendMessage(
-      ctx.id,
+    await ctx.reply(
       "Today's word is <b>${game.word}</b>.",
       parseMode: ParseMode.html,
     );
-    await ctx.api.sendMessage(
-      ctx.id,
+    await ctx.reply(
       "See ya with the next word in ${game.formattedDurationTillNext}",
     );
   };
