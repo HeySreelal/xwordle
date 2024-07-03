@@ -441,12 +441,11 @@ packages:
   televerse:
     dependency: "direct main"
     description:
-      path: "."
-      ref: dev
-      resolved-ref: c49c56b97b0506545807d6dd4df1c12848cbd2e4
-      url: "https://github.com/HeySreelal/televerse/"
-    source: git
-    version: "1.21.0"
+      name: televerse
+      sha256: fef52bd315b7b9c3dd00e37273b76520d89b6af9459b334c04a179946f328a6f
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.21.1"
   term_glyph:
     dependency: transitive
     description:
