@@ -82,6 +82,7 @@ class WordleConfig {
       "SOL_ON_BEP20",
       "USDT_TRC20",
       "USDT_ON_TON",
+      "FETCHER",
     ];
 
     final config = {for (var key in keys) key: _getVal(lines, key)};
