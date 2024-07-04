@@ -79,7 +79,7 @@ Future<void> createLogFileAndSend(List<ErrorUser> errorUsers) async {
     }
 
     if (file.lengthSync() > 0) {
-      await bot.api.sendDocument(
+      await api.sendDocument(
         WordleConfig.instance.logsChannel,
         InputFile.fromFile(file),
       );
@@ -99,7 +99,7 @@ Future<void> createLogFileAndSend(List<ErrorUser> errorUsers) async {
 
 Future<Message?> sendLogs(String text) async {
   try {
-    return await bot.api.sendMessage(
+    return await api.sendMessage(
       WordleConfig.instance.logsChannel,
       text,
       parseMode: ParseMode.html,
@@ -116,7 +116,7 @@ Future<Message?> sendLogs(String text) async {
 
 Future<void> editLog(int messageId, String text) async {
   try {
-    await bot.api.editMessageText(
+    await api.editMessageText(
       WordleConfig.instance.logsChannel,
       messageId,
       text,

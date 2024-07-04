@@ -26,7 +26,7 @@ Future<bool> setShapeHandler(ID chatId) async {
   int tries = 0;
   do {
     if (tries >= 3) {
-      await bot.api.sendMessage(
+      await api.sendMessage(
         chatId,
         "I'm sorry, I didn't understand that. I'm cancelling shape selection. Please try again later.",
         replyMarkup: ReplyKeyboardRemove(),

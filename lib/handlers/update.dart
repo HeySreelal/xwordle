@@ -68,7 +68,7 @@ Future<void> notifyUsers() async {
         success++;
         continue;
       }
-      await bot.api.sendMessage(
+      await api.sendMessage(
         ChatID(notificationEnabledUsers[i].id),
         random(MessageStrings.notificationMsgs),
       );
