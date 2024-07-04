@@ -1,6 +1,9 @@
 part of '../xwordle.dart';
 
 class WordleConfig {
+  /// A flag indicating whether the bot should use Webhook
+  static bool get isWebhook => env['FETCHER'] == 'webhook';
+
   /// Returns boolean value if bot is running in production mode
   static bool get isProduction => env['MODE'] == 'production';
 
@@ -79,6 +82,7 @@ class WordleConfig {
       "SOL_ON_BEP20",
       "USDT_TRC20",
       "USDT_ON_TON",
+      "FETCHER",
     ];
 
     final config = {for (var key in keys) key: _getVal(lines, key)};

@@ -280,4 +280,7 @@ Your donations help keep the game running smoothly and bring new features to enj
 
 Your donations help keep the game running smoothly and bring new features to enjoy! 💖
 """;
+
+  static const privacyText =
+      "Your privacy matters to us. Wordle Bot collects minimal data necessary for gameplay, such as your Telegram first name and user ID. We do not gather any personally identifiable information beyond this. For more details, you can read our full privacy statement at Privacy Statement.";
 }
