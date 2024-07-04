@@ -39,6 +39,7 @@ part 'services/dict.dart';
 part 'utils/utils.dart';
 part 'handlers/donate.dart';
 part 'handlers/inline.dart';
+part 'handlers/privacy.dart';
 
 /// The Raw API instance.
 final api = RawAPI(WordleConfig.instance.token);

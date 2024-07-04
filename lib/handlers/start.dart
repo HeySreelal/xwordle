@@ -16,7 +16,7 @@ Future<void> doFirstTimeStuffs(Context ctx) async {
   WordleDB.incrementUserCount().ignore();
   await ctx.replyWithPhoto(
     InputFile.fromUrl(
-      "https://televerse-space.web.app/assets/wordle-welcome.png",
+      "https://xwordle.web.app/assets/welcome.png",
     ),
     caption: MessageStrings.welcomeMessage,
     replyMarkup: InlineKeyboard().add("🎮 Start Game", "start"),

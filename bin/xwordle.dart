@@ -29,6 +29,7 @@ void main(List<String> args) async {
   bot.command("cancel", cancelHandler());
   bot.command("donate", donateHandler());
   bot.command("nudge", nudgeDonation);
+  bot.command("privacy", privacyHandler());
 
   // Handling errors
   bot.onError(errorHandler);
