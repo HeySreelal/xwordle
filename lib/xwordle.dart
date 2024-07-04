@@ -40,18 +40,26 @@ part 'utils/utils.dart';
 part 'handlers/donate.dart';
 part 'handlers/inline.dart';
 
+/// The Raw API instance.
+final api = RawAPI(WordleConfig.instance.token);
+
 late Bot bot;
 late Conversation conv;
 
+/// Initializes the Bot with set fetcher
 Future<void> init() async {
-  final server = await HttpServer.bind(InternetAddress.anyIPv6, 8080);
-  final webhook = WordleConfig.isDebug
-      ? LongPolling.allUpdates()
-      : Webhook(
-          server,
-          shouldSetWebhook: false,
-          allowedUpdates: UpdateType.values,
-        );
-  bot = Bot(WordleConfig.instance.token, fetcher: webhook);
+  if (WordleConfig.isWebhook) {
+    final server = await HttpServer.bind(InternetAddress.anyIPv6, 8080);
+    final webhook = Webhook(
+      server,
+      shouldSetWebhook: false,
+      allowedUpdates: UpdateType.values,
+    );
+    bot = Bot.fromAPI(api, fetcher: webhook);
+  } else {
+    final longPoll = LongPolling.allUpdates();
+    bot = Bot.fromAPI(api, fetcher: longPoll);
+  }
+
   conv = Conversation(bot);
 }
