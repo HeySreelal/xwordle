@@ -1,47 +1,39 @@
 part of '../xwordle.dart';
 
-Future<void> doFirstTimeStuffs(Context ctx) async {
-  if (ctx.args.isNotEmpty) {
-    final referrer = int.tryParse(ctx.args[0]);
-    if (referrer != null) {
-      ctx.api
-          .sendMessage(
-            ChatID(referrer),
-            "🎉 ${ctx.from?.firstName} joined with your referral link.",
-          )
-          .ignore();
-      WordleDB.referralUpdate(ctx.id.id, referrer).ignore();
-    }
-  }
-  WordleDB.incrementUserCount().ignore();
-  await ctx.replyWithPhoto(
-    InputFile.fromUrl(
-      "https://xwordle.web.app/assets/welcome.png",
-    ),
-    caption: MessageStrings.welcomeMessage,
-    replyMarkup: InlineKeyboard().add("🎮 Start Game", "start"),
-  );
-}
-
 Handler startHandler({bool callback = false}) {
   return (Context ctx) async {
+    // Answer if user reached here via callback
     if (callback) {
       await ctx.answerCallbackQuery();
     }
+
+    // Most probably, user tapped the Inline Query Result Button :)
     if (ctx.args.isNotEmpty && ctx.args[0] == 'donate') {
       await donateHandler()(ctx);
       return;
     }
-    final game = await WordleDB.today();
-    final user = await WordleUser.init(ctx.id.id);
+
+    // Get today's game and user profile
+    final futures = [
+      WordleDB.today(),
+      WordleUser.init(ctx.id.id),
+    ];
+    final List<dynamic> result = await Future.wait(futures);
+    WordleDay game = result[0];
+    WordleUser user = result[1];
+
+    // User is a first time visiter
     if (user.firstTime) {
       await doFirstTimeStuffs(ctx);
       return;
     }
+
+    // Set user name
     if (user.name == WordleUser.defaultName && ctx.from != null) {
-      user.name = ctx.message!.from!.firstName;
+      user.name = ctx.from!.firstName;
     }
 
+    // If the current game index is just the same as user's last game, you know they've already played
     if (game.index == user.lastGame) {
       final msg = random(MessageStrings.alreadyPlayed).replaceAll(
         "{DURATION}",
@@ -65,9 +57,34 @@ Handler startHandler({bool callback = false}) {
     user.tries = [];
     if (user.currentGame != game.index) {
       user.currentGame = game.index;
-      user.totalGamesPlayed++;
     }
-    user.save();
-    game.save();
+
+    Future.wait([
+      user.save(),
+      game.save(),
+    ]).ignore();
   };
+}
+
+Future<void> doFirstTimeStuffs(Context ctx) async {
+  if (ctx.args.isNotEmpty) {
+    final referrer = int.tryParse(ctx.args[0]);
+    if (referrer != null) {
+      ctx.api
+          .sendMessage(
+            ChatID(referrer),
+            "🎉 ${ctx.from?.firstName} joined with your referral link.",
+          )
+          .ignore();
+      WordleDB.referralUpdate(ctx.id.id, referrer).ignore();
+    }
+  }
+  WordleDB.incrementUserCount().ignore();
+  await ctx.replyWithPhoto(
+    InputFile.fromUrl(
+      "https://xwordle.web.app/assets/welcome.png",
+    ),
+    caption: MessageStrings.welcomeMessage,
+    replyMarkup: InlineKeyboard().add("🎮 Start Game", "start"),
+  );
 }
