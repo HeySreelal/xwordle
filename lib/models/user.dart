@@ -102,6 +102,9 @@ class WordleUser {
   /// Game end time
   DateTime? endTime;
 
+  /// Points
+  int points;
+
   /// Constructs a WordleSession
   WordleUser({
     this.currentGame = 0,
@@ -123,6 +126,7 @@ class WordleUser {
     this.firstTime = false,
     this.endTime,
     this.startTime,
+    this.points = 0,
   })  : joinedDate = joinedDate ?? DateTime.now(),
         hintShape = hintShape ?? HintShape.circle;
 
@@ -146,6 +150,7 @@ class WordleUser {
       'optedOutOfBroadcast': optedOutOfBroadcast,
       'startTime': startTime?.unixTime,
       'endTime': endTime?.unixTime,
+      'points': points,
     };
   }
 
@@ -169,6 +174,7 @@ class WordleUser {
       optedOutOfBroadcast: map['optedOutOfBroadcast'] ?? false,
       startTime: (map["startTime"] as int?)?.toDateTime(),
       endTime: (map["endTime"] as int?)?.toDateTime(),
+      points: map['points'] ?? 0,
     );
   }
 
@@ -215,6 +221,7 @@ class WordleUser {
     optedOutOfBroadcast = false;
     startTime = null;
     endTime = null;
+    points = 0;
     await save();
   }
 }
