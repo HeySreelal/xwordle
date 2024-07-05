@@ -36,7 +36,7 @@ class Hint {
     if (lastUsedGame == gameNo()) {
       return "Used";
     }
-    return left.toString();
+    return "$left left";
   }
 }
 
@@ -57,6 +57,9 @@ class PremiumHints {
   /// (Metrics) Hint purchase count
   int purchases;
 
+  /// (Metrics) Total purchase volume
+  int purchaseVolume;
+
   /// Constructs the Premium Hints object with the sepcified number of hints
   ///
   /// All hint types will be initialized to zero.
@@ -65,6 +68,7 @@ class PremiumHints {
     Hint? letterReveals,
     this.purchases = 0,
     this.usedHintsCount = 0,
+    this.purchaseVolume = 0,
   })  : extraAttempts = extraAttempts ?? Hint(),
         letterReveals = letterReveals ?? Hint();
 
@@ -76,6 +80,7 @@ class PremiumHints {
       hints.letterReveals = Hint.fromMap(map["letterReveals"]);
       hints.purchases = map["purchases"] ?? 0;
       hints.usedHintsCount = map["usedHintsCount"] ?? 0;
+      hints.purchaseVolume = map["purchaseVolume"] ?? 0;
     }
     return hints;
   }
@@ -83,14 +88,22 @@ class PremiumHints {
   /// Converts to a JSON encodable Map
   Map<String, dynamic> toMap() {
     return {
-      'extraAttempts': extraAttempts,
-      'letterReveals': letterReveals,
+      'extraAttempts': extraAttempts.toMap(),
+      'letterReveals': letterReveals.toMap(),
       'purchases': purchases,
       'usedHintsCount': usedHintsCount,
+      'purchaseVolume': purchaseVolume,
     };
   }
 
   bool get available => extraAttempts.available || letterReveals.available;
 
   bool get lowOnHints => (extraAttempts.lowOnHint || letterReveals.lowOnHint);
+
+  void addPlan(Plan plan) {
+    extraAttempts.left = extraAttempts.left + plan.extraAttemptCount;
+    letterReveals.left = extraAttempts.left + plan.letterRevealCount;
+    purchases++;
+    purchaseVolume += plan.amount;
+  }
 }

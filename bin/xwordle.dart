@@ -42,8 +42,15 @@ void main(List<String> args) async {
   bot.callbackQuery(donatePattern, donateCallbackHandler());
   bot.callbackQuery(starsCountPattern, starsCountSelectionHandler());
   bot.callbackQuery("start", startHandler(callback: true));
+
+  // Hints related callback handlers
   bot.callbackQuery(hintsGetPattern, hintsGetHandler());
   bot.callbackQuery(hintsIndividual, hintsIndividualHandler());
+  bot.callbackQuery(buykickstart, buyHandler(buykickstart));
+  bot.callbackQuery(buyadvantage, buyHandler(buyadvantage));
+  bot.callbackQuery(buydomination, buyHandler(buydomination));
+  bot.callbackQuery(letterRevealPattern, buyHandler(letterreveal));
+  bot.callbackQuery(extraattemptPattern, buyHandler(extraattempt));
 
   // Admin lock checker
   final checker = ScopeOptions(customPredicate: Admin.check);
@@ -53,6 +60,8 @@ void main(List<String> args) async {
   bot.command("count", Admin.countHandler(), options: checker);
   bot.command('testbroadcast', Admin.testBroadcastHandler(), options: checker);
   bot.command('stats', Admin.statsHandler(), options: checker);
+  bot.command('paid', handleSuccessPaymentForHints(buyadvantage),
+      options: checker);
 
   // Admin Broadcast pattern
   bot.hears(Admin.broadcastPattern, Admin.handleAdminText(), options: checker);
