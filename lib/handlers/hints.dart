@@ -183,6 +183,17 @@ class Plan {
     this.letterRevealCount = 0,
   });
 
+  Map<String, dynamic> toMap() {
+    return {
+      "title": title,
+      "description": description,
+      "payload": payload,
+      "amount": amount,
+      "extraAttemptCount": extraAttemptCount,
+      "letterRevealCount": letterRevealCount,
+    };
+  }
+
   static const all = [
     Plan(
       title: "Letter Reveal x1",
@@ -297,7 +308,17 @@ Handler buyHandler(String pattern) {
 Handler handleSuccessPaymentForHints(String payload) {
   final plan = Plan.all.singleWhere((e) => e.payload == payload);
   return (ctx) async {
+    final r = ctx.msg?.successfulPayment;
     final user = await WordleUser.init(ctx.id.id);
+
+    if (r != null) {
+      db.doc("players/${ctx.id.id}/payments/${r.telegramPaymentChargeId}").set({
+        "successful_payment": r.toJson(),
+        "plan": plan.toMap(),
+        "date": DateTime.now().unixTime,
+        "user": user.id,
+      }).ignore();
+    }
 
     user.hints.addPlan(plan);
     await user.save();
@@ -308,6 +329,8 @@ Handler handleSuccessPaymentForHints(String payload) {
 Here is your current hint balance:
 - Extra Attempts: ${user.hints.extraAttempts.left}
 - Letter Reveals: ${user.hints.letterReveals.left}
+
+Start a new game and use the /hint command to access helpful power-ups. ⚡️
 """;
     text += hintbalance;
     await ctx.reply(
