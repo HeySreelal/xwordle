@@ -12,6 +12,7 @@ const letterreveal = "letterreveal";
 const extraattempt = "extraattempt";
 final letterRevealPattern = RegExp(r"letterreveal:(.*)");
 final extraattemptPattern = RegExp(r"extraattempt:(.*)");
+const backToPricingPattern = "back:pricing";
 
 Handler hintsHandler() {
   return (ctx) async {
@@ -72,7 +73,7 @@ Here is your current hint balance:
   return "$greeting\n\n$hintInfo\n\n$hintBalance$lowHintPrompt";
 }
 
-Handler hintsGetHandler() {
+Handler hintsGetHandler({bool shouldEdit = false}) {
   const pic = "https://xwordle.web.app/assets/hints.png";
   const pricingMessage = """
 ✨ <b>Wordle Hint Pricing & Packs</b> ✨
@@ -99,6 +100,7 @@ Handler hintsGetHandler() {
 
 Purchase your hints and packs to enhance your Wordle experience!
 """;
+
   final board = InlineKeyboard()
       .add("Get Individual Hints 🌟", hintsIndividual)
       .row()
@@ -107,13 +109,22 @@ Purchase your hints and packs to enhance your Wordle experience!
       .add("🔥 Get Wordle Advantage Pack", buyadvantage)
       .row()
       .add("✨ Get Wordle Domination Kit", buydomination);
+
   return (ctx) async {
-    await ctx.replyWithPhoto(
-      InputFile.fromUrl(pic),
-      caption: pricingMessage,
-      parseMode: ParseMode.html,
-      replyMarkup: board,
-    );
+    if (shouldEdit) {
+      await ctx.editMessageCaption(
+        caption: pricingMessage,
+        parseMode: ParseMode.html,
+        replyMarkup: board,
+      );
+    } else {
+      await ctx.replyWithPhoto(
+        InputFile.fromUrl(pic),
+        caption: pricingMessage,
+        parseMode: ParseMode.html,
+        replyMarkup: board,
+      );
+    }
   };
 }
 
@@ -143,7 +154,9 @@ Handler hintsIndividualHandler() {
       .row()
       .add("x1", "$extraattempt:1")
       .add("x3", "$extraattempt:3")
-      .add("x5", "$extraattempt:5");
+      .add("x5", "$extraattempt:5")
+      .row()
+      .add("⏪ Go back", backToPricingPattern);
   return (ctx) async {
     await ctx.editMessageCaption(
       caption: text,

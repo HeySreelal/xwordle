@@ -45,6 +45,7 @@ void main(List<String> args) async {
 
   // Hints related callback handlers
   bot.callbackQuery(hintsGetPattern, hintsGetHandler());
+  bot.callbackQuery(backToPricingPattern, hintsGetHandler(shouldEdit: true));
   bot.callbackQuery(hintsIndividual, hintsIndividualHandler());
   bot.callbackQuery(buykickstart, buyHandler(buykickstart));
   bot.callbackQuery(buyadvantage, buyHandler(buyadvantage));

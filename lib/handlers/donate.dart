@@ -182,7 +182,7 @@ Handler successPaymentHandler() {
       return;
     }
 
-    final hintPayloads = [
+    const hintPayloads = [
       "$letterreveal:1",
       "$letterreveal:3",
       "$letterreveal:5",
