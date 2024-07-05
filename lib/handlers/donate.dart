@@ -73,6 +73,7 @@ Handler donateCallbackHandler() {
   }
 
   return (ctx) async {
+    ctx.answerCallbackQuery().ignore();
     final data = ctx.callbackQuery!.data!;
     final method = DonationMethod.fromString(data.split(":")[1]);
     final text = switch (method) {
@@ -113,6 +114,7 @@ Handler donateCallbackHandler() {
 
 Handler starsCountSelectionHandler() {
   return (ctx) async {
+    ctx.answerCallbackQuery().ignore();
     int count;
     try {
       final d = ctx.callbackQuery!.data!.split(":")[1];

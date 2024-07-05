@@ -91,6 +91,7 @@ Handler hintsGetHandler({bool shouldEdit = false}) {
   const picUrl = "https://xwordle.web.app/assets/hints.png";
 
   return (ctx) async {
+    ctx.answerCallbackQuery().ignore();
     final board = buildInlineKeyboard();
 
     if (shouldEdit) {
@@ -155,6 +156,7 @@ Handler hintsIndividualHandler() {
       .add("⏪ Go back", backToPricingPattern);
 
   return (ctx) async {
+    ctx.answerCallbackQuery().ignore();
     await ctx.editMessageCaption(
       caption: MessageStrings.individualPricing,
       replyMarkup: board,
@@ -165,6 +167,7 @@ Handler hintsIndividualHandler() {
 
 Handler buyHandler(String pattern) {
   return (ctx) async {
+    ctx.answerCallbackQuery().ignore();
     final data = ctx.callbackQuery!.data!;
 
     Plan plan;
@@ -287,7 +290,8 @@ Handler useHintHandler() {
     }
 
     await _updateUserHints(user, data);
-    await _showHintOptions(ctx, user);
+    _showHintOptions(ctx, user).ignore();
+    ctx.answerCallbackQuery().ignore();
   };
 }
 

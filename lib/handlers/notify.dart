@@ -30,6 +30,7 @@ Handler notifyHandler() {
 /// Handles enables the notification
 Handler handleNotificationTap() {
   return (ctx) async {
+    await ctx.answerCallbackQuery();
     final user = await WordleUser.init(ctx.id.id);
 
     user.notify = ctx.callbackQuery?.data == "notify_yes";
