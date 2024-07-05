@@ -43,6 +43,7 @@ part 'handlers/update.dart';
 part 'models/admin.dart';
 part 'models/hint_shape.dart';
 part 'models/premium_hints.dart';
+part 'models/pricing_plans.dart';
 part 'models/user.dart';
 
 // Services
