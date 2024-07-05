@@ -45,6 +45,8 @@ void main(List<String> args) async {
 
   // Hints related callback handlers
   bot.callbackQuery(hintsGetPattern, hintsGetHandler());
+  bot.callbackQuery(useLetterPattern, useHintHandler());
+  bot.callbackQuery(useAttemptPattern, useHintHandler());
   bot.callbackQuery(backToPricingPattern, hintsGetHandler(shouldEdit: true));
   bot.callbackQuery(hintsIndividual, hintsIndividualHandler());
   bot.callbackQuery(buykickstart, buyHandler(buykickstart));
@@ -73,12 +75,6 @@ void main(List<String> args) async {
     Admin.releasePattern,
     Admin.handleConfirmation(),
     options: checker,
-  );
-
-  // Handle any unanswered callback queries
-  bot.onCallbackQuery(
-    (ctx) => ctx.answerCallbackQuery(),
-    options: ScopeOptions.forked(),
   );
 
   // Listen for inline queries

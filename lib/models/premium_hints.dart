@@ -10,7 +10,7 @@ class Hint {
   /// Creates the hint object
   Hint({
     this.lastUsedGame,
-    this.left = 0,
+    this.left = 2,
   });
 
   factory Hint.fromMap(Map<String, dynamic>? map) {

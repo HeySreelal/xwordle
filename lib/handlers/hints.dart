@@ -3,7 +3,7 @@ part of '../xwordle.dart';
 // Hints Patterns
 const hintsGetPattern = "hints:get";
 const useLetterPattern = "hints:use-letter";
-const useAttemptPattern = "hints:use-attmpt";
+const useAttemptPattern = "hints:use-attempt";
 const hintsIndividual = "hints:individual";
 const buykickstart = "buy:kickstart";
 const buyadvantage = "buy:advantage";
@@ -47,9 +47,12 @@ Handler hintsHandler() {
         );
 
     await ctx.reply(
-      "${showNewTag ? "🆕 " : ""}You can use one of each hints once in a game.\n- Extra Attempt: Guess a word without including it on your 6 tries.\n- Letter Reveal: Reveal a letter from the actual word.\n\n"
+      "${showNewTag ? "🆕 " : ""}You can use one of each hints once in a game.\n\n"
+      "- <b>Extra Attempt</b>: Guess a word without including it on your 6 tries.\n"
+      "- <b>Letter Reveal</b>: Reveal a letter from the actual word.\n\n"
       "Which hint are you choosing to use now?",
       replyMarkup: useHintBoard,
+      parseMode: ParseMode.html,
     );
   };
 }
@@ -337,6 +340,155 @@ Start a new game and use the /hint command to access helpful power-ups. ⚡️
       text,
       parseMode: ParseMode.html,
       messageEffectId: "5046509860389126442",
+    );
+  };
+}
+
+(int, String) revealOptimalLetter(String word, List<String> tries) {
+  // Create a set to track revealed correct positions
+  Set<int> revealedPositions = {};
+
+  // Iterate through the tries and track the correct positions
+  for (String guess in tries) {
+    for (int i = 0; i < word.length; i++) {
+      if (guess[i] == word[i]) {
+        revealedPositions.add(i);
+      }
+    }
+  }
+
+  // Try to find a letter that is in the word but not in the correct position
+  for (String guess in tries) {
+    for (int i = 0; i < word.length; i++) {
+      if (guess[i] != word[i] && !revealedPositions.contains(i)) {
+        return (i + 1, word[i]);
+      }
+    }
+  }
+
+  // If no such letter is found, find an unrevealed letter
+  for (int i = 0; i < word.length; i++) {
+    if (!revealedPositions.contains(i)) {
+      return (i + 1, word[i]);
+    }
+  }
+
+  // If all letters are revealed or no optimal letter is found, return a random letter
+  Random random = Random();
+  int i = random.nextInt(word.length);
+  return (i + 1, word[i]);
+}
+
+Handler useHintHandler() {
+  return (ctx) async {
+    final user = await WordleUser.init(ctx.id.id);
+    final data = ctx.callbackQuery!.data!.split(":")[1];
+    final game = gameNo();
+    final cw = getWord(game);
+
+    // either use-letter, use-attempt
+    if (data == "use-letter") {
+      if (user.hints.letterReveals.lastUsedGame == game) {
+        await ctx.answerCallbackQuery(
+          text: "You have already used this power-up for the current game. 🫣",
+          showAlert: true,
+        );
+        return;
+      }
+      final msg = await ctx.reply("Give me a second to think... 🤔💭");
+      final (i, l) = revealOptimalLetter(cw, user.tries);
+      await api.deleteMessage(ctx.id, msg.messageId);
+      await ctx.reply(
+        "Here we go! 🫣 <tg-spoiler>The ${i}th letter is $l.</tg-spoiler>. Time for your guesses.",
+        parseMode: ParseMode.html,
+      );
+      user.hints.letterReveals.left--;
+      user.hints.letterReveals.lastUsedGame = game;
+      user.hints.usedHintsCount++;
+    }
+
+    if (data == "use-attempt") {
+      if (user.hints.extraAttempts.lastUsedGame == game) {
+        await ctx.answerCallbackQuery(
+          text: "You have already used this power-up for the current game. 🫣",
+          showAlert: true,
+        );
+        return;
+      }
+
+      await ctx.reply(
+        "Shoot your guess now. I'll take it as your free-hit. 😎",
+      );
+      final c = await conv.waitForTextMessage(chatId: ctx.id);
+      if (c == null) {
+        await ctx.reply(
+          "Oops, something went wrong I didn't get that. Don't worry, we haven't reduced the power-up count.",
+        );
+      } else {
+        final text = c.msg!.text!;
+
+        // If the user is not playing a game, tell them to start one
+        if (!user.onGame) {
+          await ctx.reply(random(MessageStrings.notOnGameMessages));
+          return;
+        }
+
+        final guess = text.trim().toLowerCase();
+        if (guess.length != 5) {
+          await ctx.reply(random(MessageStrings.mustBe5Letters));
+          return;
+        }
+
+        final az = RegExp(r'[a-z]');
+
+        if (guess.split('').any((l) => !az.hasMatch(l))) {
+          await ctx.reply(random(MessageStrings.mustBeLetters));
+          return;
+        }
+
+        if (!await Dictionary.existingWord(guess)) {
+          await ctx.reply(random(MessageStrings.notValidWord));
+          return;
+        }
+
+        final result = getBoxes(cw, guess, user: user);
+        await ctx.reply(
+          "Here's the result: 🫣.",
+        );
+        await ctx.reply(result.join(" "));
+        await ctx.reply("Time to continue guessing... 🤔");
+        user.hints.extraAttempts.left--;
+        user.hints.extraAttempts.lastUsedGame = game;
+        user.hints.usedHintsCount++;
+      }
+    }
+    user.save().ignore();
+    WordleDB.incrementHintsUsage(data).ignore();
+
+    final useHintBoard = InlineKeyboard()
+        .add(
+          "Letter Reveal (${user.hints.letterReveals.leftCount()})",
+          useLetterPattern,
+        )
+        .add(
+          "Extra Attempt (${user.hints.extraAttempts.leftCount()})",
+          useAttemptPattern,
+        )
+        .row()
+        .add(
+          "🌟 Get more Hints",
+          hintsGetPattern,
+        );
+    bool showNewTag = DateTime.now().isBefore(PremiumHints.noLongerNew);
+    showNewTag = showNewTag && user.hints.usedHintsCount < 3;
+
+    await ctx.editMessageText(
+      "${showNewTag ? "🆕 " : ""}You can use one of each hints once in a game.\n\n"
+      "- <b>Extra Attempt</b>: Guess a word without including it on your 6 tries.\n"
+      "- <b>Letter Reveal</b>: Reveal a letter from the actual word.\n\n"
+      "Which hint are you choosing to use now?",
+      replyMarkup: useHintBoard,
+      parseMode: ParseMode.html,
     );
   };
 }

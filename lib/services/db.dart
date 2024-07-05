@@ -53,4 +53,12 @@ class WordleDB {
       "blockedPlayers": FieldValue.increment(newBlocks),
     });
   }
+
+  static Future<void> incrementHintsUsage(String type) async {
+    final v = FieldValue.increment(1);
+    final k = type == "use-letter" ? "letterRevealUsage" : "extraAttemptUsage";
+    await db.doc("game/config").update({
+      k: v,
+    });
+  }
 }
