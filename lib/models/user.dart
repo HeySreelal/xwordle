@@ -1,48 +1,5 @@
 part of '../xwordle.dart';
 
-/// The wordle hint shape, used to display the hint
-enum HintShape {
-  circle._("🟢", "⚫️", "🟡"),
-  square._("🟩", "⬛️", "🟨"),
-  heart._("💚", "🖤", "💛"),
-  ;
-
-  final String correct;
-  final String wrong;
-  final String misplaced;
-
-  const HintShape._(this.correct, this.wrong, this.misplaced);
-
-  String get name => toString().split('.').last;
-
-  static HintShape fromName(String name) {
-    return HintShape.values.firstWhere(
-      (e) => e.name == name,
-      orElse: () => HintShape.circle,
-    );
-  }
-
-  static HintShape fromText(String text) {
-    return HintShape.values.firstWhere(
-      (e) => text.toLowerCase().contains(e.name.toLowerCase()),
-      orElse: () => HintShape.circle,
-    );
-  }
-
-  String get shapes {
-    return "$correct $misplaced $wrong";
-  }
-
-  static HintShape random() {
-    return HintShape.values[Random().nextInt(HintShape.values.length)];
-  }
-
-  static const circleText = "Circle 🟢";
-  static const squareText = "Square 🟨";
-  static const heartText = "Heart 🖤";
-  static const randText = "Random 🎲";
-}
-
 /// The wordle session, keeps track of the current wordle of the user, and their progress
 class WordleUser {
   /// The current game id
@@ -105,6 +62,9 @@ class WordleUser {
   /// Points
   int points;
 
+  /// Premium Hints available to the user
+  PremiumHints hints;
+
   /// Constructs a WordleSession
   WordleUser({
     this.currentGame = 0,
@@ -127,8 +87,10 @@ class WordleUser {
     this.endTime,
     this.startTime,
     this.points = 0,
+    PremiumHints? hints,
   })  : joinedDate = joinedDate ?? DateTime.now(),
-        hintShape = hintShape ?? HintShape.circle;
+        hintShape = hintShape ?? HintShape.circle,
+        hints = hints ?? PremiumHints();
 
   Map<String, dynamic> toJson() {
     return {
@@ -151,6 +113,7 @@ class WordleUser {
       'startTime': startTime?.unixTime,
       'endTime': endTime?.unixTime,
       'points': points,
+      'hints': hints.toMap(),
     };
   }
 
@@ -175,6 +138,7 @@ class WordleUser {
       startTime: (map["startTime"] as int?)?.toDateTime(),
       endTime: (map["endTime"] as int?)?.toDateTime(),
       points: map['points'] ?? 0,
+      hints: PremiumHints.fromMap(map['hints']),
     );
   }
 
@@ -223,5 +187,9 @@ class WordleUser {
     endTime = null;
     points = 0;
     await save();
+  }
+
+  bool get hasHintsAvailable {
+    return hints.available;
   }
 }

@@ -30,6 +30,7 @@ void main(List<String> args) async {
   bot.command("donate", donateHandler());
   bot.command("nudge", nudgeDonation);
   bot.command("privacy", privacyHandler());
+  bot.command("hint", hintsHandler());
 
   // Handling errors
   bot.onError(errorHandler);
@@ -41,6 +42,8 @@ void main(List<String> args) async {
   bot.callbackQuery(donatePattern, donateCallbackHandler());
   bot.callbackQuery(starsCountPattern, starsCountSelectionHandler());
   bot.callbackQuery("start", startHandler(callback: true));
+  bot.callbackQuery(hintsGetPattern, hintsGetHandler());
+  bot.callbackQuery(hintsIndividual, hintsIndividualHandler());
 
   // Admin lock checker
   final checker = ScopeOptions(customPredicate: Admin.check);

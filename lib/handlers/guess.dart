@@ -3,14 +3,7 @@ part of '../xwordle.dart';
 /// Handles the user guesses
 Handler guessHandler() {
   return (ctx) async {
-    // Get today's game and user profile
-    final futures = [
-      WordleDB.today(),
-      WordleUser.init(ctx.id.id),
-    ];
-    final List<dynamic> fr = await Future.wait(futures);
-    WordleDay game = fr[0];
-    WordleUser user = fr[1];
+    final (user, game) = await getUserAndGame(ctx.id.id);
 
     // If the user is not playing a game, tell them to start one
     if (!user.onGame) {

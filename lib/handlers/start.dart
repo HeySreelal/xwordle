@@ -13,14 +13,7 @@ Handler startHandler({bool callback = false}) {
       return;
     }
 
-    // Get today's game and user profile
-    final futures = [
-      WordleDB.today(),
-      WordleUser.init(ctx.id.id),
-    ];
-    final List<dynamic> result = await Future.wait(futures);
-    WordleDay game = result[0];
-    WordleUser user = result[1];
+    final (user, game) = await getUserAndGame(ctx.id.id);
 
     // User is a first time visiter
     if (user.firstTime) {

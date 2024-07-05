@@ -187,3 +187,14 @@ Future<String> statsMessage({int? requestedUser, bool autoLog = false}) async {
 extension FullName on User {
   String get fullName => "$firstName ${lastName ?? ""}";
 }
+
+Future<(WordleUser user, WordleDay day)> getUserAndGame(int id) async {
+  final futures = [
+    WordleDB.today(),
+    WordleUser.init(id),
+  ];
+  final List<dynamic> fr = await Future.wait(futures);
+  WordleDay game = fr[0];
+  WordleUser user = fr[1];
+  return (user, game);
+}
