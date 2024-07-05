@@ -58,6 +58,7 @@ Handler startHandler({bool callback = false}) {
     if (user.currentGame != game.index) {
       user.currentGame = game.index;
     }
+    user.startTime = DateTime.now();
 
     Future.wait([
       user.save(),

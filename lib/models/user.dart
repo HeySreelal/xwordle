@@ -96,6 +96,12 @@ class WordleUser {
   /// Whether the user is a first time visitor
   bool firstTime;
 
+  /// Game start time
+  DateTime? startTime;
+
+  /// Game end time
+  DateTime? endTime;
+
   /// Constructs a WordleSession
   WordleUser({
     this.currentGame = 0,
@@ -115,6 +121,8 @@ class WordleUser {
     HintShape? hintShape,
     this.optedOutOfBroadcast = false,
     this.firstTime = false,
+    this.endTime,
+    this.startTime,
   })  : joinedDate = joinedDate ?? DateTime.now(),
         hintShape = hintShape ?? HintShape.circle;
 
@@ -122,7 +130,7 @@ class WordleUser {
     return {
       'currentGame': currentGame,
       'id': id,
-      'joinedDate': joinedDate.millisecondsSinceEpoch ~/ 1000,
+      'joinedDate': joinedDate.unixTime,
       'lastGame': lastGame,
       'maxStreak': maxStreak,
       'name': name,
@@ -136,6 +144,8 @@ class WordleUser {
       'perfectGames': perfectGames,
       'hintShape': hintShape.name,
       'optedOutOfBroadcast': optedOutOfBroadcast,
+      'startTime': startTime?.unixTime,
+      'endTime': endTime?.unixTime,
     };
   }
 
@@ -143,9 +153,7 @@ class WordleUser {
     return WordleUser(
       currentGame: map['currentGame'] as int,
       id: map['id'] as int,
-      joinedDate: DateTime.fromMillisecondsSinceEpoch(
-        (map['joinedDate'] as int) * 1000,
-      ),
+      joinedDate: (map['joinedDate'] as int).toDateTime(),
       lastGame: map['lastGame'] as int,
       maxStreak: map['maxStreak'] as int,
       name: map['name'] as String,
@@ -159,16 +167,20 @@ class WordleUser {
       perfectGames: map['perfectGames'] ?? 0,
       hintShape: HintShape.fromName(map['hintShape'] ?? 'circle'),
       optedOutOfBroadcast: map['optedOutOfBroadcast'] ?? false,
+      startTime: (map["startTime"] as int?)?.toDateTime(),
+      endTime: (map["endTime"] as int?)?.toDateTime(),
     );
   }
 
   static const String defaultName = 'Player';
 
+  String get docId => "players/$id";
+
   Future<void> save() async {
     if (firstTime) {
-      await db.doc("players/$id").set(toJson());
+      await db.doc(docId).set(toJson());
     } else {
-      await db.doc("players/$id").update(toJson());
+      await db.doc(docId).update(toJson());
     }
   }
 
@@ -176,7 +188,7 @@ class WordleUser {
     final doc = await db.doc("players/$id").get();
     if (!doc.exists) {
       final user = WordleUser(id: id, firstTime: true);
-      user.save();
+      user.save().ignore();
       return user;
     }
     return WordleUser.fromMap(doc.data()!);
@@ -201,6 +213,8 @@ class WordleUser {
     perfectGames = 0;
     hintShape = HintShape.circle;
     optedOutOfBroadcast = false;
+    startTime = null;
+    endTime = null;
     await save();
   }
 }
