@@ -1,5 +1,7 @@
 part of '../xwordle.dart';
 
+const startPattern = "start";
+
 Handler startHandler({bool callback = false}) {
   return (Context ctx) async {
     if (callback) {

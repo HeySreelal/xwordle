@@ -79,9 +79,11 @@ A new word will be available every day. The bot will send you notification when 
 
 📱 <b>Available Commands</b>
 /start - Start the game
+/hint - Get some hints
+/invite - Invite your friends to the game
+/meaning - Get the meaning of the word
 /notify - Enable/Disable notifications
 /next - Shows time left for next word
-/meaning - Get the meaning of the word
 /profile - Show your profile and stats
 /shape - Change the shape of the hint
 /feedback - Send feedback to the developer
@@ -89,8 +91,7 @@ A new word will be available every day. The bot will send you notification when 
 /about - Show about message
 /settings - Show settings
 /quit - Quit the current game
-
-👛 /donate - Support bot development with a small donation 
+/donate - Support bot development with a small donation 
 
 Happy Wordleing! 🤓
 """;
@@ -321,5 +322,23 @@ Purchase your hints and packs to enhance your Wordle experience!
   • 1 Extra Attempt: ⭐️ 75 
   • 3 Extra Attempts: ⭐️ 225 
   • 5 Extra Attempts: ⭐️ 299  <i>(21% off)</i> 🔥 
+""";
+
+  static const referralInfo = """
+Hey {NAME}, earn amazing rewards by inviting your friend to Wordle Bot! ✨
+
+Here's your invite link:
+<code>{INVITE_LINK}</code>
+
+👫 You have invited {INVITE_COUNT} friends so far.
+""";
+
+  static const milestoneInfo = """
+<b>Milestones</b>
+- Invite 3 friends: Earn Letter Reveal pack
+- Invite 6 friends: Earn a Extra Attempt pack 🌟
+- Invite 9 friends: Earn the Kick Start Combo Pack 🔥
+
+Got even more friends? We have more milestones and surprises for you, I hope you'll find it out yourself. 🎁👀
 """;
 }

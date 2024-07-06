@@ -31,6 +31,7 @@ void main(List<String> args) async {
   bot.command("nudge", nudgeDonation);
   bot.command("privacy", privacyHandler());
   bot.command("hint", hintsHandler());
+  bot.command("invite", inviteHandler());
 
   // Handling errors
   bot.onError(errorHandler);
@@ -41,7 +42,8 @@ void main(List<String> args) async {
   bot.callbackQuery(settingsPattern, settingsCallback());
   bot.callbackQuery(donatePattern, donateCallbackHandler());
   bot.callbackQuery(starsCountPattern, starsCountSelectionHandler());
-  bot.callbackQuery("start", startHandler(callback: true));
+  bot.callbackQuery(startPattern, startHandler(callback: true));
+  bot.callbackQuery(milestoneInfoPattern, milestoneInfoHandler());
 
   // Hints related callback handlers
   bot.callbackQuery(hintsGetPattern, hintsGetHandler());

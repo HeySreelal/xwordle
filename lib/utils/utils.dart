@@ -185,7 +185,7 @@ Future<String> statsMessage({int? requestedUser, bool autoLog = false}) async {
 }
 
 extension FullName on User {
-  String get fullName => "$firstName ${lastName ?? ""}";
+  String get fullName => "$firstName ${lastName ?? ""}".trim();
 }
 
 Future<(WordleUser user, WordleDay day)> getUserAndGame(int id) async {
