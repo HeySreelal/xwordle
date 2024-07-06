@@ -132,7 +132,7 @@ String eval(String word, String guess) {
   const wrongSymbol = "-";
   const misplacedSymbol = "x";
 
-  List<String> result = List.filled(5, "");
+  List<String> result = List.filled(5, wrongSymbol);
   List<bool> wordMatched = List.filled(5, false);
   List<bool> guessMatched = List.filled(5, false);
 
@@ -156,13 +156,6 @@ String eval(String word, String guess) {
           break;
         }
       }
-    }
-  }
-
-  // Mark the remaining letters as wrong
-  for (int i = 0; i < 5; i++) {
-    if (result[i] == "") {
-      result[i] = wrongSymbol;
     }
   }
 
