@@ -39,6 +39,14 @@ Future<void> sendHintInfo(Context ctx, WordleUser user, bool showNewTag) async {
     (showNewTag ? "🆕 " : "") + getHintInfoMessage(user.hints),
     replyMarkup: getMoreBoard,
   );
+
+  final String referralInfo = """
+👫 You can also earn free hints by inviting friends! We offer exciting hint packs as rewards when you reach referral milestones.
+
+Send /invite to get your referral link.
+""";
+
+  await ctx.reply(referralInfo);
 }
 
 Future<void> sendHintUsage(
