@@ -9,60 +9,15 @@ final starsCountPattern = RegExp(r"stars:(.*)");
 Handler donateHandler() {
   const kdonate = "donate";
 
-  final board = InlineKeyboard()
-      .add("Telegram Stars ⭐️", "$kdonate:stars")
-      .row()
-      .add("💎 TON", "$kdonate:ton")
-      .add("💰 USDT", "$kdonate:usdt")
-      .row()
-      .add("👛 Solana", "$kdonate:sol");
+  final board =
+      InlineKeyboard().add("Continue with Telegram Stars ⭐️", "$kdonate:stars");
   return (ctx) async {
     ctx.reply(
       "🙏 Thank you so much for considering a donation to support Wordle Bot! Your generosity helps keep this project running."
-      "\n\nPlease choose a preferred donation method from below and we'll provide you with the necessary details. Your support means a lot! 💖",
+      "\n\nPlease continue to selecting number of stars to donate by pressing the button below. Your support means a lot! 💖",
       replyMarkup: board,
     );
   };
-}
-
-enum DonationMethod {
-  stars("stars"),
-  ton("ton"),
-  usdt("usdt"),
-  sol("sol"),
-  ;
-
-  final String key;
-  const DonationMethod(this.key);
-
-  static DonationMethod fromString(String k) {
-    return values.firstWhere(
-      (e) => e.key == k,
-      orElse: () => stars,
-    );
-  }
-}
-
-class DonateOption {
-  final String name;
-  final int count;
-
-  DonateOption(this.name, this.count);
-
-  static List<DonateOption> options = [
-    DonateOption("Coffee Boost", 99),
-    DonateOption("Lucky Clover", 199),
-    DonateOption("Hero's Charge", 499),
-    DonateOption("Dev's Delight", 999),
-    DonateOption("Game Changer", 1999),
-  ];
-
-  static DonateOption find(int price) {
-    return options.firstWhere((e) => e.count == price);
-  }
-
-  @override
-  String toString() => "$name ⭐️ $count";
 }
 
 Handler donateCallbackHandler() {
@@ -78,28 +33,6 @@ Handler donateCallbackHandler() {
     final method = DonationMethod.fromString(data.split(":")[1]);
     final text = switch (method) {
       DonationMethod.stars => MessageStrings.starDonationPrompt,
-      DonationMethod.ton => MessageStrings.tonDonation.replaceAll(
-          "{ADDRESS1}",
-          WordleConfig.env["TON_ADDRESS"],
-        ),
-      DonationMethod.usdt => MessageStrings.usdtDonation
-          .replaceAll(
-            "{ADDRESS1}",
-            WordleConfig.env["USDT_TRC20"],
-          )
-          .replaceAll(
-            "{ADDRESS2}",
-            WordleConfig.env["USDT_ON_TON"],
-          ),
-      DonationMethod.sol => MessageStrings.solDonation
-          .replaceAll(
-            "{ADDRESS1}",
-            WordleConfig.env["SOL_ON_SOLANA"],
-          )
-          .replaceAll(
-            "{ADDRESS2}",
-            WordleConfig.env["SOL_ON_BEP20"],
-          ),
     };
 
     final b = method == DonationMethod.stars ? countBoard : InlineKeyboard();
@@ -132,9 +65,8 @@ Handler starsCountSelectionHandler() {
       description: MessageStrings.donationDescription,
       payload: "donation",
       currency: "XTR",
-      providerToken: "",
       prices: [
-        LabeledPrice(label: "Coffee Boost", amount: count),
+        LabeledPrice(label: "Send Stars", amount: count),
       ],
     );
   };
@@ -172,7 +104,7 @@ void nudgeDonation(
 Handler successPaymentHandler() {
   return (ctx) async {
     final r = ctx.msg!.successfulPayment!;
-    db.collection("payments").add(r.toJson()).ignore();
+    db.collection("payments").add({"type": "donation", ...r.toJson()}).ignore();
 
     final successString =
         "✅ Payment #<code>${r.telegramPaymentChargeId}</code> success!\n\n";
