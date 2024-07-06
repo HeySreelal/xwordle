@@ -283,4 +283,43 @@ Your donations help keep the game running smoothly and bring new features to enj
 
   static const privacyText =
       "Your privacy matters to us. Wordle Bot collects minimal data necessary for gameplay, such as your Telegram first name and user ID. We do not gather any personally identifiable information beyond this. For more details, you can read our full privacy statement at Privacy Statement.";
+  static const pricingMessage = """
+✨ <b>Wordle Hint Pricing & Packs</b> ✨
+
+<b>Individual Hints:</b>
+- <b>Letter Reveal</b>: 35 ⭐️ stars 
+- <b>Extra Attempt</b>: 75 ⭐️ stars 
+
+<b>Combo Packs:</b>
+- 🌟 <b>Wordle Kickstart Bundle</b>: 149 stars 
+  • 3 Letter Reveals
+  • 1 Extra Attempt
+  Get a head start with a mix of hints!
+
+- 🔥 <b>Wordle Advantage Pack</b>: 299 stars 
+  • 7 Letter Reveals
+  • 3 Extra Attempts
+  More chances and reveals to boost your game!
+
+- 🌟 <b>Wordle Domination Kit</b>: 699 stars 
+  • 15 Letter Reveals
+  • 7 Extra Attempts
+  Master the game with plenty of hints!
+
+Purchase your hints and packs to enhance your Wordle experience!
+""";
+
+  static const individualPricing = """
+<b>Individual Hints Plans:</b>
+
+<b>Letter Reveal</b>:
+  • 1 Letter Reveal: ⭐️ 35 
+  • 3 Letter Reveals: ⭐️ 105 
+  • 5 Letter Reveals: ⭐️ 175  <i>(32% off)</i> 🔥 
+
+<b>Extra Attempt</b>:
+  • 1 Extra Attempt: ⭐️ 75 
+  • 3 Extra Attempts: ⭐️ 225 
+  • 5 Extra Attempts: ⭐️ 299  <i>(21% off)</i> 🔥 
+""";
 }

@@ -3,8 +3,7 @@ part of '../xwordle.dart';
 /// Handles the user guesses
 Handler guessHandler() {
   return (ctx) async {
-    final user = await WordleUser.init(ctx.id.id);
-    final game = await WordleDB.today();
+    final (user, game) = await getUserAndGame(ctx.id.id);
 
     // If the user is not playing a game, tell them to start one
     if (!user.onGame) {
@@ -55,6 +54,7 @@ Handler guessHandler() {
       user.lastGame = game.index;
       user.streak++;
       user.totalWins++;
+      user.endTime = DateTime.now();
       game.totalWinners++;
       if (user.streak > user.maxStreak) {
         user.maxStreak = user.streak;
@@ -67,7 +67,7 @@ Handler guessHandler() {
       await ctx.reply(
         shareMsg,
         replyMarkup: InlineKeyboard().addUrl(
-          "Share 📤",
+          "Share Your Result 📤",
           shareUrl,
         ),
       );
@@ -112,6 +112,7 @@ Handler guessHandler() {
         "New word will be available in ${game.formattedDurationTillNext}",
       );
       game.totalLosers++;
+      user.endTime = DateTime.now();
     } else {
       await ctx.reply(result.join(" "));
       await ctx.reply(getGuessPrompt(user.tries.length));

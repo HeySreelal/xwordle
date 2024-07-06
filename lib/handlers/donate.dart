@@ -73,6 +73,7 @@ Handler donateCallbackHandler() {
   }
 
   return (ctx) async {
+    ctx.answerCallbackQuery().ignore();
     final data = ctx.callbackQuery!.data!;
     final method = DonationMethod.fromString(data.split(":")[1]);
     final text = switch (method) {
@@ -113,6 +114,7 @@ Handler donateCallbackHandler() {
 
 Handler starsCountSelectionHandler() {
   return (ctx) async {
+    ctx.answerCallbackQuery().ignore();
     int count;
     try {
       final d = ctx.callbackQuery!.data!.split(":")[1];
@@ -171,9 +173,31 @@ Handler successPaymentHandler() {
   return (ctx) async {
     final r = ctx.msg!.successfulPayment!;
     db.collection("payments").add(r.toJson()).ignore();
-    await ctx.reply(
-      "✅ Payment #${r.telegramPaymentChargeId} success\n\n"
-      "Thank you so much for your generous contribution! Your donation helps power our bot development. We have successfully received ${r.totalAmount} in Telegram Stars ⭐️.",
-    );
+
+    final successString =
+        "✅ Payment #<code>${r.telegramPaymentChargeId}</code> success!\n\n";
+    if (r.invoicePayload == "donation") {
+      await ctx.reply(
+        "${successString}Thank you so much for your generous contribution! Your donation helps power our bot development. We have successfully received ${r.totalAmount} in Telegram Stars ⭐️.",
+        parseMode: ParseMode.html,
+      );
+      return;
+    }
+
+    const hintPayloads = [
+      "$letterreveal:1",
+      "$letterreveal:3",
+      "$letterreveal:5",
+      "$extraattempt:1",
+      "$extraattempt:3",
+      "$extraattempt:5",
+      "$extraattempt:5",
+      buykickstart,
+      buyadvantage,
+      buydomination,
+    ];
+    if (hintPayloads.contains(r.invoicePayload)) {
+      await handleSuccessPaymentForHints(r.invoicePayload)(ctx);
+    }
   };
 }

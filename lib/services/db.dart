@@ -32,16 +32,6 @@ class WordleDB {
     await db.doc("game/today").update(day.toMap());
   }
 
-  static Future<void> referralUpdate(int user, int referredBy) async {
-    await db.doc("players/$user").update({
-      "referredBy": referredBy,
-    });
-    await db.doc("players/$referredBy").update({
-      "referralCount": FieldValue.increment(1),
-      "referrals": FieldValue.arrayUnion([user])
-    });
-  }
-
   static Future<void> incrementUserCount() async {
     await db.doc("game/config").update({
       "totalPlayers": FieldValue.increment(1),
@@ -51,6 +41,14 @@ class WordleDB {
   static Future<void> incrementBlockedCount(int newBlocks) async {
     await db.doc("game/config").update({
       "blockedPlayers": FieldValue.increment(newBlocks),
+    });
+  }
+
+  static Future<void> incrementHintsUsage(String type) async {
+    final v = FieldValue.increment(1);
+    final k = type == "use-letter" ? "letterRevealUsage" : "extraAttemptUsage";
+    await db.doc("game/config").update({
+      k: v,
     });
   }
 }

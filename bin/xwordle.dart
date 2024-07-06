@@ -30,6 +30,7 @@ void main(List<String> args) async {
   bot.command("donate", donateHandler());
   bot.command("nudge", nudgeDonation);
   bot.command("privacy", privacyHandler());
+  bot.command("hint", hintsHandler());
 
   // Handling errors
   bot.onError(errorHandler);
@@ -42,6 +43,18 @@ void main(List<String> args) async {
   bot.callbackQuery(starsCountPattern, starsCountSelectionHandler());
   bot.callbackQuery("start", startHandler(callback: true));
 
+  // Hints related callback handlers
+  bot.callbackQuery(hintsGetPattern, hintsGetHandler());
+  bot.callbackQuery(useLetterPattern, useHintHandler());
+  bot.callbackQuery(useAttemptPattern, useHintHandler());
+  bot.callbackQuery(backToPricingPattern, hintsGetHandler(shouldEdit: true));
+  bot.callbackQuery(hintsIndividual, hintsIndividualHandler());
+  bot.callbackQuery(buykickstart, buyHandler(buykickstart));
+  bot.callbackQuery(buyadvantage, buyHandler(buyadvantage));
+  bot.callbackQuery(buydomination, buyHandler(buydomination));
+  bot.callbackQuery(letterRevealPattern, buyHandler(letterreveal));
+  bot.callbackQuery(extraattemptPattern, buyHandler(extraattempt));
+
   // Admin lock checker
   final checker = ScopeOptions(customPredicate: Admin.check);
 
@@ -50,22 +63,22 @@ void main(List<String> args) async {
   bot.command("count", Admin.countHandler(), options: checker);
   bot.command('testbroadcast', Admin.testBroadcastHandler(), options: checker);
   bot.command('stats', Admin.statsHandler(), options: checker);
+  bot.command(
+    'paid',
+    handleSuccessPaymentForHints(buyadvantage),
+    options: checker,
+  );
 
   // Admin Broadcast pattern
   bot.hears(Admin.broadcastPattern, Admin.handleAdminText(), options: checker);
   bot.onChannelPost(respondToFeedback);
+  bot.onPreCheckoutQuery(preCheckoutHandler());
 
   // Admin release callback query
   bot.callbackQuery(
     Admin.releasePattern,
     Admin.handleConfirmation(),
     options: checker,
-  );
-
-  // Handle any unanswered callback queries
-  bot.onCallbackQuery(
-    (ctx) => ctx.answerCallbackQuery(),
-    options: ScopeOptions.forked(),
   );
 
   // Listen for inline queries
