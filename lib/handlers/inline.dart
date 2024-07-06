@@ -28,20 +28,21 @@ Handler inlineHandler() {
         },
         description:
             "Tap to share your today's wordle game result with your friends and chats.",
+        thumbnailUrl: "https://xwordle.web.app/assets/result.png",
       );
     }
 
     final invites = [
-      "Guess the word of the day with me! Join the Wordle craze inside Telegram with @xWordleBot.",
-      "Hey, wanna play Wordle without leaving Telegram? Check out this awesome bot: @xWordleBot!",
-      "Challenge yourself with Wordle on Telegram! Play now with @xWordleBot.",
-      "Looking for a fun word game? Try Wordle on Telegram with @xWordleBot!",
-      "Let's see who can guess the word first! Play Wordle with @xWordleBot.",
-      "Join the word-guessing fun on Telegram with @xWordleBot!",
-      "Can't get enough of Wordle? Play it on Telegram with @xWordleBot.",
-      "Test your vocabulary skills with Wordle Bot! Start playing at @xWordleBot.",
-      "Wordle is now on Telegram! Join the game with @xWordleBot.",
-      "Discover the word of the day with Wordle Bot on Telegram! Try it now at @xWordleBot."
+      "Guess the word of the day with me! Join the Wordle craze inside Telegram with Wordle Bot.",
+      "Hey, wanna play Wordle without leaving Telegram? Check out this awesome bot: Wordle Bot!",
+      "Challenge yourself with Wordle on Telegram! Play now with Wordle Bot.",
+      "Looking for a fun word game? Try Wordle on Telegram with Wordle Bot!",
+      "Let's see who can guess the word first! Play Wordle with Wordle Bot.",
+      "Join the word-guessing fun on Telegram with Wordle Bot!",
+      "Can't get enough of Wordle? Play it on Telegram with Wordle Bot.",
+      "Test your vocabulary skills with Wordle Bot! Start playing at Wordle Bot.",
+      "Wordle is now on Telegram! Join the game with Wordle Bot.",
+      "Discover the word of the day with Wordle Bot on Telegram! Try it now at Wordle Bot."
     ];
 
     builder.article(
@@ -56,6 +57,7 @@ Handler inlineHandler() {
         "🎮 Start Playing",
         "https://t.me/xclairebot?start=${ctx.from?.id}",
       ),
+      thumbnailUrl: "https://xwordle.web.app/assets/invite.png",
     );
 
     await ctx.answerInlineQuery(
