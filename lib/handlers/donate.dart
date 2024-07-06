@@ -73,7 +73,7 @@ Handler starsCountSelectionHandler() {
 }
 
 // Define a function to check if the user should be nudged to donate
-bool shouldNudgeToDonate() {
+bool shouldNudge() {
   // Adjust the probability as desired, for example, 30% chance
   return Random().nextInt(100) < 30; // 30% chance
 }
@@ -89,7 +89,7 @@ void nudgeDonation(
     "<tg-spoiler>Feeling lucky in Wordle Bot? Share the luck with a donation! Use /donate to keep the good times rolling! </tg-spoiler>",
   ];
   // Optionally nudge the user to donate randomly
-  if (!straight ? shouldNudgeToDonate() : true) {
+  if (!straight ? shouldNudge() : true) {
     try {
       await ctx.reply(
         random(nudges),
