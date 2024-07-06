@@ -41,7 +41,7 @@ Future<void> sendHintInfo(Context ctx, WordleUser user, bool showNewTag) async {
   );
 
   final String referralInfo = """
-👫 You can also earn free hints by inviting friends! We offer exciting hint packs as rewards when you reach referral milestones.
+👫 You can also earn free hints by inviting friends! Achieve the milestones to earn some cool reward packs.
 
 Send /invite to get your referral link.
 """;

@@ -33,6 +33,7 @@ Handler inviteHandler() {
 
 Handler milestoneInfoHandler() {
   return (ctx) async {
+    ctx.answerCallbackQuery().ignore();
     await ctx.reply(
       MessageStrings.milestoneInfo,
       parseMode: ParseMode.html,
