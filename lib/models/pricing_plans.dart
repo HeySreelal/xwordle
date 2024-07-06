@@ -37,72 +37,90 @@ class Plan {
     return "This pack includes $letterReveals Letter Reveals and $extraAttempts Extra Attempt power-ups. ${bundleName == 'Wordle Kickstart Bundle' ? 'Get a head start with a mix of hints!' : bundleName == 'Wordle Advantage Pack' ? 'Perfect for more chances and reveals to boost your game!' : 'Master the game with plenty of hints!'} Please continue to purchase by tapping the button below.";
   }
 
+  static final letterReveal1 = Plan(
+    title: "Letter Reveal x1",
+    amount: 35,
+    description: generateDescription('Letter Reveal', 1, 35),
+    payload: "$letterreveal:1",
+    letterRevealCount: 1,
+  );
+
+  static final letterReveal3 = Plan(
+    title: "Letter Reveal x3",
+    amount: 105,
+    description: generateDescription('Letter Reveal', 3, 105),
+    payload: "$letterreveal:3",
+    letterRevealCount: 3,
+  );
+
+  static final letterReveal5 = Plan(
+    title: "Letter Reveal x5",
+    amount: 175,
+    description: generateDescription('Letter Reveal', 5, 175),
+    payload: "$letterreveal:5",
+    letterRevealCount: 5,
+  );
+
+  static final extraattempt1 = Plan(
+    title: "Extra Attempt x1",
+    amount: 75,
+    description: generateDescription('Extra Attempt', 1, 75),
+    payload: "$extraattempt:1",
+    extraAttemptCount: 1,
+  );
+
+  static final extraattempt3 = Plan(
+    title: "Extra Attempt x3",
+    amount: 225,
+    description: generateDescription('Extra Attempt', 3, 225),
+    payload: "$extraattempt:3",
+    extraAttemptCount: 3,
+  );
+
+  static final extraattempt5 = Plan(
+    title: "Extra Attempt x5",
+    amount: 299,
+    description: generateDescription('Extra Attempt', 5, 299),
+    payload: "$extraattempt:5",
+    extraAttemptCount: 5,
+  );
+
+  static final kickStartBundle = Plan(
+    title: "Wordle Kickstart Bundle",
+    amount: 149,
+    payload: buykickstart,
+    description: generateBundleDescription('Wordle Kickstart Bundle', 3, 1),
+    letterRevealCount: 3,
+    extraAttemptCount: 1,
+  );
+
+  static final advantagePack = Plan(
+    title: "Wordle Advantage Pack",
+    amount: 299,
+    payload: buyadvantage,
+    description: generateBundleDescription('Wordle Advantage Pack', 7, 3),
+    letterRevealCount: 7,
+    extraAttemptCount: 3,
+  );
+
+  static final dominationKit = Plan(
+    title: "Wordle Domination Kit",
+    amount: 699,
+    payload: buydomination,
+    description: generateBundleDescription('Wordle Domination Kit', 15, 7),
+    letterRevealCount: 15,
+    extraAttemptCount: 7,
+  );
+
   static final all = [
-    Plan(
-      title: "Letter Reveal x1",
-      amount: 35,
-      description: generateDescription('Letter Reveal', 1, 35),
-      payload: "$letterreveal:1",
-      letterRevealCount: 1,
-    ),
-    Plan(
-      title: "Letter Reveal x3",
-      amount: 105,
-      description: generateDescription('Letter Reveal', 3, 105),
-      payload: "$letterreveal:3",
-      letterRevealCount: 3,
-    ),
-    Plan(
-      title: "Letter Reveal x5",
-      amount: 175,
-      description: generateDescription('Letter Reveal', 5, 175),
-      payload: "$letterreveal:5",
-      letterRevealCount: 5,
-    ),
-    Plan(
-      title: "Extra Attempt x1",
-      amount: 75,
-      description: generateDescription('Extra Attempt', 1, 75),
-      payload: "$extraattempt:1",
-      extraAttemptCount: 1,
-    ),
-    Plan(
-      title: "Extra Attempt x3",
-      amount: 225,
-      description: generateDescription('Extra Attempt', 3, 225),
-      payload: "$extraattempt:3",
-      extraAttemptCount: 3,
-    ),
-    Plan(
-      title: "Extra Attempt x5",
-      amount: 299,
-      description: generateDescription('Extra Attempt', 5, 299),
-      payload: "$extraattempt:5",
-      extraAttemptCount: 5,
-    ),
-    Plan(
-      title: "Wordle Kickstart Bundle",
-      amount: 149,
-      payload: buykickstart,
-      description: generateBundleDescription('Wordle Kickstart Bundle', 3, 1),
-      letterRevealCount: 3,
-      extraAttemptCount: 1,
-    ),
-    Plan(
-      title: "Wordle Advantage Pack",
-      amount: 299,
-      payload: buyadvantage,
-      description: generateBundleDescription('Wordle Advantage Pack', 7, 3),
-      letterRevealCount: 7,
-      extraAttemptCount: 3,
-    ),
-    Plan(
-      title: "Wordle Domination Kit",
-      amount: 699,
-      payload: buydomination,
-      description: generateBundleDescription('Wordle Domination Kit', 15, 7),
-      letterRevealCount: 15,
-      extraAttemptCount: 7,
-    ),
+    letterReveal1,
+    letterReveal3,
+    letterReveal5,
+    extraattempt1,
+    extraattempt3,
+    extraattempt5,
+    kickStartBundle,
+    advantagePack,
+    dominationKit,
   ];
 }

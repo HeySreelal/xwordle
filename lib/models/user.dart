@@ -65,6 +65,15 @@ class WordleUser {
   /// Premium Hints available to the user
   PremiumHints hints;
 
+  /// Referrer's User ID
+  int? referrer;
+
+  /// Referral Count
+  int referralCount;
+
+  /// The ids of the people the current person has invited
+  List<int> referrals;
+
   /// Constructs a WordleSession
   WordleUser({
     this.currentGame = 0,
@@ -88,9 +97,13 @@ class WordleUser {
     this.startTime,
     this.points = 0,
     PremiumHints? hints,
+    this.referralCount = 0,
+    List<int>? referrals,
+    this.referrer,
   })  : joinedDate = joinedDate ?? DateTime.now(),
         hintShape = hintShape ?? HintShape.circle,
-        hints = hints ?? PremiumHints();
+        hints = hints ?? PremiumHints(),
+        referrals = referrals ?? [];
 
   Map<String, dynamic> toJson() {
     return {
@@ -114,6 +127,9 @@ class WordleUser {
       'endTime': endTime?.unixTime,
       'points': points,
       'hints': hints.toMap(),
+      'referralCount': referralCount,
+      'referrals': referrals,
+      'referrer': referrer,
     };
   }
 
@@ -139,6 +155,9 @@ class WordleUser {
       endTime: (map["endTime"] as int?)?.toDateTime(),
       points: map['points'] ?? 0,
       hints: PremiumHints.fromMap(map['hints']),
+      referralCount: map["referralCount"] ?? 0,
+      referrals: map["referrals"]?.cast<int>(),
+      referrer: map["referrer"],
     );
   }
 
@@ -191,5 +210,12 @@ class WordleUser {
 
   bool get hasHintsAvailable {
     return hints.available;
+  }
+
+  String getName() {
+    if (name.isEmpty) {
+      return WordleUser.defaultName;
+    }
+    return name;
   }
 }

@@ -54,7 +54,7 @@ Handler inlineHandler() {
           "Invite your friend to the Wordle Bot and challenge each other",
       replyMarkup: InlineKeyboard().addUrl(
         "🎮 Start Playing",
-        "https://t.me/xwordlebot?start=${ctx.from?.id}",
+        "https://t.me/xclairebot?start=${ctx.from?.id}",
       ),
     );
 
