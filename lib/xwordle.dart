@@ -33,6 +33,7 @@ part 'handlers/next.dart';
 part 'handlers/notify.dart';
 part 'handlers/privacy.dart';
 part 'handlers/profile.dart';
+part 'handlers/payments.dart';
 part 'handlers/quit.dart';
 part 'handlers/settings.dart';
 part 'handlers/shape.dart';

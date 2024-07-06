@@ -63,12 +63,16 @@ void main(List<String> args) async {
   bot.command("count", Admin.countHandler(), options: checker);
   bot.command('testbroadcast', Admin.testBroadcastHandler(), options: checker);
   bot.command('stats', Admin.statsHandler(), options: checker);
-  bot.command('paid', handleSuccessPaymentForHints(buyadvantage),
-      options: checker);
+  bot.command(
+    'paid',
+    handleSuccessPaymentForHints(buyadvantage),
+    options: checker,
+  );
 
   // Admin Broadcast pattern
   bot.hears(Admin.broadcastPattern, Admin.handleAdminText(), options: checker);
   bot.onChannelPost(respondToFeedback);
+  bot.onPreCheckoutQuery(preCheckoutHandler());
 
   // Admin release callback query
   bot.callbackQuery(
