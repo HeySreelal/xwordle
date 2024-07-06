@@ -77,11 +77,6 @@ class WordleConfig {
       "ADMINS",
       "MODE",
       "PROJECT_ID",
-      "TON_ADDRESS",
-      "SOL_ON_SOLANA",
-      "SOL_ON_BEP20",
-      "USDT_TRC20",
-      "USDT_ON_TON",
       "FETCHER",
     ];
 
