@@ -43,7 +43,9 @@ Future<void> handleFirstTimeUser(Context ctx, WordleUser user) async {
     caption: MessageStrings.welcomeMessage,
     replyMarkup: InlineKeyboard().add("🎮 Start Game", "start"),
   );
-  WordleDB.incrementUserCount().ignore();
+
+  final isInvited = ctx.args.isNotEmpty && int.tryParse(ctx.args[0]) != null;
+  WordleDB.incrementUserCount(isInvited: isInvited).ignore();
 
   if (ctx.args.isEmpty) return;
 

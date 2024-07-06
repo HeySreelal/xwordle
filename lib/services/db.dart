@@ -32,9 +32,12 @@ class WordleDB {
     await db.doc("game/today").update(day.toMap());
   }
 
-  static Future<void> incrementUserCount() async {
+  static Future<void> incrementUserCount({
+    bool isInvited = false,
+  }) async {
     await db.doc("game/config").update({
       "totalPlayers": FieldValue.increment(1),
+      if (isInvited) "totalInvites": FieldValue.increment(1),
     });
   }
 
