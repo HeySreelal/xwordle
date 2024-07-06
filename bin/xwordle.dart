@@ -71,7 +71,11 @@ void main(List<String> args) async {
 
   // Admin Broadcast pattern
   bot.hears(Admin.broadcastPattern, Admin.handleAdminText(), options: checker);
+
+  // Handle response to feedback posts
   bot.onChannelPost(respondToFeedback);
+
+  // Accept all pre-checkout queries
   bot.onPreCheckoutQuery(preCheckoutHandler());
 
   // Admin release callback query
