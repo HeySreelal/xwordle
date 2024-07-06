@@ -1,3 +1,15 @@
+## 1.3.0
+
+- 🌬️ Improved error handling, fetcher configs, and more by @HeySreelal in
+  https://github.com/HeySreelal/xwordle/pull/90
+- ⚡️ Added Hints by @HeySreelal in https://github.com/HeySreelal/xwordle/pull/95
+- 🎁 Removed crypto donation by @HeySreelal in
+  https://github.com/HeySreelal/xwordle/pull/96
+- Completes the invite related things by @HeySreelal in
+  https://github.com/HeySreelal/xwordle/pull/98
+- 🚀 Updated the `eval` method by @HeySreelal in
+  https://github.com/HeySreelal/xwordle/pull/99
+
 ## 1.2.0
 
 - Updated coloring logic to whole new one
