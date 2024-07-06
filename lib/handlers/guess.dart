@@ -133,27 +133,36 @@ String eval(String word, String guess) {
   const misplacedSymbol = "x";
 
   List<String> result = List.filled(5, "");
-  List<String> tracked = List.filled(5, "");
+  List<bool> wordMatched = List.filled(5, false);
+  List<bool> guessMatched = List.filled(5, false);
 
   // First pass: mark correct letters
   for (int i = 0; i < 5; i++) {
     if (guess[i] == word[i]) {
       result[i] = correctSymbol;
-      tracked[i] = guess[i];
+      wordMatched[i] = true;
+      guessMatched[i] = true;
     }
   }
 
   // Second pass: mark misplaced letters
   for (int i = 0; i < 5; i++) {
-    if (result[i] == "") {
-      // If not marked as correct
-      if (word.contains(guess[i]) && !tracked.contains(guess[i])) {
-        result[i] = misplacedSymbol;
-        // Track the misplaced letter
-        tracked[tracked.indexOf("")] = guess[i];
-      } else {
-        result[i] = wrongSymbol;
+    if (!guessMatched[i]) {
+      for (int j = 0; j < 5; j++) {
+        if (!wordMatched[j] && guess[i] == word[j]) {
+          result[i] = misplacedSymbol;
+          wordMatched[j] = true;
+          guessMatched[i] = true;
+          break;
+        }
       }
+    }
+  }
+
+  // Mark the remaining letters as wrong
+  for (int i = 0; i < 5; i++) {
+    if (result[i] == "") {
+      result[i] = wrongSymbol;
     }
   }
 

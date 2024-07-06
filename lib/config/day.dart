@@ -46,7 +46,7 @@ class WordleDay {
   factory WordleDay.fromMap(Map<String, dynamic> map) {
     return WordleDay(
       map['word'],
-      map['id'],
+      map['index'],
       DateTime.fromMillisecondsSinceEpoch(map['date'] * 1000),
       totalWinners: map['totalWinners'] ?? 0,
       totalLosers: map['totalLosers'] ?? 0,
