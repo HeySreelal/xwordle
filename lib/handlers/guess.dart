@@ -116,6 +116,11 @@ Handler guessHandler() {
     } else {
       await ctx.reply(result.join(" "));
       await ctx.reply(getGuessPrompt(user.tries.length));
+      if (user.tries.length == 5 && user.hints.available) {
+        await ctx.reply(
+          "Stuck? You still have hints available! Use /hint to get a clue. ✨",
+        );
+      }
     }
     await user.save();
     await game.save();

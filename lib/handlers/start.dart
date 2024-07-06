@@ -1,5 +1,7 @@
 part of '../xwordle.dart';
 
+const startPattern = "start";
+
 Handler startHandler({bool callback = false}) {
   return (Context ctx) async {
     if (callback) {
@@ -41,7 +43,9 @@ Future<void> handleFirstTimeUser(Context ctx, WordleUser user) async {
     caption: MessageStrings.welcomeMessage,
     replyMarkup: InlineKeyboard().add("🎮 Start Game", "start"),
   );
-  WordleDB.incrementUserCount().ignore();
+
+  final isInvited = ctx.args.isNotEmpty && int.tryParse(ctx.args[0]) != null;
+  WordleDB.incrementUserCount(isInvited: isInvited).ignore();
 
   if (ctx.args.isEmpty) return;
 
@@ -139,6 +143,16 @@ bool _isUserCurrentlyPlaying(WordleUser user, WordleDay game) {
 
 Future<void> _startNewGame(Context ctx, WordleUser user, WordleDay game) async {
   await ctx.reply(MessageStrings.letsStart, parseMode: ParseMode.html);
+
+  if (user.hints.available &&
+      (user.hints.usedHintsCount < 4 || shouldNudge())) {
+    final message = user.hints.usedHintsCount == 0
+        ? "🆕 Exciting news! You can now use /hint to get hints during the game."
+        : "Reminder: You can use the /hint command to get some hints. 😉";
+
+    await ctx.reply(message);
+  }
+
   user.onGame = true;
   game.totalPlayed++;
   user.tries = [];
