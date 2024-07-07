@@ -80,7 +80,7 @@ class Admin {
 
       if (text == releaseBroadcast) {
         ctx.reply(
-          "Are you sure want to release the broadcast?",
+          "Are you sure want to release the broadcast? 👀",
           replyMarkup: confirmReleaseKeyboard,
         );
       }
@@ -107,39 +107,16 @@ class Admin {
       final admin = await AdminConfig.get();
       final message = admin.releaseNote;
 
-      final users = await WordleDB.getUsers();
-      int count = users.length;
-      int sent = 0, failed = 0;
-
-      for (int i = 0; i < count; i++) {
-        try {
-          await ctx.api.sendMessage(
-            ChatID(users[i].id),
-            message,
-            parseMode: ParseMode.html,
-          );
-          sent++;
-          await Future.delayed(Duration(milliseconds: 2500));
-        } catch (e) {
-          failed++;
-          continue;
-        }
-
-        if (i % 10 == 0) {
-          await ctx.editMessageText(
-            "Sending broadcast message...\n\n"
-            "Sent: $sent\n"
-            "Failed: $failed\n"
-            "Total: $count",
-          );
-        }
-      }
-      final resultMsg = "Broadcast message sent!\n\n 🤘"
-          "Sent: $sent\n"
-          "Failed: $failed\n"
-          "Total: $count";
-      await ctx.editMessageText(resultMsg);
-      await sendLogs("$resultMsg\n\n#broadcast");
+      await broadcast(
+        message,
+        keyboard: InlineKeyboard()
+            .switchInlineQuery("Invite Friends 💌")
+            .row()
+            .addUrl(
+              "@Xooniverse",
+              "https://t.me/xooniverse",
+            ),
+      );
     };
   }
 
@@ -149,14 +126,17 @@ class Admin {
       final admin = await AdminConfig.get();
       final message = admin.releaseNote;
       final admins = WordleConfig.instance.adminChats;
-      for (int i = 0; i < admins.length; i++) {
-        await ctx.api.sendMessage(
-          admins[i],
-          message,
-          parseMode: ParseMode.html,
-        );
-        await Future.delayed(Duration(milliseconds: 2500));
-      }
+      await broadcast(
+        userSet: admins.map((e) => e.id).toList(),
+        message,
+        keyboard: InlineKeyboard()
+            .switchInlineQuery("Invite Friends 💌")
+            .row()
+            .addUrl(
+              "@Xooniverse",
+              "https://t.me/xooniverse",
+            ),
+      );
 
       await ctx.reply("Test broadcast message sent!");
     };
@@ -185,4 +165,115 @@ class Admin {
 extension IsAdmin on Context {
   /// Checks if the given [id] is an admin
   bool get isAdmin => Admin.check(this);
+}
+
+void logToFile(String text) async {
+  // Get the current timestamp
+  String timestamp = DateTime.now().toIso8601String();
+
+  // Combine the timestamp with the log text
+  String logEntry = '$timestamp - $text\n';
+
+  print(logEntry);
+
+  // Create a reference to the file
+  File file = File("log.log");
+
+  // Append the log entry to the file
+  file.writeAsStringSync(logEntry, mode: FileMode.append);
+}
+
+const gap = "    ";
+Future<void> broadcast(
+  String message, {
+  InlineKeyboard? keyboard,
+  List<int>? userSet,
+}) async {
+  List<WordleUser> users;
+  if (userSet != null) {
+    logToFile("ℹ️ We have a specified user set.");
+    users = await Future.wait(userSet.map((e) => WordleUser.init(e)));
+  } else {
+    logToFile("ℹ️ No user set is specified. Targeting whole users.");
+    users = await WordleDB.getUsers();
+  }
+
+  final stopwatch = Stopwatch()..start();
+
+  List<int> successPeople = [];
+  int success = 0, failure = 0;
+  List<ErrorUser> errorUsers = [];
+  logToFile("ℹ️ Sending the progress-log message");
+  final statusMsg = await sendLogs(
+    progressMessage(users.length, success, failure),
+  );
+  if (statusMsg == null) {
+    logToFile("Couldn't send status message. So aborting.");
+    return;
+  }
+  logToFile("🌟 Progress log message sent succesfully");
+
+  logToFile("Got ${users.length} users to send messages to.");
+  for (var user in users) {
+    try {
+      logToFile("ℹ️ Sending broadcast to ${user.id}");
+      await api.sendMessage(
+        ChatID(user.id),
+        message,
+        parseMode: ParseMode.html,
+        replyMarkup: keyboard,
+      );
+      logToFile("$gap> ✅ Success");
+      success++;
+      successPeople.add(user.id);
+
+      await Future.delayed(Duration(seconds: 2));
+    } catch (err, stack) {
+      failure++;
+      logToFile("$gap> ❌ An error occurred");
+
+      if (err is TelegramException) {
+        logToFile("$gap> Telegram Exception: $err");
+        errorUsers.add(
+          ErrorUser(user.id, err.description ?? "$err"),
+        );
+        continue;
+      }
+      errorUsers.add(ErrorUser(user.id, "$err"));
+      logToFile("$gap>Unknown Error");
+      logToFile("$gap>$err\n$stack");
+    } finally {
+      if ((success + failure) % 10 == 0) {
+        await editLog(
+          statusMsg.messageId,
+          progressMessage(users.length, success, failure),
+        );
+        await Future.delayed(Duration(milliseconds: 2000));
+      }
+    }
+  }
+  stopwatch.stop();
+  logToFile("⏰ Took ${stopwatch.elapsed}");
+  sendLogs("⏰ Took ${stopwatch.elapsed}").ignore();
+  editLog(
+    statusMsg.messageId,
+    "${progressMessage(success + failure, success, failure)}\n\n#Broadcast",
+  ).ignore();
+  logToFile("✅ The log message has been updated with final results.");
+  logToFile(
+    "ℹ️ Successfully sent to $success people. Those are: $successPeople",
+  );
+  await createLogFileAndSend(errorUsers);
+  logToFile("💥 Error log is created and sent.");
+  logToFile("✅ Finished");
+
+  final file = File("log.log");
+  await api.sendDocument(
+    WordleConfig.init().logsChannel,
+    InputFile.fromFile(file),
+  );
+
+  await Future.delayed(Duration(seconds: 5), () {
+    file.deleteSync();
+  });
 }
