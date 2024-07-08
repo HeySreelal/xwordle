@@ -214,9 +214,9 @@ Future<void> broadcast(
   logToFile("🌟 Progress log message sent succesfully");
 
   logToFile("Got ${users.length} users to send messages to.");
-  for (var user in users) {
+  for (var (n, user) in users.indexed) {
     try {
-      logToFile("ℹ️ Sending broadcast to ${user.id}");
+      logToFile("ℹ️ ${n + 1}/${users.length} Sending broadcast to  ${user.id}");
       await api.sendMessage(
         ChatID(user.id),
         message,
