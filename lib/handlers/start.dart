@@ -147,7 +147,7 @@ Future<void> _startNewGame(Context ctx, WordleUser user, WordleDay game) async {
   if (user.hints.available &&
       (user.hints.usedHintsCount < 4 || shouldNudge())) {
     final message = user.hints.usedHintsCount == 0
-        ? "🆕 Exciting news! You can now use /hint to get hints during the game."
+        ? "🆕 You got some FREE hints! 💡 Just send /hint when you're in need of help."
         : "Reminder: You can use the /hint command to get some hints. 😉";
 
     await ctx.reply(message);
