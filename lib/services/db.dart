@@ -93,4 +93,13 @@ class WordleDB {
       });
     } catch (_) {}
   }
+
+  static Future<void> toggleNotification(int user, bool on) async {
+    try {
+      await db.doc("game/subscribers").update({
+        "users":
+            on ? FieldValue.arrayUnion([user]) : FieldValue.arrayRemove([user]),
+      });
+    } catch (_) {}
+  }
 }

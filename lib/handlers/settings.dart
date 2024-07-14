@@ -157,7 +157,8 @@ Future<bool> changeNameCallback(Context ctx) async {
 Future<bool> toggleNotificationsCallback(Context ctx) async {
   final user = await WordleUser.init(ctx.id.id);
   user.notify = !user.notify;
-  user.save();
+  await WordleDB.toggleNotification(user.id, user.notify);
+  await user.save();
   await ctx.answerCallbackQuery(
     text: "Okay, I'll${user.notify ? '' : 'not '} update you on new games.",
   );
