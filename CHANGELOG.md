@@ -1,3 +1,11 @@
+## 1.3.1
+
+- Some fixes around broadcasting
+- Shared some free hints info
+- Changed the way notifications are sent
+- Deprecated the `WordleDB.getUsers` because it used to get all documents in the players collection
+- Changed the way notifications are sent.
+
 ## 1.3.0
 
 - 🌬️ Improved error handling, fetcher configs, and more by @HeySreelal in

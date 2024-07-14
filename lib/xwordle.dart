@@ -48,6 +48,7 @@ part 'models/premium_hints.dart';
 part 'models/pricing_plans.dart';
 part 'models/user.dart';
 part 'models/donation_option.dart';
+part 'models/game_config.dart';
 
 // Services
 part 'services/auto_chat_action.dart';
