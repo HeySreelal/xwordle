@@ -15,6 +15,7 @@ String getWord(int index) {
 
 /// Updates the words, sends notification to subscribed users.
 Future<void> updateWord() async {
+  await sendLogs("Update word has been called!");
   try {
     WordleDay day = await _fetchAndUpdateWordleDay();
     await _scheduleNextUpdate(day);
@@ -37,7 +38,9 @@ Future<WordleDay> _fetchAndUpdateWordleDay() async {
 /// Schedule the next update
 Future<void> _scheduleNextUpdate(WordleDay day) async {
   final durationToNext = day.next.difference(DateTime.now());
-  print("Duration to next update call: $durationToNext");
+  sendLogs(
+    "⏰ Duration to next update call: ${DateUtil.durationString(durationToNext)}",
+  ).ignore();
   Timer(durationToNext, () async {
     await sendDailyLog();
     await day.resetCounters();
