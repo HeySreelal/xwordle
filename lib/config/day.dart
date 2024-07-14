@@ -83,13 +83,13 @@ class WordleDay {
     return {
       'word': word,
       'index': index,
-      'date': date.millisecondsSinceEpoch ~/ 1000,
+      'date': date.unixTime,
       'totalWinners': totalWinners,
       'totalLosers': totalLosers,
       'totalPlayed': totalPlayed,
       'dictionaryWord': dictionaryWord?.toJson(),
       'meaningCheckCount': meaningCheckCount,
-      "next": next.millisecondsSinceEpoch ~/ 1000,
+      "next": next.unixTime,
     };
   }
 

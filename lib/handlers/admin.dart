@@ -145,7 +145,7 @@ class Admin {
   /// Handles count command
   static Handler countHandler() {
     return (ctx) async {
-      final users = await WordleDB.getUsers();
+      final users = await WordleDB.getAllUsers();
       int count = users.length;
       await ctx.reply("Total users: $count");
     };
@@ -195,7 +195,9 @@ Future<void> broadcast(
     users = await Future.wait(userSet.map((e) => WordleUser.init(e)));
   } else {
     logToFile("ℹ️ No user set is specified. Targeting whole users.");
-    users = await WordleDB.getUsers();
+    users = await Future.wait(
+      (await WordleDB.getAllUsers()).map((e) => WordleUser.init(e)),
+    );
   }
 
   final stopwatch = Stopwatch()..start();

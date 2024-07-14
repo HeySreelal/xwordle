@@ -26,9 +26,10 @@ Future<void> updateWord() async {
 /// Fetch and update the Wordle day
 Future<WordleDay> _fetchAndUpdateWordleDay() async {
   WordleDay day = await WordleDB.today();
-  day.index = gameNo();
+  final ix = gameNo();
+  day.index = ix;
   day.word = getWord(day.index);
-  day.next = launch.add(Duration(days: gameNo() + 1));
+  day.next = launch.add(Duration(days: ix + 1));
   await day.save();
   return day;
 }
@@ -62,70 +63,70 @@ Future<void> _handleWordUpdateError(dynamic e, StackTrace s) async {
 
 /// Notify users about the new word
 Future<void> notifyUsers() async {
-  final users = await WordleDB.getUsers();
-  final notificationEnabledUsers =
-      users.where((e) => e.notify && e.hasPlayedInLast4Days()).toList();
-  int count = notificationEnabledUsers.length;
+  final game = gameNo();
+  List<int> users = await WordleDB.notifyMePeople();
 
-  await sendLogs("🔔 Notifying $count users");
-  Message? statusMessage = await sendLogs(progressMessage(count, 0, 0));
+  int totalCount = users.length;
+
+  await sendLogs("🔔 Notifying $totalCount users");
+
+  int successCount = 0, failureCount = 0;
+  final text = progressMessage(totalCount, successCount, failureCount);
+  Message? statusMessage = await sendLogs(text);
 
   final stopwatch = Stopwatch()..start();
 
-  int success = 0, failure = 0;
   List<ErrorUser> errorUsers = [];
 
-  for (int i = 0; i < count; i++) {
-    await _notifySingleUser(
-      notificationEnabledUsers[i],
-      gameNo(),
-      stopwatch,
-      statusMessage,
-      success,
-      failure,
-      errorUsers,
-      count,
-    );
-  }
-
-  await _finalizeNotifications(
-    stopwatch,
-    statusMessage,
-    success,
-    failure,
-    errorUsers,
-  );
-}
-
-/// Notify a single user
-Future<void> _notifySingleUser(
-  WordleUser user,
-  int gameNo,
-  Stopwatch stopwatch,
-  Message? statusMessage,
-  int success,
-  int failure,
-  List<ErrorUser> errorUsers,
-  int count,
-) async {
-  try {
-    if (await _shouldNotifyUser(user, gameNo)) {
-      await _sendNotification(user);
-      success++;
-    } else {
-      success++;
+  for (int i = 0; i < totalCount; i++) {
+    final user = await WordleUser.init(users[i]);
+    try {
+      if (await _shouldNotifyUser(user, game)) {
+        await _sendNotification(user);
+      }
+      successCount++;
+    } catch (e) {
+      user.notify = false;
+      try {
+        await user.save();
+      } catch (_) {}
+      failureCount++;
+      errorUsers.add(ErrorUser(user.id, e.toString()));
     }
-  } catch (e) {
-    failure++;
-    errorUsers.add(ErrorUser(user.id, e.toString()));
+
+    if (i % 10 == 0 && statusMessage != null) {
+      await editLog(
+        statusMessage.messageId,
+        progressMessage(totalCount, successCount, failureCount),
+      );
+      await Future.delayed(Duration(milliseconds: 2000));
+    }
   }
 
-  if (count % 10 == 0 && statusMessage != null) {
-    await editLog(
-      statusMessage.messageId,
-      progressMessage(count, success, failure),
+  try {
+    await sendLogs(
+      "🔔 Notified $successCount users, failed to notify $failureCount users.\n\nIt took ${DateUtil.durationString(stopwatch.elapsed)}",
     );
-    await Future.delayed(Duration(milliseconds: 2000));
+    await editLog(
+      statusMessage!.messageId,
+      "${progressMessage(totalCount, successCount, failureCount)}\n\n#notified",
+    );
+    stopwatch.stop();
+    await sendLogs(
+      'Turning off notifications for ${errorUsers.length} failed users',
+    );
+
+    users.removeWhere((e) => errorUsers.any((x) => x.userId == e));
+
+    final blocked = errorUsers
+        .where((e) => e.reason.contains(MessageStrings.blocked))
+        .length;
+
+    WordleDB.incrementBlockedCount(blocked).ignore();
+    WordleDB.updateNotifyList(users).ignore();
+    await createLogFileAndSend(errorUsers);
+  } catch (err) {
+    print(err);
   }
 }
 
@@ -141,42 +142,6 @@ Future<void> _sendNotification(WordleUser user) async {
     random(MessageStrings.notificationMsgs),
   );
   await Future.delayed(Duration(milliseconds: 2000));
-}
-
-/// Finalize notifications
-Future<void> _finalizeNotifications(Stopwatch stopwatch, Message? statusMessage,
-    int success, int failure, List<ErrorUser> errorUsers) async {
-  try {
-    await sendLogs(
-      "🔔 Notified $success users, failed to notify $failure users.\n\nIt took ${DateUtil.durationString(stopwatch.elapsed)}",
-    );
-    await editLog(
-      statusMessage!.messageId,
-      "${progressMessage(success + failure, success, failure)}\n\n#notified",
-    );
-    stopwatch.stop();
-    await _turnOffNotificationsForFailedUsers(errorUsers);
-    await createLogFileAndSend(errorUsers);
-  } catch (err) {
-    print(err);
-  }
-}
-
-/// Turn off notifications for failed users
-Future<void> _turnOffNotificationsForFailedUsers(
-  List<ErrorUser> errorUsers,
-) async {
-  await sendLogs(
-    'Turning off notifications for ${errorUsers.length} failed users',
-  );
-  for (var errorUser in errorUsers) {
-    WordleUser user = await WordleUser.init(errorUser.userId);
-    user.notify = false;
-    await user.save();
-  }
-  final blocked =
-      errorUsers.where((e) => e.reason.contains(MessageStrings.blocked)).length;
-  WordleDB.incrementBlockedCount(blocked).ignore();
 }
 
 /// Generate a progress message

@@ -46,6 +46,7 @@ Future<void> handleFirstTimeUser(Context ctx, WordleUser user) async {
 
   final isInvited = ctx.args.isNotEmpty && int.tryParse(ctx.args[0]) != null;
   WordleDB.incrementUserCount(isInvited: isInvited).ignore();
+  WordleDB.addNewUser(user.id).ignore();
 
   if (ctx.args.isEmpty) return;
 
