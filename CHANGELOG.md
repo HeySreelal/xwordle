@@ -1,3 +1,9 @@
+## 1.3.2
+
+- Admin must manually update words with `/update` command
+- Changed the way notifications are sent
+- Why? Outlined here: https://github.com/HeySreelal/xwordle/pull/103 
+
 ## 1.3.1
 
 - Some fixes around broadcasting
