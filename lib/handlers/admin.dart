@@ -164,8 +164,13 @@ class Admin {
     return (ctx) async {
       await ctx.reply(
         "Okay, I can update the word, do we need to notify the users or reset counters?",
-        replyMarkup:
-            Keyboard().addText("Notify").addText("Reset").oneTime().resized(),
+        replyMarkup: Keyboard()
+            .addText("Notify")
+            .addText("Reset")
+            .row()
+            .addText("Just Update")
+            .oneTime()
+            .resized(),
       );
 
       final r = await conv.waitForTextMessage(chatId: ctx.id);
