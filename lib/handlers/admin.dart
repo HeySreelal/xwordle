@@ -162,10 +162,21 @@ class Admin {
 
   static Handler updateHandler() {
     return (ctx) async {
-      await ctx.reply("Updating the word now!");
-      final shouldNotify = ctx.args.isNotEmpty && ctx.args[0] == "notify";
-      final shouldReset =
-          shouldNotify || (ctx.args.isNotEmpty && ctx.args[0] == "reset");
+      await ctx.reply(
+        "Okay, I can update the word, do we need to notify the users or reset counters?",
+        replyMarkup:
+            Keyboard().addText("Notify").addText("Reset").oneTime().resized(),
+      );
+
+      final r = await conv.waitForTextMessage(chatId: ctx.id);
+      if (r == null) {
+        await ctx.reply("Cancelling the action.");
+        return;
+      }
+
+      final shouldNotify = r.msg?.text == "Notify";
+      final shouldReset = shouldNotify || r.msg?.text == "Reset";
+
       await updateWord(
         shouldNotify: shouldNotify,
         shouldReset: shouldReset,
