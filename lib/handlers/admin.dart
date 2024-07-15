@@ -159,6 +159,36 @@ class Admin {
       await ctx.reply(await msg, parseMode: ParseMode.html);
     };
   }
+
+  static Handler updateHandler() {
+    return (ctx) async {
+      await ctx.reply(
+        "Okay, I can update the word, do we need to notify the users or reset counters?",
+        replyMarkup: Keyboard()
+            .addText("Notify")
+            .addText("Reset")
+            .row()
+            .addText("Just Update")
+            .oneTime()
+            .resized(),
+      );
+
+      final r = await conv.waitForTextMessage(chatId: ctx.id);
+      if (r == null) {
+        await ctx.reply("Cancelling the action.");
+        return;
+      }
+
+      final shouldNotify = r.msg?.text == "Notify";
+      final shouldReset = shouldNotify || r.msg?.text == "Reset";
+
+      await updateWord(
+        shouldNotify: shouldNotify,
+        shouldReset: shouldReset,
+      );
+      await ctx.reply("Updated the word!");
+    };
+  }
 }
 
 /// Extension isAdmin on ID
