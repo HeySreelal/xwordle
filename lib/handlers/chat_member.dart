@@ -21,14 +21,14 @@ Handler chatMemberHandler() {
     final notClaimed = !user.hasClaimedXooniverseOffer;
 
     if (isMember && notClaimed) {
-      user.hints.extraAttempts.left += 3;
+      user.hints.extraAttempts.left += 1;
       user.hints.letterReveals.left += 3;
       user.hasClaimedXooniverseOffer = true;
       await user.save();
       try {
         final message = await api.sendMessage(
           ChatID(user.id),
-          "You have been credited with Bonus Hints Pack with Letter Reveal x3 and Extra Attempt x3!\n\n<blockquote>Woohoo! Thanks for jumping into @Xooniverse! We're happy to have you. Here's a little something to show our appreciation! 🎉</blockquote>",
+          "You have been credited with Bonus Hints Pack with Letter Reveal x3 and Extra Attempt x1!\n\n<blockquote>Woohoo! Thanks for jumping into @Xooniverse! We're happy to have you. Here's a little something to show our appreciation! 🎉</blockquote>",
           messageEffectId: kPartyEffectId,
           parseMode: ParseMode.html,
         );
