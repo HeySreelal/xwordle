@@ -14,11 +14,18 @@ String getWord(int index) {
 }
 
 /// Updates the words, sends notification to subscribed users.
-Future<void> updateWord() async {
-  await sendLogs("Update word has been called!");
+Future<void> updateWord({bool shouldNotify = false}) async {
+  await sendLogs("⏰ Updating word now!");
+  if (shouldNotify) {
+    await sendLogs("🔔 This time, we will send notifications to users.");
+  }
   try {
+    await sendDailyLog();
     WordleDay day = await _fetchAndUpdateWordleDay();
-    await _scheduleNextUpdate(day);
+    await day.resetCounters();
+    if (shouldNotify) {
+      await notifyUsers();
+    }
   } catch (e, s) {
     await _handleWordUpdateError(e, s);
   }
@@ -33,20 +40,6 @@ Future<WordleDay> _fetchAndUpdateWordleDay() async {
   day.next = launch.add(Duration(days: ix + 1));
   await day.save();
   return day;
-}
-
-/// Schedule the next update
-Future<void> _scheduleNextUpdate(WordleDay day) async {
-  final durationToNext = day.next.difference(DateTime.now());
-  sendLogs(
-    "⏰ Duration to next update call: ${DateUtil.durationString(durationToNext)}",
-  ).ignore();
-  Timer(durationToNext, () async {
-    await sendDailyLog();
-    await day.resetCounters();
-    await updateWord();
-    await notifyUsers();
-  });
 }
 
 /// Handle errors during word update

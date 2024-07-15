@@ -5,9 +5,6 @@ void main(List<String> args) async {
   // Init the bot
   await init();
 
-  // Update the word
-  await updateWord();
-
   // Handle guessed word
   bot.onText(guessHandler());
 
@@ -61,6 +58,7 @@ void main(List<String> args) async {
   final checker = ScopeOptions(customPredicate: Admin.check);
 
   // Admin Handlers
+  bot.command("update", Admin.updateHandler(), options: checker);
   bot.command("mod", Admin.modHandler(), options: checker);
   bot.command("count", Admin.countHandler(), options: checker);
   bot.command('testbroadcast', Admin.testBroadcastHandler(), options: checker);

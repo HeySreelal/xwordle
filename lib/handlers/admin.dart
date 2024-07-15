@@ -159,6 +159,15 @@ class Admin {
       await ctx.reply(await msg, parseMode: ParseMode.html);
     };
   }
+
+  static Handler updateHandler() {
+    return (ctx) async {
+      await ctx.reply("Updating the word now!");
+      bool shouldNotify = ctx.args.isNotEmpty && ctx.args[0] == "notify";
+      await updateWord(shouldNotify: shouldNotify);
+      await ctx.reply("Updated the word!");
+    };
+  }
 }
 
 /// Extension isAdmin on ID
