@@ -163,8 +163,13 @@ class Admin {
   static Handler updateHandler() {
     return (ctx) async {
       await ctx.reply("Updating the word now!");
-      bool shouldNotify = ctx.args.isNotEmpty && ctx.args[0] == "notify";
-      await updateWord(shouldNotify: shouldNotify);
+      final shouldNotify = ctx.args.isNotEmpty && ctx.args[0] == "notify";
+      final shouldReset =
+          shouldNotify || (ctx.args.isNotEmpty && ctx.args[0] == "reset");
+      await updateWord(
+        shouldNotify: shouldNotify,
+        shouldReset: shouldReset,
+      );
       await ctx.reply("Updated the word!");
     };
   }

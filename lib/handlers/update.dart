@@ -14,7 +14,10 @@ String getWord(int index) {
 }
 
 /// Updates the words, sends notification to subscribed users.
-Future<void> updateWord({bool shouldNotify = false}) async {
+Future<void> updateWord({
+  bool shouldNotify = false,
+  bool shouldReset = false,
+}) async {
   await sendLogs("⏰ Updating word now!");
   if (shouldNotify) {
     await sendLogs("🔔 This time, we will send notifications to users.");
@@ -22,7 +25,9 @@ Future<void> updateWord({bool shouldNotify = false}) async {
   try {
     await sendDailyLog();
     WordleDay day = await _fetchAndUpdateWordleDay();
-    await day.resetCounters();
+    if (shouldReset) {
+      await day.resetCounters();
+    }
     if (shouldNotify) {
       await notifyUsers();
     }
