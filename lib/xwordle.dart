@@ -40,6 +40,7 @@ part 'handlers/shape.dart';
 part 'handlers/start.dart';
 part 'handlers/update.dart';
 part 'handlers/invite.dart';
+part 'handlers/chat_member.dart';
 
 // Models
 part 'models/admin.dart';

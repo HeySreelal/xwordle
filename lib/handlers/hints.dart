@@ -216,7 +216,7 @@ Handler handleSuccessPaymentForHints(String payload) {
     await ctx.reply(
       text,
       parseMode: ParseMode.html,
-      messageEffectId: "5046509860389126442",
+      messageEffectId: kPartyEffectId,
     );
   };
 }

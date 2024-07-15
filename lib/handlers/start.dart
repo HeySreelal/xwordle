@@ -109,7 +109,7 @@ Future<void> handleReferralRewards(
     await api.sendMessage(
       referrerChat,
       "😎 Hey ${referredByUser.getName()}, I have a good news, just for you! You've unlocked the <tg-spoiler><b>$rewardMessage</b></tg-spoiler> power-up by achieving ${referredByUser.referralCount} referrals. 😎",
-      messageEffectId: "5046509860389126442",
+      messageEffectId: kPartyEffectId,
       parseMode: ParseMode.html,
     );
     await api.sendMessage(

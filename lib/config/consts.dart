@@ -2,6 +2,9 @@ part of '../xwordle.dart';
 // I know this is shit :)
 // But, just to keep all the strings in one place
 
+/// party effect id
+const kPartyEffectId = "5046509860389126442";
+
 class MessageStrings {
   static const List<String> mustBe5Letters = [
     "Your guess must be 5 letters long",

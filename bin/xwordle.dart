@@ -30,6 +30,9 @@ void main(List<String> args) async {
   bot.command("hint", hintsHandler());
   bot.command("invite", inviteHandler());
 
+  // Handle sub to @Xooniverse
+  bot.onChatMember(chatMemberHandler());
+
   // Handling errors
   bot.onError(errorHandler);
 

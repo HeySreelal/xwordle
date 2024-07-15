@@ -80,7 +80,7 @@ Handler guessHandler() {
           game.word.toUpperCase(),
         ),
         parseMode: ParseMode.html,
-        messageEffectId: "5046509860389126442",
+        messageEffectId: kPartyEffectId,
       );
       await ctx.reply(
         "New word will be available in ${game.formattedDurationTillNext}",

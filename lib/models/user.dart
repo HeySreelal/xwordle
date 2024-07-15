@@ -74,6 +74,10 @@ class WordleUser {
   /// The ids of the people the current person has invited
   List<int> referrals;
 
+  /// A flag indicating whether the user has already subscribed to @Xooniverse
+  /// to get redeem the order.
+  bool hasClaimedXooniverseOffer;
+
   /// Constructs a WordleSession
   WordleUser({
     this.currentGame = 0,
@@ -100,6 +104,7 @@ class WordleUser {
     this.referralCount = 0,
     List<int>? referrals,
     this.referrer,
+    this.hasClaimedXooniverseOffer = false,
   })  : joinedDate = joinedDate ?? DateTime.now(),
         hintShape = hintShape ?? HintShape.circle,
         hints = hints ?? PremiumHints(),
@@ -130,6 +135,7 @@ class WordleUser {
       'referralCount': referralCount,
       'referrals': referrals,
       'referrer': referrer,
+      'hasClaimedXooniverseOffer': hasClaimedXooniverseOffer,
     };
   }
 
@@ -158,6 +164,7 @@ class WordleUser {
       referralCount: map["referralCount"] ?? 0,
       referrals: map["referrals"]?.cast<int>(),
       referrer: map["referrer"],
+      hasClaimedXooniverseOffer: map["hasClaimedXooniverseOffer"] ?? false,
     );
   }
 
