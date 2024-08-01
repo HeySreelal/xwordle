@@ -8,10 +8,10 @@ environment:
   sdk: ^3.0.4
 
 dependencies:
-  http: ^1.0.0
-  televerse: ^1.21.1
+  http: ^1.2.2
+  televerse: ^1.23.0
   dart_firebase_admin: ^0.3.1
 
 dev_dependencies:
   lints: ^4.0.0
-  test: ^1.25.5
+  test: ^1.25.8
