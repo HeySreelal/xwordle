@@ -117,10 +117,10 @@ packages:
     dependency: transitive
     description:
       name: dio
-      sha256: "77befdddf51050e1635a04d2bcfff230089ce7294e642d00da58cd079c0de0c8"
+      sha256: "5598aa796bbf4699afd5c67c0f5f6e2ed542afc956884b9cd58c306966efc260"
       url: "https://pub.dev"
     source: hosted
-    version: "5.5.0"
+    version: "5.7.0"
   dio_web_adapter:
     dependency: transitive
     description:
@@ -429,10 +429,10 @@ packages:
     dependency: "direct main"
     description:
       name: televerse
-      sha256: edd1594d6d1f3f4419318d634bc5f79953efddb6885e93c564b8eb3ecefc205b
+      sha256: "30e22d5e83f8ab92e3b7e01ab6802414c748e1394037558c260ab3a7ccd3861a"
       url: "https://pub.dev"
     source: hosted
-    version: "1.24.0"
+    version: "1.26.2"
   term_glyph:
     dependency: transitive
     description:
