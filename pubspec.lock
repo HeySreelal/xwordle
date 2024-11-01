@@ -101,18 +101,18 @@ packages:
     dependency: "direct main"
     description:
       name: dart_firebase_admin
-      sha256: "5c09e4fcef4f5b67a7acea5793648d802bf0336b4598e8b0cb2e8b1ac5fce3cd"
+      sha256: a50cc3b6f976296ff76e75e7af7a0f22b51dc20b1b380cf4a19a91bb4f02a2c5
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.1"
+    version: "0.4.0"
   dart_jsonwebtoken:
     dependency: transitive
     description:
       name: dart_jsonwebtoken
-      sha256: "346e9a21e4bf6e6a431e19ece00ebb2e3668e1e339cabdf6f46d18d88692a848"
+      sha256: adf073720e491d64fa599942615b919915710af2d809b2798146f9b7c4330f3f
       url: "https://pub.dev"
     source: hosted
-    version: "2.14.0"
+    version: "2.14.1"
   dio:
     dependency: transitive
     description:
